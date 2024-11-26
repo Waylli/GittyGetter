@@ -17,37 +17,39 @@ struct OrganizationsView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Spacer()
-                Button {
-                    
-                } label: {
-                    Image(systemName: "plus.circle")
-                        .font(.title)
-                        .padding([.top, .trailing])
+            TitleTextComponent(title: "Organizations")
+                .overlay {
+                    HStack {
+                        Spacer()
+                        VStack {
+                            Button {
+
+                            } label: {
+                                Image(systemName: "plus.circle")
+                                    .font(.title)
+                                    .padding([.top, .trailing])
+                            }
+                            Spacer()
+                        }
+                    }
                 }
-            }
-            topView
+            OrganizationsList(with: model.createOrganizationsListModel())
             Spacer()
         }
+        .padding()
     }
 
-    private
-    var topView: some View {
-        HStack {
-            Spacer()
-            Text("Organizations")
-                .font(.title)
-                .bold()
-            Spacer()
-        }
-    }
 }
 
 #if DEBUG
+import Combine
 #Preview {
+    let orgs = Just(Organization.mocks())
+        .eraseToAnyPublisher()
     let modelInput = OrganizationsViewModel
-        .Input()
+        .Input(oragnizations: orgs,
+               fetcher: MockFetcher(),
+               configuration: Configuration.standard())
     let modelOutput = OrganizationsViewModel
         .Output()
     let viewModel = OrganizationsViewModel(with: modelInput,
