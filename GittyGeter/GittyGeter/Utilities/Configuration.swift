@@ -10,6 +10,7 @@ import Foundation
 struct Configuration {
 
     let thumbnail: Thumbnail
+    let view: View
 
     struct Thumbnail {
         let widht: CGFloat
@@ -17,13 +18,14 @@ struct Configuration {
     }
 
     struct View {
-        let     cornerRadius: Double
+        let cornerRadius: Double
     }
 
 }
 
 extension Configuration {
     static func standard() -> Configuration {
-        Configuration(thumbnail: Thumbnail(widht: 65, height: 65))
+        Configuration(thumbnail: Thumbnail(widht: 65, height: 65),
+                      view: View(cornerRadius: 15))
     }
 }

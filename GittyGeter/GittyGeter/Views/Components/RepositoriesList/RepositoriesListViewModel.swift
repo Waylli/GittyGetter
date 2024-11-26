@@ -26,7 +26,7 @@ extension RepositoriesListViewModel {
         let isScrollable: Bool
         let repositories: Repositories
         let fetcher: Fetcher
-        let configurration: Configuration
+        let configuration: Configuration
     }
 
     struct Output {
@@ -40,7 +40,7 @@ extension RepositoriesListViewModel {
         let modelInput = RepositoryCardModel
             .Input(repository: repo,
                    fetcher: input.fetcher,
-                   configuration: input.configurration)
+                   configuration: input.configuration)
         let modelOutput = RepositoryCardModel
             .Output()
         return RepositoryCardModel(with: modelInput, and: modelOutput)

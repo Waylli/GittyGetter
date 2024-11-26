@@ -29,8 +29,6 @@ struct OrganizationCard: View {
                         Text("followers count")
                     }
                     Spacer()
-                    Image(systemName: "heart.fill")
-                        .font(.title3)
                 }
             }
         }

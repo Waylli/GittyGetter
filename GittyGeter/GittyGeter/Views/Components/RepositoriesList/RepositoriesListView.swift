@@ -37,7 +37,7 @@ struct RepositoriesListView: View {
                 RepositoryCard(with: model.createRepositoryCardModel(for: repo))
                     .padding()
                     .background {
-                        RoundedRectangle(cornerRadius: 15)
+                        RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
                             .foregroundStyle(Color.black.opacity(0.1))
                     }
             }
@@ -53,7 +53,7 @@ import Combine
         .Input(isScrollable: true,
                repositories: Repository.mocks(),
                fetcher: MockFetcher(),
-               configurration: Configuration.standard())
+               configuration: Configuration.standard())
     let modelOutput = RepositoriesListViewModel
         .Output()
     let model = RepositoriesListViewModel(with: modelInput, and: modelOutput)
@@ -65,7 +65,7 @@ import Combine
         .Input(isScrollable: false,
                repositories: Repository.mocks(),
                fetcher: MockFetcher(),
-               configurration: Configuration.standard())
+               configuration: Configuration.standard())
     let modelOutput = RepositoriesListViewModel
         .Output()
     let model = RepositoriesListViewModel(with: modelInput, and: modelOutput)

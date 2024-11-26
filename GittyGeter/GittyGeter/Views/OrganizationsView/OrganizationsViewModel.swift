@@ -1,5 +1,5 @@
 //
-//  FavoriteOrganizationsViewModel.swift
+//  OrganizationsViewModel.swift
 //  GittyGeter
 //
 //  Created by Petar Perkovski on 26/11/2024.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class FavoriteOrganizationsViewModel: ObservableObject {
+class OrganizationsViewModel: ObservableObject {
 
     @Published private(set) var favoriteRepositories = Repositories()
 
@@ -22,7 +22,7 @@ class FavoriteOrganizationsViewModel: ObservableObject {
 
 }
 
-extension FavoriteOrganizationsViewModel {
+extension OrganizationsViewModel {
 
     struct Input {
 

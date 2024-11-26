@@ -7,24 +7,18 @@
 
 import Foundation
 
-struct Organization: Codable, Identifiable {
+struct Organization: Identifiable, Hashable {
     let identifier: String
-    let avatarURL: URL?
-
-    enum CodingKeys: String, CodingKey {
-        case identifier = "id"
-        case avatarURL = "avatar_url"
-    }
+    let name: String
+    let descrition: String?
+    let websiteUrl: String?
+    let followers: Int
+    let avatarURL: String?
 }
 
 extension Organization {
 
     var id: String {identifier}
-
-    init(identifier: String, avatarUrl: String) {
-        self.identifier = identifier
-        self.avatarURL = URL(string: identifier)
-    }
 
 }
 
@@ -33,7 +27,12 @@ extension Organization {
 
     static
     func mock() -> Organization {
-        Organization(identifier: UUID().uuidString, avatarURL: nil)
+        Organization(identifier: String.random(),
+                     name: String.orgName(),
+                     descrition: "some description which need to be a bit longer",
+                     websiteUrl: "https://algorand.co/",
+                     followers: Int.random(in: 100...1000),
+                     avatarURL: "https://avatars.githubusercontent.com/u/49564161?v=4")
     }
 
     static func mocks(count: Int = 10) -> Organizations {

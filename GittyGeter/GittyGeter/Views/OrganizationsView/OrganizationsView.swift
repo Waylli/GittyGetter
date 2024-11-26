@@ -1,5 +1,5 @@
 //
-//  FavoriteOrganizationsView.swift
+//  OrganizationsView.swift
 //  GittyGeter
 //
 //  Created by Petar Perkovski on 26/11/2024.
@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct FavoriteOrganizationsView: View {
+struct OrganizationsView: View {
 
-    @ObservedObject private var model: FavoriteOrganizationsViewModel
+    @ObservedObject private var model: OrganizationsViewModel
 
-    init(with model: FavoriteOrganizationsViewModel) {
+    init(with model: OrganizationsViewModel) {
         self.model = model
     }
     
@@ -26,7 +26,6 @@ struct FavoriteOrganizationsView: View {
                         .font(.title)
                         .padding([.top, .trailing])
                 }
-
             }
             topView
             Spacer()
@@ -37,7 +36,7 @@ struct FavoriteOrganizationsView: View {
     var topView: some View {
         HStack {
             Spacer()
-            Text("Favorite Organizations")
+            Text("Organizations")
                 .font(.title)
                 .bold()
             Spacer()
@@ -47,12 +46,12 @@ struct FavoriteOrganizationsView: View {
 
 #if DEBUG
 #Preview {
-    let modelInput = FavoriteOrganizationsViewModel
+    let modelInput = OrganizationsViewModel
         .Input()
-    let modelOutput = FavoriteOrganizationsViewModel
+    let modelOutput = OrganizationsViewModel
         .Output()
-    let viewModel = FavoriteOrganizationsViewModel(with: modelInput,
+    let viewModel = OrganizationsViewModel(with: modelInput,
                                                    and: modelOutput)
-    FavoriteOrganizationsView(with: viewModel)
+    OrganizationsView(with: viewModel)
 }
 #endif
