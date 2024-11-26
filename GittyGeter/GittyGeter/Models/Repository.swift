@@ -9,7 +9,7 @@ import Foundation
 
 struct Repository: Codable, Identifiable {
 
-    let id: Int
+    let id: String
     let name: String
     let fullName: String
     let description: String?
@@ -25,3 +25,17 @@ struct Repository: Codable, Identifiable {
     }
 
 }
+
+#if DEBUG
+extension Repository {
+    static func mock() -> Repository {
+        Repository(id: UUID().uuidString,
+                   name: "some name",
+                   fullName: "some full name",
+                   description: "some description and type some more text to have it be as long as possible \(UUID().uuidString) + \(UUID().uuidString)",
+                   language: "Swift",
+                   stargazersCount: 10,
+                   forksCount: 2)
+    }
+}
+#endif

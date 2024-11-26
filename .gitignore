@@ -14,34 +14,15 @@ DerivedData/
 *.xcworkspace
 !default.xcworkspace
 
-# CocoaPods
-Pods/
-Podfile.lock
-
-# Carthage
-Carthage/Build/
 
 # Swift Package Manager
 .swiftpm/
 Package.resolved
 
-# Fastlane
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots/
-fastlane/test_output/
 
 # Archives
 *.xcarchive
 
-# Signing
-*.mobileprovision
-*.xcconfig
-!default.xcconfig
-
-# Playgrounds
-timeline.xctimeline
-playground.xcworkspace
 
 # Other
 *.moved-aside
@@ -54,8 +35,6 @@ playground.xcworkspace
 *.mode2v3
 *.perspectivev3
 
-# Asset Catalogs
-*.xcassets
 
 # Temporary Files
 *.tmp
