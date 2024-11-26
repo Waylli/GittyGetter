@@ -9,7 +9,7 @@ import Foundation
 
 struct Organization: Codable, Identifiable {
     let identifier: String
-    let avatarURL: URL
+    let avatarURL: URL?
 
     enum CodingKeys: String, CodingKey {
         case identifier = "id"
@@ -21,12 +21,10 @@ extension Organization {
 
     var id: String {identifier}
 
-    init(identifier: String, avatarUrl: String) throws {
-        guard let url = URL(string: avatarUrl) else {
-            throw CustomError.dataMappingFailed
-        }
+    init(identifier: String, avatarUrl: String) {
         self.identifier = identifier
-        self.avatarURL = url
+        self.avatarURL = URL(string: identifier)
     }
+
 }
 
