@@ -19,7 +19,8 @@ struct RepositoryCard: View {
             HStack(alignment: .top) {
                 getThumbnail()
                     .resizable()
-                    .frame(width: 65, height: 65)
+                    .frame(width: model.input.configuration.thumbnail.widht,
+                           height: model.input.configuration.thumbnail.height)
                     .aspectRatio(contentMode: .fit)
                     .background(Color.red)
                 VStack(alignment: .leading) {
@@ -72,13 +73,10 @@ struct RepositoryCard: View {
 import Combine
 
 #Preview {
-    let mockRepo = Repository.mock()
     let modelInput = RepositoryCardModel
-        .Input(repository: mockRepo, fetchImage: { _ in
-            Just(Photo.star)
-                .setFailureType(to: CustomError.self)
-                .eraseToAnyPublisher()
-        })
+        .Input(repository: Repository.mock(),
+               fetcher: MockFetcher(),
+               configuration: Configuration.standard())
     let modelOutput = RepositoryCardModel
         .Output()
     let model = RepositoryCardModel(with: modelInput,

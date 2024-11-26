@@ -8,7 +8,8 @@
 import Foundation
 
 enum CustomError: Error {
-    case dataMappingFailed,
+    case networkError,
+         dataMappingFailed,
          unknown(Error)
 }
 

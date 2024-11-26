@@ -23,8 +23,10 @@ class RepositoriesListViewModel: ObservableObject {
 extension RepositoriesListViewModel {
 
     struct Input {
+        let isScrollable: Bool
         let repositories: Repositories
-        let fetchImage: (String) -> AnyPublisher<Photo, CustomError>
+        let fetcher: Fetcher
+        let configurration: Configuration
     }
 
     struct Output {
@@ -36,9 +38,12 @@ extension RepositoriesListViewModel {
 
     func createRepositoryCardModel(for repo: Repository) -> RepositoryCardModel {
         let modelInput = RepositoryCardModel
-            .Input(repository: repo, fetchImage: input.fetchImage)
+            .Input(repository: repo,
+                   fetcher: input.fetcher,
+                   configuration: input.configurration)
         let modelOutput = RepositoryCardModel
             .Output()
         return RepositoryCardModel(with: modelInput, and: modelOutput)
     }
+    
 }

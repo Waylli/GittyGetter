@@ -18,6 +18,7 @@ struct Repository:/* Codable,*/ Identifiable, Hashable {
     let forksCount: Int
     let avatarURL: String?
     let organization: String
+    let isFavorite: Bool
 
 //    enum CodingKeys: String, CodingKey {
 //        case id, name, description, language
@@ -40,7 +41,8 @@ extension Repository {
                    stargazersCount: 10,
                    forksCount: 2,
                    avatarURL: "https://avatars.githubusercontent.com/u/49564161?v=4",
-                   organization: "Algorand Foundation")
+                   organization: "Algorand Foundation",
+                   isFavorite: Int.random(in: 0...4) == 1)
     }
 
     static func mocks(count: Int = 10) -> Repositories {

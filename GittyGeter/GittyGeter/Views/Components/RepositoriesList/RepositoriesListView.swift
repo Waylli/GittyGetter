@@ -15,16 +15,31 @@ struct RepositoriesListView: View {
         self.model = model
     }
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 16) {
-                ForEach(model.input.repositories, id: \.self) { repo in
-                    RepositoryCard(with: model.createRepositoryCardModel(for: repo))
-                        .padding()
-                        .background {
-                            RoundedRectangle(cornerRadius: 15)
-                                .foregroundStyle(Color.black.opacity(0.1))
-                        }
-                }
+        mainView()
+    }
+
+    private
+    func mainView() -> AnyView {
+        guard model.input.isScrollable else {
+            return AnyView(list)
+        }
+        return AnyView(
+            ScrollView {
+                list
+            }
+        )
+    }
+
+    private
+    var list: some View {
+        LazyVStack(spacing: 16) {
+            ForEach(model.input.repositories, id: \.self) { repo in
+                RepositoryCard(with: model.createRepositoryCardModel(for: repo))
+                    .padding()
+                    .background {
+                        RoundedRectangle(cornerRadius: 15)
+                            .foregroundStyle(Color.black.opacity(0.1))
+                    }
             }
         }
     }
@@ -35,9 +50,22 @@ import Combine
 
 #Preview {
     let modelInput = RepositoriesListViewModel
-        .Input(repositories: Repository.mocks(count: 100),
-               fetchImage: {_ in Just(Photo.star)
-            .setFailureType(to: CustomError.self).eraseToAnyPublisher()})
+        .Input(isScrollable: true,
+               repositories: Repository.mocks(),
+               fetcher: MockFetcher(),
+               configurration: Configuration.standard())
+    let modelOutput = RepositoriesListViewModel
+        .Output()
+    let model = RepositoriesListViewModel(with: modelInput, and: modelOutput)
+    RepositoriesListView(with: model)
+}
+
+#Preview {
+    let modelInput = RepositoriesListViewModel
+        .Input(isScrollable: false,
+               repositories: Repository.mocks(),
+               fetcher: MockFetcher(),
+               configurration: Configuration.standard())
     let modelOutput = RepositoriesListViewModel
         .Output()
     let model = RepositoriesListViewModel(with: modelInput, and: modelOutput)

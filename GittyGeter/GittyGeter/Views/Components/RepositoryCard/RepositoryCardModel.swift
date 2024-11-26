@@ -29,7 +29,8 @@ extension RepositoryCardModel {
 
     struct Input {
         let repository: Repository
-        let fetchImage: (String) -> AnyPublisher<Photo, CustomError>
+        let fetcher: Fetcher
+        let configuration: Configuration
     }
 
     struct Output {
@@ -49,7 +50,7 @@ extension RepositoryCardModel {
         guard let thumbnail = input.repository.avatarURL else {
             return
         }
-        input.fetchImage(thumbnail)
+        input.fetcher.fetchPhoto(from: thumbnail)
             .sink { _ in
 
             } receiveValue: { [weak self] in
