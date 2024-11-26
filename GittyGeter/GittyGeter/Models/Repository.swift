@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Repository: Codable, Identifiable {
+struct Repository:/* Codable,*/ Identifiable {
 
     let id: String
     let name: String
@@ -16,13 +16,16 @@ struct Repository: Codable, Identifiable {
     let language: String?
     let stargazersCount: Int
     let forksCount: Int
+    let avatarURL: String?
+    let organization: String
 
-    enum CodingKeys: String, CodingKey {
-        case id, name, description, language
-        case fullName = "full_name"
-        case stargazersCount = "stargazers_count"
-        case forksCount = "forks_count"
-    }
+//    enum CodingKeys: String, CodingKey {
+//        case id, name, description, language
+//        case fullName = "full_name"
+//        case stargazersCount = "stargazers_count"
+//        case forksCount = "forks_count"
+//        case avatarURL = "avatar_url"
+//    }
 
 }
 
@@ -35,7 +38,9 @@ extension Repository {
                    description: "some description and type some more text to have it be as long as possible \(UUID().uuidString) + \(UUID().uuidString)",
                    language: "Swift",
                    stargazersCount: 10,
-                   forksCount: 2)
+                   forksCount: 2,
+                   avatarURL: "https://avatars.githubusercontent.com/u/49564161?v=4",
+                   organization: "Algorand Foundation")
     }
 }
 #endif
