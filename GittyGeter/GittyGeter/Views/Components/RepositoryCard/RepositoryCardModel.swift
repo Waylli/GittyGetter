@@ -10,7 +10,6 @@ import Combine
 
 class RepositoryCardModel: ObservableObject {
 
-    @Published var repository: Repository?
     @Published var thumbnail: Photo?
     var cancelBag = CancelBag()
 
@@ -29,7 +28,7 @@ class RepositoryCardModel: ObservableObject {
 extension RepositoryCardModel {
 
     struct Input {
-        let repository: AnyPublisher<Repository, CustomError>
+        let repository: Repository
         let fetchImage: (String) -> AnyPublisher<Photo, CustomError>
     }
 
@@ -43,28 +42,17 @@ private
 extension RepositoryCardModel {
 
     func bind() {
-        input.repository
-            .receive(on: RunLoop.main)
-            .sink { [weak self] result in
-                switch result {
-                case .finished: return
-                case .failure(let error): self?.handle(this: error)
-                }
+        fetchThumbnail()
+    }
+
+    func fetchThumbnail() {
+        guard let thumbnail = input.repository.avatarURL else {
+            return
+        }
+        input.fetchImage(thumbnail)
+            .sink { _ in
+
             } receiveValue: { [weak self] in
-                self?.repository = $0
-            }
-            .store(in: &cancelBag)
-        $repository
-            .compactMap {$0}
-            .flatMap { [weak self] repo -> AnyPublisher<Photo?, Never> in
-                guard let this = self,
-                      let thumbnail = repo.avatarURL else {return Empty().eraseToAnyPublisher()}
-                return this.input.fetchImage(thumbnail)
-                    .map {$0 as Photo?}
-                    .replaceError(with: nil)
-                    .eraseToAnyPublisher()
-            }
-            .sink { [weak self] in
                 self?.thumbnail = $0
             }
             .store(in: &cancelBag)

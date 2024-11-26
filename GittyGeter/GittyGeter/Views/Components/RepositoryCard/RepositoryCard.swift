@@ -23,10 +23,10 @@ struct RepositoryCard: View {
                     .aspectRatio(contentMode: .fit)
                     .background(Color.red)
                 VStack(alignment: .leading) {
-                    Text(model.repository?.name ?? "")
+                    Text(model.input.repository.name)
                         .font(.title3)
                         .fontWeight(.semibold)
-                    Text(model.repository?.description ?? "")
+                    Text(model.input.repository.description ?? "")
                         .fontWeight(.light)
                         .italic()
                         .font(.headline)
@@ -36,7 +36,7 @@ struct RepositoryCard: View {
                     HStack {
                         HStack(alignment: .bottom, spacing: 4) {
                             Image(uiImage: UIImage.star)
-                            Text("\(model.repository?.stargazersCount ?? 0)")
+                            Text("\(model.input.repository.stargazersCount)")
                                 .fontWeight(.light)
                                 .italic()
                                 .font(.headline)
@@ -44,7 +44,7 @@ struct RepositoryCard: View {
                         Spacer()
                         HStack (alignment: .bottom, spacing: 4) {
                             Image(uiImage: UIImage.fork)
-                            Text("\(model.repository?.forksCount ?? 0)")
+                            Text("\(model.input.repository.forksCount)")
                                 .fontWeight(.light)
                                 .italic()
                                 .font(.headline)
@@ -53,7 +53,7 @@ struct RepositoryCard: View {
                     }
                 }
             }
-            Text(model.repository?.organization ?? "")
+            Text(model.input.repository.organization)
                 .font(.title3)
                 .italic()
         }
@@ -73,11 +73,8 @@ import Combine
 
 #Preview {
     let mockRepo = Repository.mock()
-    let publisher = Just(mockRepo)
-        .setFailureType(to: CustomError.self)
-        .eraseToAnyPublisher()
     let modelInput = RepositoryCardModel
-        .Input(repository: publisher, fetchImage: { _ in
+        .Input(repository: mockRepo, fetchImage: { _ in
             Just(Photo.star)
                 .setFailureType(to: CustomError.self)
                 .eraseToAnyPublisher()

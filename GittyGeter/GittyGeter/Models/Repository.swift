@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Repository:/* Codable,*/ Identifiable {
+struct Repository:/* Codable,*/ Identifiable, Hashable {
 
     let id: String
     let name: String
@@ -41,6 +41,17 @@ extension Repository {
                    forksCount: 2,
                    avatarURL: "https://avatars.githubusercontent.com/u/49564161?v=4",
                    organization: "Algorand Foundation")
+    }
+
+    static func mocks(count: Int = 10) -> Repositories {
+        guard count > 0, count < 1000 else {
+            return []
+        }
+        var repos = Repositories()
+        for _ in 1...count {
+            repos.append(Repository.mock())
+        }
+        return repos
     }
 }
 #endif
