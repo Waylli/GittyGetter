@@ -1,0 +1,582 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		D2706FEA2CF5EA9E00C909D2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D2706FC82CF5EA9D00C909D2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2706FCF2CF5EA9D00C909D2;
+			remoteInfo = GittyGeter;
+		};
+		D2706FF42CF5EA9E00C909D2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D2706FC82CF5EA9D00C909D2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2706FCF2CF5EA9D00C909D2;
+			remoteInfo = GittyGeter;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D2706FD02CF5EA9D00C909D2 /* GittyGeter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GittyGeter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2706FE92CF5EA9E00C909D2 /* GittyGeterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GittyGeterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2706FF32CF5EA9E00C909D2 /* GittyGeterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GittyGeterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D2706FFB2CF5EA9E00C909D2 /* Exceptions for "GittyGeter" folder in "GittyGeter" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = D2706FCF2CF5EA9D00C909D2 /* GittyGeter */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		D2706FD22CF5EA9D00C909D2 /* GittyGeter */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D2706FFB2CF5EA9E00C909D2 /* Exceptions for "GittyGeter" folder in "GittyGeter" target */,
+			);
+			path = GittyGeter;
+			sourceTree = "<group>";
+		};
+		D2706FEC2CF5EA9E00C909D2 /* GittyGeterTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = GittyGeterTests;
+			sourceTree = "<group>";
+		};
+		D2706FF62CF5EA9E00C909D2 /* GittyGeterUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = GittyGeterUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D2706FCD2CF5EA9D00C909D2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2706FE62CF5EA9E00C909D2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2706FF02CF5EA9E00C909D2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D2706FC72CF5EA9D00C909D2 = {
+			isa = PBXGroup;
+			children = (
+				D2706FD22CF5EA9D00C909D2 /* GittyGeter */,
+				D2706FEC2CF5EA9E00C909D2 /* GittyGeterTests */,
+				D2706FF62CF5EA9E00C909D2 /* GittyGeterUITests */,
+				D2706FD12CF5EA9D00C909D2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D2706FD12CF5EA9D00C909D2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2706FD02CF5EA9D00C909D2 /* GittyGeter.app */,
+				D2706FE92CF5EA9E00C909D2 /* GittyGeterTests.xctest */,
+				D2706FF32CF5EA9E00C909D2 /* GittyGeterUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D2706FCF2CF5EA9D00C909D2 /* GittyGeter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D2706FFC2CF5EA9E00C909D2 /* Build configuration list for PBXNativeTarget "GittyGeter" */;
+			buildPhases = (
+				D2706FCC2CF5EA9D00C909D2 /* Sources */,
+				D2706FCD2CF5EA9D00C909D2 /* Frameworks */,
+				D2706FCE2CF5EA9D00C909D2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				D2706FD22CF5EA9D00C909D2 /* GittyGeter */,
+			);
+			name = GittyGeter;
+			packageProductDependencies = (
+			);
+			productName = GittyGeter;
+			productReference = D2706FD02CF5EA9D00C909D2 /* GittyGeter.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D2706FE82CF5EA9E00C909D2 /* GittyGeterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D27070012CF5EA9E00C909D2 /* Build configuration list for PBXNativeTarget "GittyGeterTests" */;
+			buildPhases = (
+				D2706FE52CF5EA9E00C909D2 /* Sources */,
+				D2706FE62CF5EA9E00C909D2 /* Frameworks */,
+				D2706FE72CF5EA9E00C909D2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D2706FEB2CF5EA9E00C909D2 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D2706FEC2CF5EA9E00C909D2 /* GittyGeterTests */,
+			);
+			name = GittyGeterTests;
+			packageProductDependencies = (
+			);
+			productName = GittyGeterTests;
+			productReference = D2706FE92CF5EA9E00C909D2 /* GittyGeterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D2706FF22CF5EA9E00C909D2 /* GittyGeterUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D27070042CF5EA9E00C909D2 /* Build configuration list for PBXNativeTarget "GittyGeterUITests" */;
+			buildPhases = (
+				D2706FEF2CF5EA9E00C909D2 /* Sources */,
+				D2706FF02CF5EA9E00C909D2 /* Frameworks */,
+				D2706FF12CF5EA9E00C909D2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D2706FF52CF5EA9E00C909D2 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D2706FF62CF5EA9E00C909D2 /* GittyGeterUITests */,
+			);
+			name = GittyGeterUITests;
+			packageProductDependencies = (
+			);
+			productName = GittyGeterUITests;
+			productReference = D2706FF32CF5EA9E00C909D2 /* GittyGeterUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D2706FC82CF5EA9D00C909D2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1610;
+				LastUpgradeCheck = 1610;
+				TargetAttributes = {
+					D2706FCF2CF5EA9D00C909D2 = {
+						CreatedOnToolsVersion = 16.1;
+					};
+					D2706FE82CF5EA9E00C909D2 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = D2706FCF2CF5EA9D00C909D2;
+					};
+					D2706FF22CF5EA9E00C909D2 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = D2706FCF2CF5EA9D00C909D2;
+					};
+				};
+			};
+			buildConfigurationList = D2706FCB2CF5EA9D00C909D2 /* Build configuration list for PBXProject "GittyGeter" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D2706FC72CF5EA9D00C909D2;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = D2706FD12CF5EA9D00C909D2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2706FCF2CF5EA9D00C909D2 /* GittyGeter */,
+				D2706FE82CF5EA9E00C909D2 /* GittyGeterTests */,
+				D2706FF22CF5EA9E00C909D2 /* GittyGeterUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D2706FCE2CF5EA9D00C909D2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2706FE72CF5EA9E00C909D2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2706FF12CF5EA9E00C909D2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D2706FCC2CF5EA9D00C909D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2706FE52CF5EA9E00C909D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2706FEF2CF5EA9E00C909D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D2706FEB2CF5EA9E00C909D2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2706FCF2CF5EA9D00C909D2 /* GittyGeter */;
+			targetProxy = D2706FEA2CF5EA9E00C909D2 /* PBXContainerItemProxy */;
+		};
+		D2706FF52CF5EA9E00C909D2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2706FCF2CF5EA9D00C909D2 /* GittyGeter */;
+			targetProxy = D2706FF42CF5EA9E00C909D2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D2706FFD2CF5EA9E00C909D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GittyGeter/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.petar.perkovski.GittyGeter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D2706FFE2CF5EA9E00C909D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GittyGeter/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.petar.perkovski.GittyGeter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D2706FFF2CF5EA9E00C909D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
+			};
+			name = Debug;
+		};
+		D27070002CF5EA9E00C909D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D27070022CF5EA9E00C909D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.petar.perkovski.GittyGeterTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GittyGeter.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GittyGeter";
+			};
+			name = Debug;
+		};
+		D27070032CF5EA9E00C909D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.petar.perkovski.GittyGeterTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GittyGeter.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GittyGeter";
+			};
+			name = Release;
+		};
+		D27070052CF5EA9E00C909D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.petar.perkovski.GittyGeterUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GittyGeter;
+			};
+			name = Debug;
+		};
+		D27070062CF5EA9E00C909D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.petar.perkovski.GittyGeterUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GittyGeter;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D2706FCB2CF5EA9D00C909D2 /* Build configuration list for PBXProject "GittyGeter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2706FFF2CF5EA9E00C909D2 /* Debug */,
+				D27070002CF5EA9E00C909D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D2706FFC2CF5EA9E00C909D2 /* Build configuration list for PBXNativeTarget "GittyGeter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2706FFD2CF5EA9E00C909D2 /* Debug */,
+				D2706FFE2CF5EA9E00C909D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D27070012CF5EA9E00C909D2 /* Build configuration list for PBXNativeTarget "GittyGeterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D27070022CF5EA9E00C909D2 /* Debug */,
+				D27070032CF5EA9E00C909D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D27070042CF5EA9E00C909D2 /* Build configuration list for PBXNativeTarget "GittyGeterUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D27070052CF5EA9E00C909D2 /* Debug */,
+				D27070062CF5EA9E00C909D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D2706FC82CF5EA9D00C909D2 /* Project object */;
+}
