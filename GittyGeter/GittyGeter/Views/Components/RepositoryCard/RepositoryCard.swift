@@ -43,7 +43,7 @@ struct RepositoryCard: View {
                                 .font(.headline)
                         }
                         Spacer()
-                        HStack (alignment: .bottom, spacing: 4) {
+                        HStack(alignment: .bottom, spacing: 4) {
                             Image(uiImage: UIImage.fork)
                             Text("\(model.input.repository.forksCount)")
                                 .fontWeight(.light)

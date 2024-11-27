@@ -45,5 +45,5 @@ extension RepositoriesListViewModel {
             .Output()
         return RepositoryCardModel(with: modelInput, and: modelOutput)
     }
-    
+
 }

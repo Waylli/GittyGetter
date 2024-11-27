@@ -17,14 +17,14 @@ struct RepositoriesView: View {
 
     var body: some View {
         VStack {
-            TitleTextComponent(title: "Repositories")
-            searchView
-            FilterOrganizationsComponent(with: model.createFilterOrganizationsComponentModel())
+                TitleTextComponent(title: "Repositories")
+                searchView
+                FilterOrganizationsComponent(with: model.createFilterOrganizationsComponentModel())
             RepositoriesListView(with: model.createRepositoriesListViewModel())
             Spacer()
         }
-        .navigationTitle("Test")
         .padding()
+        .animation(.easeIn(duration: 0.1), value: model.currentFilteredOrganizations)
     }
 
     private
@@ -35,24 +35,6 @@ struct RepositoriesView: View {
         .textFieldStyle(.roundedBorder)
     }
 
-    var filterView: some View {
-        VStack {
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(model.availableOrganizations
-                        .filter { !model.filteredOrganizations.contains($0)},
-                            id: \.self) { organization in
-                        Text(organization.name)
-                            .padding()
-                            .background {
-                                RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
-                                    .foregroundStyle(Color.black.opacity(0.2))
-                            }
-                    }
-                }
-            }
-        }
-    }
 }
 
 #if DEBUG
@@ -73,8 +55,6 @@ import Combine
     RepositoriesView(with: model)
 }
 #endif
-
-import SwiftUI
 
 struct WrappingItemsView: View {
     let items: [String]

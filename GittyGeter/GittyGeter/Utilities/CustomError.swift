@@ -16,7 +16,7 @@ enum CustomError: Error {
 extension CustomError {
     static
     func from(any error: Error) -> CustomError {
-        //handle it better when you have the time
+        // handle it better when you have the time
         .unknown(error)
     }
 }

@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D2902A5B2CF69845006EDE17 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = D2902A5A2CF69845006EDE17 /* WrappingHStack */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		D2706FEA2CF5EA9E00C909D2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2902A5B2CF69845006EDE17 /* WrappingHStack in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +130,7 @@
 			);
 			name = GittyGeter;
 			packageProductDependencies = (
+				D2902A5A2CF69845006EDE17 /* WrappingHStack */,
 			);
 			productName = GittyGeter;
 			productReference = D2706FD02CF5EA9D00C909D2 /* GittyGeter.app */;
@@ -208,6 +214,9 @@
 			);
 			mainGroup = D2706FC72CF5EA9D00C909D2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D2902A592CF69845006EDE17 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D2706FD12CF5EA9D00C909D2 /* Products */;
 			projectDirPath = "";
@@ -577,6 +586,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D2902A592CF69845006EDE17 /* XCRemoteSwiftPackageReference "WrappingHStack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dkk/WrappingHStack";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.11;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D2902A5A2CF69845006EDE17 /* WrappingHStack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D2902A592CF69845006EDE17 /* XCRemoteSwiftPackageReference "WrappingHStack" */;
+			productName = WrappingHStack;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D2706FC82CF5EA9D00C909D2 /* Project object */;
 }

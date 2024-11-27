@@ -14,7 +14,7 @@ struct OrganizationsView: View {
     init(with model: OrganizationsViewModel) {
         self.model = model
     }
-    
+
     var body: some View {
         VStack {
             TitleTextComponent(title: "Organizations")

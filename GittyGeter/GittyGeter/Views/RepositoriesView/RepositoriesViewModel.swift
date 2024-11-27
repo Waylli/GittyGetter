@@ -12,8 +12,8 @@ class RepositoriesViewModel: ObservableObject {
 
     @Published var query = ""
     @Published var quriedRepositories = Repositories()
-    @Published var filteredOrganizations = Organizations()
-    @Published var availableOrganizations = Organizations()
+    @Published var currentFilteredOrganizations = Organizations()
+    @Published private var allOrganizations = Organizations()
     private var cancelBag = CancelBag()
 
     let input: Input
@@ -25,6 +25,8 @@ class RepositoriesViewModel: ObservableObject {
         self.input = input
         self.output = output
         bind()
+        bindSearch()
+        bindActions()
     }
 
     func createRepositoriesListViewModel() -> RepositoriesListViewModel {
@@ -60,14 +62,16 @@ extension RepositoriesViewModel {
     }
 
     func createFilterOrganizationsComponentModel() -> FilterOrganizationsComponentModel {
+        let available = allOrganizations.filter {!currentFilteredOrganizations.contains($0)}
         // improve after tesing
         let modelInput = FilterOrganizationsComponentModel
-            .Input(availableOrganizations: availableOrganizations,
-                   currentFilteredOrganizations: availableOrganizations)
+            .Input(availableOrganizations: available,
+                   currentFilteredOrganizations: currentFilteredOrganizations,
+                   configuration: input.configuration)
         let modelOutput = FilterOrganizationsComponentModel
             .Output(removeFilteredOrganization: actions.removeFilteredOrganization,
                     removeAllFilteredOrganizations: actions.removeAllFilteredOrganizations,
-                    applyFilterToOrganization: actions.applyFilterToOrganization)
+                    applyFilterFromOrganization: actions.applyFilterToOrganization)
         return FilterOrganizationsComponentModel(with: modelInput,
                                                  and: modelOutput)
     }
@@ -79,15 +83,14 @@ extension RepositoriesViewModel {
     func bind() {
         input.oragnizations
             .sink { [weak self] in
-                self?.availableOrganizations = $0
+                self?.allOrganizations = $0
             }
             .store(in: &cancelBag)
-        bindSearch()
     }
 
     func bindSearch() {
         Publishers
-            .CombineLatest($query.throttle(for: 2, scheduler: RunLoop.main, latest: true), $filteredOrganizations)
+            .CombineLatest($query.throttle(for: 2, scheduler: RunLoop.main, latest: true), $currentFilteredOrganizations)
             .flatMap { [weak self] (query, organizations) -> AnyPublisher<Repositories, Never> in
                 guard let this = self else {return Empty().eraseToAnyPublisher()}
                 return this.input.getRepositories(query, organizations)
@@ -106,6 +109,30 @@ extension RepositoriesViewModel {
 
     func handle(this error: CustomError) {
 
+    }
+
+    private func bindActions() {
+        actions
+            .applyFilterToOrganization
+            .sink { [weak self] in
+                guard let this = self, this.currentFilteredOrganizations.firstIndex(of: $0) == nil else {
+                    return
+                }
+                this.currentFilteredOrganizations.append($0)
+            }
+            .store(in: &cancelBag)
+        actions
+            .removeFilteredOrganization
+            .sink { [weak self] in
+                self?.currentFilteredOrganizations.removeSafe($0)
+            }
+            .store(in: &cancelBag)
+        actions
+            .removeAllFilteredOrganizations
+            .sink { [weak self] _ in
+                self?.currentFilteredOrganizations.removeAll()
+            }
+            .store(in: &cancelBag)
     }
 
 }
