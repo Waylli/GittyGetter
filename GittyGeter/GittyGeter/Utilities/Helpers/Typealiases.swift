@@ -13,3 +13,4 @@ typealias Organizations = [Organization]
 typealias Repositories = [Repository]
 typealias CancelBag = Set<AnyCancellable>
 typealias Photo = UIImage
+typealias Navigator = NavigationCoordinator
