@@ -30,7 +30,7 @@ struct OrganizationsList: View {
                     .padding()
                     .background {
                         RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
-                            .foregroundStyle(Color.black.opacity(0.1))
+                            .foregroundStyle(Color.primary.opacity(0.15))
                     }
             }
         }

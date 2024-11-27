@@ -30,6 +30,7 @@ struct Configuration {
 
     struct Buttons {
         let smallSize: CGSize
+        let backButtonSize: CGSize
     }
 
 }
@@ -38,6 +39,7 @@ extension Configuration {
     static func standard() -> Configuration {
         Configuration(thumbnail: Thumbnail(widht: 65, height: 65),
                       view: View(cornerRadius: 15),
-                      buttons: Buttons(smallSize: CGSize(width: 44, height: 44)))
+                      buttons: Buttons(smallSize: CGSize(width: 44, height: 44),
+                                       backButtonSize: CGSize(width: 55, height: 44)))
     }
 }

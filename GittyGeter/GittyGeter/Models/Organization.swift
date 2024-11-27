@@ -10,8 +10,9 @@ import Foundation
 struct Organization: Identifiable, Hashable {
     let identifier: String
     let name: String
-    let descrition: String?
+    let description: String?
     let websiteUrl: String?
+    let email: String?
     let followers: Int
     let avatarURL: String?
 }
@@ -29,8 +30,9 @@ extension Organization {
     func mock() -> Organization {
         Organization(identifier: String.random(),
                      name: String.orgName(),
-                     descrition: "some description which need to be a bit longer",
+                     description: "some description which need to be a bit longer",
                      websiteUrl: "https://algorand.co/",
+                     email: "some@some.com",
                      followers: Int.random(in: 100...1000),
                      avatarURL: "https://avatars.githubusercontent.com/u/49564161?v=4")
     }

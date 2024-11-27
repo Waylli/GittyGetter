@@ -83,12 +83,12 @@ struct FilterOrganizationsComponent: View {
                             Text(organization.name)
                                 .italic()
                                 .font(.headline)
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.primary)
                                 .padding([.top, .bottom], 8)
                                 .padding([.leading, .trailing], 12)
                                 .background {
                                     RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
-                                        .foregroundStyle(Color.black.opacity(0.8))
+                                        .foregroundStyle(Color.primary.opacity(0.25))
                                 }
                                 .onTapGesture {
                                     model.applyFilterFrom(this: organization)
