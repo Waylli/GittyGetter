@@ -14,6 +14,7 @@ struct GittyTabView: View {
     init(with model: GittyTabViewModel) {
         self.model = model
     }
+    /// NE ZABORAVAJ FAVORITES Page
     var body: some View {
         TabView {
             RepositoriesView(with: model.makeRepositoriesViewModel())

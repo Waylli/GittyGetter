@@ -22,7 +22,7 @@ struct DetailedOrganizationView: View {
                 Spacer()
             }
             TitleTextComponent(title: model.input.organization.name)
-            description
+            DescriptionTextComponent(text: model.input.organization.description)
             decoration
                 .padding()
                 .background {
@@ -34,15 +34,6 @@ struct DetailedOrganizationView: View {
             Spacer()
         }
         .padding()
-    }
-
-    private
-    var description: some View {
-        HStack {
-            Text(model.input.organization.description ?? "N/A")
-                .font(.title3)
-            Spacer()
-        }
     }
 
     var decoration: some View {

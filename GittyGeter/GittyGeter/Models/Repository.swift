@@ -16,6 +16,8 @@ struct Repository: /* Codable,*/ Identifiable, Hashable {
     let language: String?
     let stargazersCount: Int
     let forksCount: Int
+    let watchers: Int
+    let issues: Int
     let avatarURL: String?
     let organization: String
     let isFavorite: Bool
@@ -40,6 +42,8 @@ extension Repository {
                    language: "Swift",
                    stargazersCount: 10,
                    forksCount: 2,
+                   watchers: Int.random(in: 1...100),
+                   issues: Int.random(in: 1...20),
                    avatarURL: "https://avatars.githubusercontent.com/u/49564161?v=4",
                    organization: "Algorand Foundation",
                    isFavorite: Int.random(in: 0...4) == 1)
@@ -57,3 +61,4 @@ extension Repository {
     }
 }
 #endif
+
