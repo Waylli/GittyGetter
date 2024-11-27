@@ -22,16 +22,6 @@ class OrganizationsViewModel: ObservableObject {
         bind()
     }
 
-    func makeOrganizationsListModel() -> OrganizationsListModel {
-        let modelInput = OrganizationsListModel
-            .Input(organizations: organizations,
-                   fetcher: input.fetcher,
-                   configuration: input.configuration)
-        let modelOutput = OrganizationsListModel
-            .Output()
-        return OrganizationsListModel(with: modelInput, and: modelOutput)
-    }
-
 }
 
 extension OrganizationsViewModel {
@@ -43,7 +33,21 @@ extension OrganizationsViewModel {
     }
 
     struct Output {
+        let userSelectedOrganization: PassthroughSubject<Organization, Never>
+    }
 
+    func makeOrganizationsListModel() -> OrganizationsListModel {
+        let modelInput = OrganizationsListModel
+            .Input(organizations: organizations,
+                   fetcher: input.fetcher,
+                   configuration: input.configuration)
+        let modelOutput = OrganizationsListModel
+            .Output(userSelectedOrganization: output.userSelectedOrganization)
+        return OrganizationsListModel(with: modelInput, and: modelOutput)
+    }
+
+    func userSelected(this organization: Organization) {
+        output.userSelectedOrganization.send(organization)
     }
 
 }

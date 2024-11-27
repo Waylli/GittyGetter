@@ -19,26 +19,6 @@ class GittyTabViewModel: ObservableObject {
         self.output = output
     }
 
-    func makeRepositoriesViewModel() -> RepositoriesViewModel {
-        let modelInput = RepositoriesViewModel
-            .Input(allOrganizations: input.allOrganizations,
-                   getRepositories: input.getRepositories,
-                   fetcher: input.fetcher,
-                   configuration: input.configuration)
-        let modelOutput = RepositoriesViewModel
-            .Output()
-        return RepositoriesViewModel(with: modelInput, and: modelOutput)
-    }
-
-    func makeOrganizationsViewModel() -> OrganizationsViewModel {
-        let modelInput = OrganizationsViewModel
-            .Input(oragnizations: input.allOrganizations,
-                   fetcher: input.fetcher,
-                   configuration: input.configuration)
-        let modelOutput = OrganizationsViewModel
-            .Output()
-        return OrganizationsViewModel(with: modelInput, and: modelOutput)
-    }
 }
 
 extension GittyTabViewModel {
@@ -51,6 +31,28 @@ extension GittyTabViewModel {
     }
 
     struct Output {
+        let userSelectedRepository: PassthroughSubject<Repository, Never>
+        let userSelectedOrganization: PassthroughSubject<Organization, Never>
+    }
 
+    func makeRepositoriesViewModel() -> RepositoriesViewModel {
+        let modelInput = RepositoriesViewModel
+            .Input(allOrganizations: input.allOrganizations,
+                   getRepositories: input.getRepositories,
+                   fetcher: input.fetcher,
+                   configuration: input.configuration)
+        let modelOutput = RepositoriesViewModel
+            .Output(userSelectedRepository: output.userSelectedRepository)
+        return RepositoriesViewModel(with: modelInput, and: modelOutput)
+    }
+
+    func makeOrganizationsViewModel() -> OrganizationsViewModel {
+        let modelInput = OrganizationsViewModel
+            .Input(oragnizations: input.allOrganizations,
+                   fetcher: input.fetcher,
+                   configuration: input.configuration)
+        let modelOutput = OrganizationsViewModel
+            .Output(userSelectedOrganization: output.userSelectedOrganization)
+        return OrganizationsViewModel(with: modelInput, and: modelOutput)
     }
 }

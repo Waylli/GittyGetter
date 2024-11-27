@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class DetailedRepositoryViewModel: ObservableObject {
 
@@ -34,7 +35,11 @@ extension DetailedRepositoryViewModel {
     }
 
     struct Output {
+        let backButtonTapped: PassthroughSubject<Void, Never>
+    }
 
+    func backButtonTapped() {
+        output.backButtonTapped.send(())
     }
 }
 
@@ -56,7 +61,7 @@ extension DetailedRepositoryViewModel {
             .store(in: &cancelBag)
     }
 
-    private func handle(this error: CustomError) {
+    func handle(this error: CustomError) {
 
     }
 }

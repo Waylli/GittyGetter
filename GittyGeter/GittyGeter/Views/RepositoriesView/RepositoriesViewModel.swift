@@ -45,7 +45,7 @@ extension RepositoriesViewModel {
     }
 
     struct Output {
-
+        let userSelectedRepository: PassthroughSubject<Repository, Never>
     }
 
     struct Actions {
@@ -82,7 +82,7 @@ extension RepositoriesViewModel {
                    fetcher: input.fetcher,
                    configuration: input.configuration)
         let modelOutput = RepositoriesListViewModel
-            .Output()
+            .Output(userSelectedRepository: output.userSelectedRepository)
         return RepositoriesListViewModel(with: modelInput, and: modelOutput)
     }
 }

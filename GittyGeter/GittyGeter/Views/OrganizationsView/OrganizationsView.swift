@@ -51,7 +51,7 @@ import Combine
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = OrganizationsViewModel
-        .Output()
+        .Output(userSelectedOrganization: PassthroughSubject())
     let viewModel = OrganizationsViewModel(with: modelInput,
                                                    and: modelOutput)
     OrganizationsView(with: viewModel)

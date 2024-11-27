@@ -11,6 +11,7 @@ import Combine
 struct AppManagerModel {
 
     let input: Input
+    let actions = Actions()
 
     init(with input: Input) {
         self.input = input
@@ -25,7 +26,9 @@ extension AppManagerModel {
     }
 
     struct Actions {
-        let organizationWasSelected = PassthroughSubject<Organization, Never>()
+        let userSelectedRepository = PassthroughSubject<Repository, Never>()
+        let userSelectedOrganization = PassthroughSubject<Organization, Never>()
+        let backButtonTapped = PassthroughSubject<Void, Never>()
     }
 
 }

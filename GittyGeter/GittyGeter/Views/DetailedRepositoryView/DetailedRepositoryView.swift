@@ -50,7 +50,7 @@ struct DetailedRepositoryView: View {
     var backView: some View {
         HStack {
             Button {
-
+                model.backButtonTapped()
             } label: {
                 BackNavigationComponenet(configuration: model.input.configuration)
             }
@@ -143,13 +143,15 @@ struct DetailedRepositoryView: View {
 }
 
 #if DEBUG
+import Combine
+
 #Preview {
     let modelInput = DetailedRepositoryViewModel
         .Input(repository: Repository.mock(),
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = DetailedRepositoryViewModel
-        .Output()
+        .Output(backButtonTapped: PassthroughSubject())
     let model = DetailedRepositoryViewModel(with: modelInput,
                                             and: modelOutput)
     DetailedRepositoryView(with: model)

@@ -35,7 +35,8 @@ extension DetailedOrganizationViewModel {
     }
 
     struct Output {
-
+        let userSelectedRepository: PassthroughSubject<Repository, Never>
+        let backButtonTapped: PassthroughSubject<Void, Never>
     }
 
     func makeRepositoriesListViewModel() -> RepositoriesListViewModel {
@@ -45,8 +46,12 @@ extension DetailedOrganizationViewModel {
                    fetcher: input.fetcher,
                    configuration: input.configuration)
         let modelOutput = RepositoriesListViewModel
-            .Output()
+            .Output(userSelectedRepository: output.userSelectedRepository)
         return RepositoriesListViewModel(with: modelInput, and: modelOutput)
+    }
+
+    func backButtonTapped() {
+        output.backButtonTapped.send(())
     }
 }
 

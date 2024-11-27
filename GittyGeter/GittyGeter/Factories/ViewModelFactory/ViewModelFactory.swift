@@ -15,6 +15,7 @@ class ViewModelFactory {
     init(with model: ViewModelFactoryModel) {
         self.model = model
     }
+
 }
 
 extension ViewModelFactory {
@@ -22,10 +23,30 @@ extension ViewModelFactory {
     func makeGittyTabViewModel(with modelOutput: GittyTabViewModel.Output) -> GittyTabViewModel {
         let modelInput = GittyTabViewModel
             .Input(allOrganizations: model.input.database.allOrganizations,
-                   getRepositories: model.input.database.getAllRepositories(query:for:),
+                   getRepositories: model.input.database.getAllRepositories,
                    fetcher: model.input.fetcher,
                    configuration: model.input.configurtion)
         return GittyTabViewModel(with: modelInput, and: modelOutput)
     }
-    
+
+    func makeDetailModel(for repository: Repository,
+                         modelOutput: DetailedRepositoryViewModel.Output) -> DetailedRepositoryViewModel {
+        let modelInput = DetailedRepositoryViewModel
+            .Input(repository: repository,
+                   fetcher: model.input.fetcher,
+                   configuration: model.input.configurtion)
+        return DetailedRepositoryViewModel(with: modelInput, and: modelOutput)
+
+    }
+
+    func makeDetailedOrganizationViewModel(for organization: Organization,
+                                           modelOutput: DetailedOrganizationViewModel.Output) -> DetailedOrganizationViewModel {
+        let modelInput = DetailedOrganizationViewModel
+            .Input(organization: Organization.mock(),
+                   fetcher: MockFetcher(),
+                   configuration: Configuration.standard(),
+                   getRepositories: model.input.database.getRepositories)
+        return DetailedOrganizationViewModel(with: modelInput, and: modelOutput)
+    }
+
 }

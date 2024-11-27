@@ -18,7 +18,12 @@ struct DetailedOrganizationView: View {
     var body: some View {
         VStack {
             HStack {
-                BackNavigationComponenet(configuration: model.input.configuration)
+                Button {
+                    model.backButtonTapped()
+                } label: {
+                    BackNavigationComponenet(configuration: model.input.configuration)
+                }
+                .foregroundStyle(.primary)
                 Spacer()
             }
             TitleTextComponent(title: model.input.organization.name)
@@ -106,7 +111,7 @@ import Combine
                 .eraseToAnyPublisher()
         }
     let modelOutput = DetailedOrganizationViewModel
-        .Output()
+        .Output(userSelectedRepository: PassthroughSubject(), backButtonTapped: PassthroughSubject())
     let model = DetailedOrganizationViewModel(with: modelInput, and: modelOutput)
     DetailedOrganizationView(with: model)
 }

@@ -32,19 +32,23 @@ struct OrganizationsList: View {
                         RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
                             .foregroundStyle(Color.primary.opacity(0.15))
                     }
+                    .onTapGesture {
+                        model.userSelected(this: organization)
+                    }
             }
         }
     }
 }
 
 #if DEBUG
+import Combine
 #Preview {
     let modelInput = OrganizationsListModel
         .Input(organizations: Organization.mocks(),
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = OrganizationsListModel
-        .Output()
+        .Output(userSelectedOrganization: PassthroughSubject())
     let model = OrganizationsListModel(with: modelInput,
                                        and: modelOutput)
     OrganizationsList(with: model)

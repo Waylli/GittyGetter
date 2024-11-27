@@ -30,7 +30,7 @@ extension RepositoriesListViewModel {
     }
 
     struct Output {
-
+        let userSelectedRepository: PassthroughSubject<Repository, Never>
     }
 }
 
@@ -44,6 +44,10 @@ extension RepositoriesListViewModel {
         let modelOutput = RepositoryCardModel
             .Output()
         return RepositoryCardModel(with: modelInput, and: modelOutput)
+    }
+
+    func userselected(this repository: Repository) {
+        output.userSelectedRepository.send(repository)
     }
 
 }

@@ -54,7 +54,7 @@ import Combine
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = RepositoriesViewModel
-        .Output()
+        .Output(userSelectedRepository: PassthroughSubject())
     let model = RepositoriesViewModel(with: modelInput, and: modelOutput)
     RepositoriesView(with: model)
 }

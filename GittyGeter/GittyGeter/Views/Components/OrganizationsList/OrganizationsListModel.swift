@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class OrganizationsListModel: ObservableObject {
 
@@ -28,7 +29,7 @@ extension OrganizationsListModel {
     }
 
     struct Output {
-
+        let userSelectedOrganization: PassthroughSubject<Organization, Never>
     }
 
     func makeOrganizationCardModel(for organization: Organization) -> OrganizationCardModel {
@@ -39,6 +40,10 @@ extension OrganizationsListModel {
         let modelOutput = OrganizationCardModel
             .Output()
         return OrganizationCardModel(with: modelInput, and: modelOutput)
+    }
+
+    func userSelected(this organization: Organization) {
+        output.userSelectedOrganization.send(organization)
     }
 
 }

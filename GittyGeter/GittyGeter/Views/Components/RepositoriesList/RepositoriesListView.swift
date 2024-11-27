@@ -33,12 +33,15 @@ struct RepositoriesListView: View {
     private
     var list: some View {
         LazyVStack(spacing: 16) {
-            ForEach(model.input.repositories, id: \.self) { repo in
-                RepositoryCard(with: model.makeRepositoryCardModel(for: repo))
+            ForEach(model.input.repositories, id: \.self) { repository in
+                RepositoryCard(with: model.makeRepositoryCardModel(for: repository))
                     .padding()
                     .background {
                         RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
                             .foregroundStyle(Color.primary.opacity(0.15))
+                    }
+                    .onTapGesture {
+                        model.userselected(this: repository)
                     }
             }
         }
@@ -55,7 +58,7 @@ import Combine
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = RepositoriesListViewModel
-        .Output()
+        .Output(userSelectedRepository: PassthroughSubject())
     let model = RepositoriesListViewModel(with: modelInput, and: modelOutput)
     RepositoriesListView(with: model)
 }
@@ -67,7 +70,7 @@ import Combine
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = RepositoriesListViewModel
-        .Output()
+        .Output(userSelectedRepository: PassthroughSubject())
     let model = RepositoriesListViewModel(with: modelInput, and: modelOutput)
     RepositoriesListView(with: model)
 }

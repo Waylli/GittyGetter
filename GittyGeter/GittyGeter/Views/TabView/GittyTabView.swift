@@ -48,7 +48,8 @@ import Combine
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = GittyTabViewModel
-        .Output()
+        .Output(userSelectedRepository: PassthroughSubject(),
+                userSelectedOrganization: PassthroughSubject())
     let model = GittyTabViewModel(with: modelInput,
                              and: modelOutput)
     GittyTabView(with: model)

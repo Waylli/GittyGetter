@@ -10,19 +10,34 @@ import Combine
 
 protocol Database {
     var allOrganizations: AnyPublisher<Organizations, Never> {get}
-    func getAllRepositories(query: String,
-                            for organizations: Organizations) -> AnyPublisher<Repositories, CustomError>
+    var getAllRepositories: (String, Organizations) -> AnyPublisher<Repositories, CustomError> {get}
+    var getRepositories: (Organization) -> AnyPublisher<Repositories, CustomError> {get}
 }
 
 #if DEBUG
 class MockDatabase: Database {
+    var getAllRepositories: (String, Organizations) -> AnyPublisher<Repositories, CustomError> {
+        _getAllRepositories
+    }
+
 
     var allOrganizations: AnyPublisher<Organizations, Never> {
         Just(Organization.mocks())
             .eraseToAnyPublisher()
     }
 
-    func getAllRepositories(query: String, for organizations: Organizations) -> AnyPublisher<Repositories, CustomError> {
+    private func _getAllRepositories(query: String,
+                            in organizations: Organizations) -> AnyPublisher<Repositories, CustomError> {
+        Just(Repository.mocks())
+            .setFailureType(to: CustomError.self)
+            .eraseToAnyPublisher()
+    }
+
+    var getRepositories: (Organization) -> AnyPublisher<Repositories, CustomError> {
+        _getRepositories(for:)
+    }
+
+    private func _getRepositories(for organization: Organization) -> AnyPublisher<Repositories, CustomError> {
         Just(Repository.mocks())
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
