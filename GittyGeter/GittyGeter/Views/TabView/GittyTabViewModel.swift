@@ -19,7 +19,7 @@ class GittyTabViewModel: ObservableObject {
         self.output = output
     }
 
-    func createRepositoriesViewModel() -> RepositoriesViewModel {
+    func makeRepositoriesViewModel() -> RepositoriesViewModel {
         let modelInput = RepositoriesViewModel
             .Input(allOrganizations: input.allOrganizations,
                    getRepositories: input.getRepositories,
@@ -30,7 +30,7 @@ class GittyTabViewModel: ObservableObject {
         return RepositoriesViewModel(with: modelInput, and: modelOutput)
     }
 
-    func createOrganizationsViewModel() -> OrganizationsViewModel {
+    func makeOrganizationsViewModel() -> OrganizationsViewModel {
         let modelInput = OrganizationsViewModel
             .Input(oragnizations: input.allOrganizations,
                    fetcher: input.fetcher,

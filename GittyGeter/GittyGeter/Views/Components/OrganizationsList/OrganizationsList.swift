@@ -26,7 +26,7 @@ struct OrganizationsList: View {
         LazyVStack {
             ForEach(model.input.organizations,
                     id: \.self) { organization in
-                OrganizationCard(with: model.createOrganizationCardModel(for: organization))
+                OrganizationCard(with: model.makeOrganizationCardModel(for: organization))
                     .padding()
                     .background {
                         RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)

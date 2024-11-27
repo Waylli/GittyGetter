@@ -34,7 +34,7 @@ struct RepositoriesListView: View {
     var list: some View {
         LazyVStack(spacing: 16) {
             ForEach(model.input.repositories, id: \.self) { repo in
-                RepositoryCard(with: model.createRepositoryCardModel(for: repo))
+                RepositoryCard(with: model.makeRepositoryCardModel(for: repo))
                     .padding()
                     .background {
                         RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)

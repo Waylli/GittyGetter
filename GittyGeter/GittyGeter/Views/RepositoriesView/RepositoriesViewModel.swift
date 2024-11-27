@@ -11,34 +11,27 @@ import Combine
 class RepositoriesViewModel: ObservableObject {
 
     @Published var query = ""
-    @Published var quriedRepositories = Repositories()
+    @Published var queriedRepositories = Repositories()
     @Published var currentFilteredOrganizations = Organizations()
     @Published private var allOrganizations = Organizations()
+    var availableOrganizations: Organizations {allOrganizations.filter {!currentFilteredOrganizations.contains($0)}}
     private var cancelBag = CancelBag()
 
     let input: Input
     let output: Output
-    private let actions = Actions()
+    private let actions: Actions
 
     init(with input: Input,
-         and output: Output) {
+         and output: Output,
+         actions: Actions = Actions()) {
         self.input = input
         self.output = output
+        self.actions = actions
         bind()
         bindSearch()
         bindActions()
     }
 
-    func createRepositoriesListViewModel() -> RepositoriesListViewModel {
-        let modelInput = RepositoriesListViewModel
-            .Input(isScrollable: true,
-                   repositories: quriedRepositories,
-                   fetcher: input.fetcher,
-                   configuration: input.configuration)
-        let modelOutput = RepositoriesListViewModel
-            .Output()
-        return RepositoriesListViewModel(with: modelInput, and: modelOutput)
-    }
 }
 
 extension RepositoriesViewModel {
@@ -56,16 +49,22 @@ extension RepositoriesViewModel {
     }
 
     struct Actions {
-        let removeFilteredOrganization = PassthroughSubject<Organization, Never>()
-        let removeAllFilteredOrganizations = PassthroughSubject<Void, Never>()
-        let applyFilterToOrganization = PassthroughSubject<Organization, Never>()
+        let removeFilteredOrganization: PassthroughSubject<Organization, Never>
+        let removeAllFilteredOrganizations: PassthroughSubject<Void, Never>
+        let applyFilterToOrganization: PassthroughSubject<Organization, Never>
+
+        init(removeFilteredOrganization: PassthroughSubject<Organization, Never> = PassthroughSubject(),
+             removeAllFilteredOrganizations: PassthroughSubject<Void, Never> = PassthroughSubject(),
+             applyFilterToOrganization: PassthroughSubject<Organization, Never> = PassthroughSubject()) {
+            self.removeFilteredOrganization = removeFilteredOrganization
+            self.removeAllFilteredOrganizations = removeAllFilteredOrganizations
+            self.applyFilterToOrganization = applyFilterToOrganization
+        }
     }
 
-    func createFilterOrganizationsComponentModel() -> FilterOrganizationsComponentModel {
-        let available = allOrganizations.filter {!currentFilteredOrganizations.contains($0)}
-        // improve after tesing
+    func makeFilterOrganizationsComponentModel() -> FilterOrganizationsComponentModel {
         let modelInput = FilterOrganizationsComponentModel
-            .Input(availableOrganizations: available,
+            .Input(availableOrganizations: availableOrganizations,
                    currentFilteredOrganizations: currentFilteredOrganizations,
                    configuration: input.configuration)
         let modelOutput = FilterOrganizationsComponentModel
@@ -74,6 +73,17 @@ extension RepositoriesViewModel {
                     applyFilterFromOrganization: actions.applyFilterToOrganization)
         return FilterOrganizationsComponentModel(with: modelInput,
                                                  and: modelOutput)
+    }
+
+    func makeRepositoriesListViewModel() -> RepositoriesListViewModel {
+        let modelInput = RepositoriesListViewModel
+            .Input(isScrollable: true,
+                   repositories: queriedRepositories,
+                   fetcher: input.fetcher,
+                   configuration: input.configuration)
+        let modelOutput = RepositoriesListViewModel
+            .Output()
+        return RepositoriesListViewModel(with: modelInput, and: modelOutput)
     }
 }
 
@@ -102,7 +112,7 @@ extension RepositoriesViewModel {
                     .eraseToAnyPublisher()
             }
             .sink { [weak self] in
-                self?.quriedRepositories = $0
+                self?.queriedRepositories = $0
             }
             .store(in: &cancelBag)
     }

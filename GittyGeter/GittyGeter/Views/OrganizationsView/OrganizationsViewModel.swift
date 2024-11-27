@@ -22,7 +22,7 @@ class OrganizationsViewModel: ObservableObject {
         bind()
     }
 
-    func createOrganizationsListModel() -> OrganizationsListModel {
+    func makeOrganizationsListModel() -> OrganizationsListModel {
         let modelInput = OrganizationsListModel
             .Input(organizations: organizations,
                    fetcher: input.fetcher,

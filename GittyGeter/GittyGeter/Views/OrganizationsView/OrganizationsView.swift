@@ -33,7 +33,7 @@ struct OrganizationsView: View {
                         }
                     }
                 }
-            OrganizationsList(with: model.createOrganizationsListModel())
+            OrganizationsList(with: model.makeOrganizationsListModel())
             Spacer()
         }
         .padding()

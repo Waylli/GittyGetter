@@ -16,7 +16,7 @@ struct GittyTabView: View {
     }
     var body: some View {
         TabView {
-            RepositoriesView(with: model.createRepositoriesViewModel())
+            RepositoriesView(with: model.makeRepositoriesViewModel())
                 .tabItem {
                     Label {
                         Text("Repositories")
@@ -25,7 +25,7 @@ struct GittyTabView: View {
                     }
 
                 }
-            OrganizationsView(with: model.createOrganizationsViewModel())
+            OrganizationsView(with: model.makeOrganizationsViewModel())
                 .tabItem {
                     Label("Organizations", systemImage: "building.2")
                 }

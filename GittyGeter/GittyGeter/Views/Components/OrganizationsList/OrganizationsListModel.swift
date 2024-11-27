@@ -31,7 +31,7 @@ extension OrganizationsListModel {
 
     }
 
-    func createOrganizationCardModel(for organization: Organization) -> OrganizationCardModel {
+    func makeOrganizationCardModel(for organization: Organization) -> OrganizationCardModel {
         let modelInput = OrganizationCardModel
             .Input(organization: organization,
                    fetcher: input.fetcher,

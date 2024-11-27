@@ -36,7 +36,7 @@ extension RepositoriesListViewModel {
 
 extension RepositoriesListViewModel {
 
-    func createRepositoryCardModel(for repo: Repository) -> RepositoryCardModel {
+    func makeRepositoryCardModel(for repo: Repository) -> RepositoryCardModel {
         let modelInput = RepositoryCardModel
             .Input(repository: repo,
                    fetcher: input.fetcher,

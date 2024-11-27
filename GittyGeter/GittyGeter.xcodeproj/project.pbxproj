@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D2902A5B2CF69845006EDE17 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = D2902A5A2CF69845006EDE17 /* WrappingHStack */; };
+		D2E0988A2CF7263900476A6F /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = D2E098892CF7263900476A6F /* Quick */; };
+		D2E0988D2CF7265100476A6F /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = D2E0988C2CF7265100476A6F /* Nimble */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D221081A2CF741DD0074F5DD /* GittyGeter_1.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GittyGeter_1.xctestplan; sourceTree = "<group>"; };
 		D2706FD02CF5EA9D00C909D2 /* GittyGeter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GittyGeter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2706FE92CF5EA9E00C909D2 /* GittyGeterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GittyGeterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2706FF32CF5EA9E00C909D2 /* GittyGeterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GittyGeterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +80,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2E0988A2CF7263900476A6F /* Quick in Frameworks */,
+				D2E0988D2CF7265100476A6F /* Nimble in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +98,7 @@
 		D2706FC72CF5EA9D00C909D2 = {
 			isa = PBXGroup;
 			children = (
+				D221081A2CF741DD0074F5DD /* GittyGeter_1.xctestplan */,
 				D2706FD22CF5EA9D00C909D2 /* GittyGeter */,
 				D2706FEC2CF5EA9E00C909D2 /* GittyGeterTests */,
 				D2706FF62CF5EA9E00C909D2 /* GittyGeterUITests */,
@@ -154,6 +160,8 @@
 			);
 			name = GittyGeterTests;
 			packageProductDependencies = (
+				D2E098892CF7263900476A6F /* Quick */,
+				D2E0988C2CF7265100476A6F /* Nimble */,
 			);
 			productName = GittyGeterTests;
 			productReference = D2706FE92CF5EA9E00C909D2 /* GittyGeterTests.xctest */;
@@ -216,6 +224,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				D2902A592CF69845006EDE17 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
+				D2E098882CF7263900476A6F /* XCRemoteSwiftPackageReference "Quick" */,
+				D2E0988B2CF7265100476A6F /* XCRemoteSwiftPackageReference "Nimble" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D2706FD12CF5EA9D00C909D2 /* Products */;
@@ -596,6 +606,22 @@
 				minimumVersion = 2.2.11;
 			};
 		};
+		D2E098882CF7263900476A6F /* XCRemoteSwiftPackageReference "Quick" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Quick/Quick.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		D2E0988B2CF7265100476A6F /* XCRemoteSwiftPackageReference "Nimble" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Quick/Nimble.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -603,6 +629,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D2902A592CF69845006EDE17 /* XCRemoteSwiftPackageReference "WrappingHStack" */;
 			productName = WrappingHStack;
+		};
+		D2E098892CF7263900476A6F /* Quick */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D2E098882CF7263900476A6F /* XCRemoteSwiftPackageReference "Quick" */;
+			productName = Quick;
+		};
+		D2E0988C2CF7265100476A6F /* Nimble */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D2E0988B2CF7265100476A6F /* XCRemoteSwiftPackageReference "Nimble" */;
+			productName = Nimble;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -22,8 +22,8 @@ struct RepositoriesView: View {
             SearchComponent(query: $model.query,
                             isFocused: $isSearching,
                             configuration: model.input.configuration)
-            FilterOrganizationsComponent(with: model.createFilterOrganizationsComponentModel())
-            RepositoriesListView(with: model.createRepositoriesListViewModel())
+            FilterOrganizationsComponent(with: model.makeFilterOrganizationsComponentModel())
+            RepositoriesListView(with: model.makeRepositoriesListViewModel())
             Spacer()
         }
         .padding()
