@@ -102,7 +102,7 @@ extension RepositoriesViewModel {
 
     func bindSearch() {
         Publishers
-            .CombineLatest($query.throttle(for: 2, scheduler: RunLoop.main, latest: true), $currentFilteredOrganizations)
+            .CombineLatest($query.throttle(for: 0.2, scheduler: RunLoop.main, latest: true), $currentFilteredOrganizations)
             .flatMap { [weak self] (query, organizations) -> AnyPublisher<Repositories, Never> in
                 guard let this = self else {return Empty().eraseToAnyPublisher()}
                 return this.input.getRepositories(query, organizations)

@@ -37,7 +37,9 @@ extension SceneDelegate {
         let factoryModel = ViewModelFactoryModel(with: factoryModelInput)
         let viewModelFactory = ViewModelFactory(with: factoryModel)
         let modelInput = AppManagerModel
-            .Input(navigationCoordinator: navigationController, viewModelFactor: viewModelFactory)
+            .Input(navigationCoordinator: navigationController,
+                   viewModelFactor: viewModelFactory,
+                   dataManager: MockDataManager())
         let appManagerModel = AppManagerModel(with: modelInput)
         return AppManager(with: appManagerModel)
     }

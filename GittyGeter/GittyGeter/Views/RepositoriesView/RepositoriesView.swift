@@ -47,7 +47,7 @@ import Combine
     let database = MockDatabase()
     let modelInput = RepositoriesViewModel
         .Input(getAllOrganizations: database.getOrganizations,
-               getRepositories: database.getRepositories(qury:for:),
+               getRepositories: database.getRepositories(query:within:),
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = RepositoriesViewModel

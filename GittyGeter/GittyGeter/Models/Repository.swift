@@ -22,14 +22,6 @@ struct Repository: Identifiable, Hashable {
     let organization: String
     let isFavourite: Bool
 
-//    enum CodingKeys: String, CodingKey {
-//        case id, name, description, language
-//        case fullName = "full_name"
-//        case stargazersCount = "stargazers_count"
-//        case forksCount = "forks_count"
-//        case avatarURL = "avatar_url"
-//    }
-
 }
 
 #if DEBUG

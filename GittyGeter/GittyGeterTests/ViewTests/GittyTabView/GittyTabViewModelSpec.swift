@@ -16,16 +16,14 @@ class GittyTabViewModelSpec: QuickSpec {
     override class func spec() {
         describe("GittyTabViewModel") {
             var model: GittyTabViewModel!
-
+            var database: Database!
             beforeEach {
-                model = Self.makeGittyTabViewModel(all: Organization.mocks(), getRepositories: { _, _ in
-                    Just(Repository.mocks())
-                        .setFailureType(to: CustomError.self)
-                        .eraseToAnyPublisher()
-                })
+                database = MockDatabase()
+                model = Self.makeGittyTabViewModel(with: database)
             }
 
             afterEach {
+                database = nil
                 model = nil
             }
             context("when creating view models") {
@@ -43,15 +41,16 @@ class GittyTabViewModelSpec: QuickSpec {
     }
 
     private
-    static func makeGittyTabViewModel(all organizations: Organizations,
-                                      getRepositories: @escaping (String, Organizations) -> AnyPublisher<Repositories, CustomError>) -> GittyTabViewModel {
+    static func makeGittyTabViewModel(with database: Database) -> GittyTabViewModel {
         let modelInput = GittyTabViewModel
-            .Input(allOrganizations: Just(organizations).eraseToAnyPublisher(),
-                   getRepositories: getRepositories,
+            .Input(getAllOrganizations: database.getOrganizations,
+                   getRepositories: database.getRepositories(query:within:),
+                   getFavouriteRepositories: database.getFavouriteRepositories,
                    fetcher: MockFetcher(),
                    configuration: Configuration.standard())
         let modelOutput = GittyTabViewModel
-            .Output()
+            .Output(userSelectedRepository: PassthroughSubject(),
+                    userSelectedOrganization: PassthroughSubject())
         return GittyTabViewModel(with: modelInput, and: modelOutput)
     }
 

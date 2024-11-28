@@ -19,25 +19,33 @@ class RepositoriesViewModelSpec: QuickSpec {
             var model: RepositoriesViewModel!
             var organizations: Organizations!
             var repositories: Repositories!
+            var fetchedRepositories: Repositories!
             var actions: RepositoriesViewModel.Actions!
+            var database: MockDatabase!
             beforeEach {
                 organizations = Organization.mocks()
                 repositories = Repository.mocks(count: 20)
+                fetchedRepositories = Repository.mocks(count: 4)
+                database = MockDatabase(organizations: organizations,
+                                        getRepositories: repositories,
+                                        fetchedRepositories: fetchedRepositories)
                 actions = RepositoriesViewModel.Actions()
-                model = Self.makeRepositoriesViewModel(organizations: organizations,
-                                                         repositories: repositories,
-                                                         actions: actions)
+                model = Self.makeRepositoriesViewModel(with: database,
+                                                       actions: actions)
             }
 
             afterEach {
+                database = nil
+                organizations = nil
+                repositories = nil
+                actions = nil
                 model = nil
             }
 
             describe("when query does not throw errors") {
                 beforeEach {
-                    model = Self.makeRepositoriesViewModel(organizations: organizations,
-                                                             repositories: repositories,
-                                                             actions: actions)
+                    model = Self.makeRepositoriesViewModel(with: database,
+                                                           actions: actions)
                 }
 
                 context("when initialized") {
@@ -69,7 +77,8 @@ class RepositoriesViewModelSpec: QuickSpec {
 
                     it("returns filtered repositories for a specific query") {
                         model.query = "test"
-                        expect(model.queriedRepositories.count).toEventually(equal(Self.queriedRepositoriesCount), timeout: .seconds(1))
+                        expect(model.queriedRepositories.count).toEventually(equal(fetchedRepositories.count),
+                                                                             timeout: .seconds(2))
                     }
                 }
 
@@ -78,9 +87,11 @@ class RepositoriesViewModelSpec: QuickSpec {
                         let firstOrg = organizations.first!
                         let secondOrg = organizations[1]
                         actions.applyFilterToOrganization.send(firstOrg)
-                        expect(model.queriedRepositories.count).toEventually(equal(Self.queriedRepositoriesCount), timeout: .seconds(1))
+                        expect(model.queriedRepositories.count).toEventually(equal(fetchedRepositories.count), timeout: .seconds(1))
                         actions.removeFilteredOrganization.send(firstOrg)
-                        expect(model.queriedRepositories.count).toEventually(equal(repositories.count), timeout: .seconds(1))
+                        expect(model.queriedRepositories.count)
+                            .toEventually(equal(repositories.count),
+                                          timeout: .seconds(1))
                         actions.applyFilterToOrganization.send(firstOrg)
                         actions.applyFilterToOrganization.send(secondOrg)
                         expect(model.currentFilteredOrganizations.count).toEventually(equal(2), timeout: .seconds(1))
@@ -94,16 +105,15 @@ class RepositoriesViewModelSpec: QuickSpec {
                         actions.applyFilterToOrganization.send(organizations.first!)
                         actions.applyFilterToOrganization.send(organizations.first!)
                         actions.removeFilteredOrganization.send(Organization.mock())
-                        expect(model.queriedRepositories.count).toEventually(equal(Self.queriedRepositoriesCount), timeout: .seconds(1))
+                        expect(model.queriedRepositories.count).toEventually(equal(fetchedRepositories.count), timeout: .seconds(1))
                     }
                 }
             }
 
             describe("error handling") {
                 beforeEach {
-                    model = Self.makeErrorThrowingRepositoriesViewModel(organizations: organizations,
-                                                                          repositories: repositories,
-                                                                          actions: actions)
+                    model = Self.makeErrorThrowingRepositoriesViewModel(with: database,
+                                                                        actions: actions)
                 }
 
                 it("can handle error") {
@@ -118,49 +128,33 @@ class RepositoriesViewModelSpec: QuickSpec {
 
     }
 
-    private static func makeRepositoriesViewModel(organizations: [Organization],
-                                                    repositories: [Repository],
-                                                    actions: RepositoriesViewModel.Actions) -> RepositoriesViewModel {
-        let modelInput = RepositoriesViewModel.Input(
-            allOrganizations: Just(organizations).eraseToAnyPublisher(),
-            getRepositories: { query, filtered in
-                Self.getRepositories(with: query, filtered: filtered, repositories: repositories)
-            },
-            fetcher: MockFetcher(),
-            configuration: Configuration.standard()
-        )
-        let modelOutput = RepositoriesViewModel.Output()
+    private static func makeRepositoriesViewModel(with database: Database,
+                                                  actions: RepositoriesViewModel.Actions) -> RepositoriesViewModel {
+        let modelInput = RepositoriesViewModel.Input(getAllOrganizations: database.getOrganizations,
+                                                     getRepositories: database.getRepositories(query:within:),
+                                                     fetcher: MockFetcher(),
+                                                     configuration: Configuration.standard())
+        let modelOutput = RepositoriesViewModel
+            .Output(userSelectedRepository: PassthroughSubject())
         return RepositoriesViewModel(with: modelInput, and: modelOutput, actions: actions)
     }
-    private static func getRepositories(with query: String,
-                                        filtered: [Organization],
-                                        repositories: [Repository]) -> AnyPublisher<[Repository], CustomError> {
-        guard query.isEmpty, filtered.isEmpty else {
-            return Just(Repository.mocks(count: queriedRepositoriesCount))
-                .setFailureType(to: CustomError.self)
+
+    private static func makeErrorThrowingRepositoriesViewModel(with database: Database,
+                                                               actions: RepositoriesViewModel.Actions) -> RepositoriesViewModel {
+        func errorFunction(query: String, orgs: Organizations) -> AnyPublisher<Repositories, CustomError> {
+            Fail(error: CustomError.dataMappingFailed)
                 .eraseToAnyPublisher()
         }
-        return Just(repositories)
-            .setFailureType(to: CustomError.self)
-            .eraseToAnyPublisher()
-    }
 
-    private static func makeErrorThrowingRepositoriesViewModel(organizations: [Organization],
-                                                                 repositories: [Repository],
-                                                                 actions: RepositoriesViewModel.Actions) -> RepositoriesViewModel {
-        let modelInput = RepositoriesViewModel.Input(
-            allOrganizations: Just(organizations).eraseToAnyPublisher(),
-            getRepositories: { query, filtered in
-                Fail(error: CustomError.networkError)
-                    .eraseToAnyPublisher()
-            },
-            fetcher: MockFetcher(),
-            configuration: Configuration.standard()
-        )
-        let modelOutput = RepositoriesViewModel.Output()
+        let modelInput = RepositoriesViewModel
+            .Input(getAllOrganizations: database.getOrganizations,
+                   getRepositories: errorFunction(query:orgs:),
+                   fetcher: MockFetcher(),
+                   configuration: Configuration.standard())
+        let modelOutput = RepositoriesViewModel
+            .Output(userSelectedRepository: PassthroughSubject())
         return RepositoriesViewModel(with: modelInput, and: modelOutput, actions: actions)
     }
 
-    private static let queriedRepositoriesCount = 4
 
 }

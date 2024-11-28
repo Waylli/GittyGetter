@@ -17,13 +17,15 @@ class OrganizationsViewModelSpec: QuickSpec {
         describe("OrganizationsViewModel") {
             var model: OrganizationsViewModel!
             var organizations: Organizations!
-
+            var database: Database!
             beforeEach {
                 organizations = Organization.mocks()
-                model = createModel(with: organizations)
+                database = MockDatabase(organizations: organizations)
+                model = createModel(with: database)
             }
 
             afterEach {
+                database = nil
                 model = nil
                 organizations = nil
             }
@@ -43,13 +45,13 @@ class OrganizationsViewModelSpec: QuickSpec {
     }
 
     static
-    private func createModel(with organizations: Organizations) -> OrganizationsViewModel {
+    private func createModel(with database: Database) -> OrganizationsViewModel {
         let modelInput = OrganizationsViewModel
-            .Input(oragnizations: Just(organizations).eraseToAnyPublisher(),
+            .Input(getAllOragnizations: database.getOrganizations,
                    fetcher: MockFetcher(),
                    configuration: Configuration.standard())
         let modelOutput = OrganizationsViewModel
-            .Output()
+            .Output(userSelectedOrganization: PassthroughSubject())
         return OrganizationsViewModel(with: modelInput, and: modelOutput)
     }
 

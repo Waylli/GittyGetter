@@ -23,6 +23,7 @@ extension AppManagerModel {
     struct Input {
         let navigationCoordinator: NavigationCoordinator
         let viewModelFactor: ViewModelFactory
+        let dataManager: DataManager
     }
 
     struct Actions {

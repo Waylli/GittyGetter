@@ -48,7 +48,7 @@ import Combine
     let database = MockDatabase()
     let modelInput = GittyTabViewModel
         .Input(getAllOrganizations: database.getOrganizations,
-               getRepositories: database.getRepositories(qury:for:),
+               getRepositories: database.getRepositories(query:within:),
                getFavouriteRepositories: database.getFavouriteRepositories,
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
