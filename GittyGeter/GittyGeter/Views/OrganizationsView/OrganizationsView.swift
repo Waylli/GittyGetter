@@ -44,10 +44,9 @@ struct OrganizationsView: View {
 #if DEBUG
 import Combine
 #Preview {
-    let orgs = Just(Organization.mocks())
-        .eraseToAnyPublisher()
+    let database = MockDatabase()
     let modelInput = OrganizationsViewModel
-        .Input(oragnizations: orgs,
+        .Input(getAllOragnizations: database.getOrganizations,
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = OrganizationsViewModel

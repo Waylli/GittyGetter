@@ -37,7 +37,7 @@ class RepositoriesViewModel: ObservableObject {
 extension RepositoriesViewModel {
 
     struct Input {
-        let allOrganizations: AnyPublisher<Organizations, Never>
+        let getAllOrganizations: () -> AnyPublisher<Organizations, CustomError>
         /// params: query string, filtered organizations if array is empty repos from all orgs will be shown
         let getRepositories: (String, Organizations) -> AnyPublisher<Repositories, CustomError>
         let fetcher: Fetcher
@@ -91,10 +91,12 @@ private
 extension RepositoriesViewModel {
 
     func bind() {
-        input.allOrganizations
-            .sink { [weak self] in
+        input.getAllOrganizations()
+            .sink(receiveCompletion: { _ in
+                print("handle erro if any")
+            }, receiveValue: { [weak self] in
                 self?.allOrganizations = $0
-            }
+            })
             .store(in: &cancelBag)
     }
 

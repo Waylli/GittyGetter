@@ -24,7 +24,6 @@ struct GittyTabView: View {
                     } icon: {
                         Image(uiImage: UIImage.fork)
                     }
-
                 }
             OrganizationsView(with: model.makeOrganizationsViewModel())
                 .tabItem {
@@ -38,13 +37,11 @@ struct GittyTabView: View {
 import Combine
 
 #Preview {
+    let database = MockDatabase()
     let modelInput = GittyTabViewModel
-        .Input(allOrganizations: Just(Organization.mocks()).eraseToAnyPublisher(),
-               getRepositories: { _, _ in
-            Just(Repository.mocks())
-                .setFailureType(to: CustomError.self)
-                .eraseToAnyPublisher()
-        },
+        .Input(getAllOrganizations: database.getOrganizations,
+               getRepositories: database.getRepositories(qury:for:),
+               getFavoriteRepositories: database.getFavoriteRepositories,
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = GittyTabViewModel

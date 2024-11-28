@@ -44,13 +44,10 @@ struct RepositoriesView: View {
 #if DEBUG
 import Combine
 #Preview {
-    let orgs = Just(Organization.mocks()).eraseToAnyPublisher()
+    let database = MockDatabase()
     let modelInput = RepositoriesViewModel
-        .Input(allOrganizations: orgs, getRepositories: { _, _ in
-            Just(Repository.mocks())
-                .setFailureType(to: CustomError.self)
-                .eraseToAnyPublisher()
-        },
+        .Input(getAllOrganizations: database.getOrganizations,
+               getRepositories: database.getRepositories(qury:for:),
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = RepositoriesViewModel

@@ -24,8 +24,9 @@ class GittyTabViewModel: ObservableObject {
 extension GittyTabViewModel {
 
     struct Input {
-        let allOrganizations: AnyPublisher<Organizations, Never>
+        let getAllOrganizations: () -> AnyPublisher<Organizations, CustomError>
         let getRepositories: (String, Organizations) -> AnyPublisher<Repositories, CustomError>
+        let getFavoriteRepositories: () -> AnyPublisher<Repositories, CustomError>
         let fetcher: Fetcher
         let configuration: Configuration
     }
@@ -37,7 +38,7 @@ extension GittyTabViewModel {
 
     func makeRepositoriesViewModel() -> RepositoriesViewModel {
         let modelInput = RepositoriesViewModel
-            .Input(allOrganizations: input.allOrganizations,
+            .Input(getAllOrganizations: input.getAllOrganizations,
                    getRepositories: input.getRepositories,
                    fetcher: input.fetcher,
                    configuration: input.configuration)
@@ -48,11 +49,21 @@ extension GittyTabViewModel {
 
     func makeOrganizationsViewModel() -> OrganizationsViewModel {
         let modelInput = OrganizationsViewModel
-            .Input(oragnizations: input.allOrganizations,
+            .Input(getAllOragnizations: input.getAllOrganizations,
                    fetcher: input.fetcher,
                    configuration: input.configuration)
         let modelOutput = OrganizationsViewModel
             .Output(userSelectedOrganization: output.userSelectedOrganization)
         return OrganizationsViewModel(with: modelInput, and: modelOutput)
+    }
+
+    func makeFavoriteRepositoriesViewModel() -> FavoriteRepositoriesViewModel {
+        let modelInput = FavoriteRepositoriesViewModel
+            .Input(getFavoriteRepositories: input.getFavoriteRepositories,
+                   fetcher: input.fetcher,
+                   configuration: input.configuration)
+        let modelOutput = FavoriteRepositoriesViewModel
+            .Output(userSelectedRepository: output.userSelectedRepository)
+        return FavoriteRepositoriesViewModel(with: modelInput, and: modelOutput)
     }
 }

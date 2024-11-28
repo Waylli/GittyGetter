@@ -27,7 +27,7 @@ class OrganizationsViewModel: ObservableObject {
 extension OrganizationsViewModel {
 
     struct Input {
-        let oragnizations: AnyPublisher<Organizations, Never>
+        let getAllOragnizations: () -> AnyPublisher<Organizations, CustomError>
         let fetcher: Fetcher
         let configuration: Configuration
     }
@@ -56,11 +56,13 @@ private
 extension OrganizationsViewModel {
 
     func bind() {
-        input.oragnizations
+        input.getAllOragnizations()
             .receive(on: RunLoop.main)
-            .sink { [weak self] in
+            .sink(receiveCompletion: { _ in
+                print("handle error")
+            }, receiveValue: { [weak self] in
                 self?.organizations = $0
-            }
+            })
             .store(in: &cancelBag)
     }
 }

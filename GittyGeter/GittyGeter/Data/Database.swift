@@ -9,38 +9,37 @@ import Foundation
 import Combine
 
 protocol Database {
-    var allOrganizations: AnyPublisher<Organizations, Never> {get}
-    var getAllRepositories: (String, Organizations) -> AnyPublisher<Repositories, CustomError> {get}
-    var getRepositories: (Organization) -> AnyPublisher<Repositories, CustomError> {get}
+    func getOrganizations() -> AnyPublisher<Organizations, CustomError>
+    func getRepositories(qury: String, for: Organizations) -> AnyPublisher<Repositories, CustomError>
+    func getFavoriteRepositories() -> AnyPublisher<Repositories, CustomError>
+    func getRepositories(for orgnization: Organization) -> AnyPublisher<Repositories, CustomError>
 }
 
 #if DEBUG
 class MockDatabase: Database {
-    var getAllRepositories: (String, Organizations) -> AnyPublisher<Repositories, CustomError> {
-        _getAllRepositories
+
+    func getRepositories(qury: String, for: Organizations) -> AnyPublisher<Repositories, CustomError> {
+        Just(Repository.mocks())
+            .setFailureType(to: CustomError.self)
+            .eraseToAnyPublisher()
     }
-
-
-    var allOrganizations: AnyPublisher<Organizations, Never> {
+    func getOrganizations() -> AnyPublisher<Organizations, CustomError> {
         Just(Organization.mocks())
+            .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }
 
-    private func _getAllRepositories(query: String,
-                            in organizations: Organizations) -> AnyPublisher<Repositories, CustomError> {
+    func getFavoriteRepositories() -> AnyPublisher<Repositories, CustomError> {
         Just(Repository.mocks())
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }
 
-    var getRepositories: (Organization) -> AnyPublisher<Repositories, CustomError> {
-        _getRepositories(for:)
-    }
-
-    private func _getRepositories(for organization: Organization) -> AnyPublisher<Repositories, CustomError> {
+    func getRepositories(for orgnization: Organization) -> AnyPublisher<Repositories, CustomError> {
         Just(Repository.mocks())
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }
+
 }
 #endif

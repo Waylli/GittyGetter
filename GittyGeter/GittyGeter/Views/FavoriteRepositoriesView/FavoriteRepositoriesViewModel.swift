@@ -1,0 +1,66 @@
+//
+//  FavoriteRepositoriesViewModel.swift
+//  GittyGeter
+//
+//  Created by Petar Perkovski on 28/11/2024.
+//
+
+import Foundation
+import Combine
+
+class FavoriteRepositoriesViewModel: ObservableObject {
+
+    @Published private(set) var repositories = Repositories()
+    private var cancelBag = CancelBag()
+
+    let input: Input
+    let output: Output
+
+    init(with input: Input, and output: Output) {
+        self.input = input
+        self.output = output
+        bind()
+    }
+}
+
+extension FavoriteRepositoriesViewModel {
+
+    struct Input {
+        let getFavoriteRepositories: () -> AnyPublisher<Repositories, CustomError>
+        let fetcher: Fetcher
+        let configuration: Configuration
+    }
+
+    struct Output {
+        let userSelectedRepository: PassthroughSubject<Repository, Never>
+    }
+}
+
+extension FavoriteRepositoriesViewModel {
+    func makeRepositoriesListViewModel() -> RepositoriesListViewModel {
+        let modelInput = RepositoriesListViewModel
+            .Input(isScrollable: true,
+                   repositories: repositories,
+                   fetcher: input.fetcher,
+                   configuration: input.configuration)
+        let modelOutput = RepositoriesListViewModel
+            .Output(userSelectedRepository: output.userSelectedRepository)
+        return RepositoriesListViewModel(with: modelInput, and: modelOutput)
+    }
+}
+
+private
+extension FavoriteRepositoriesViewModel {
+
+    func bind() {
+        input.getFavoriteRepositories()
+            .sink { _ in
+                print("handle error if any")
+            } receiveValue: { [weak self] in
+                self?.repositories = $0
+            }
+            .store(in: &cancelBag)
+    }
+
+}
+

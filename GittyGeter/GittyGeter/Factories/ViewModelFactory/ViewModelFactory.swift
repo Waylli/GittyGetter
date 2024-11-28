@@ -22,8 +22,9 @@ extension ViewModelFactory {
 
     func makeGittyTabViewModel(with modelOutput: GittyTabViewModel.Output) -> GittyTabViewModel {
         let modelInput = GittyTabViewModel
-            .Input(allOrganizations: model.input.database.allOrganizations,
-                   getRepositories: model.input.database.getAllRepositories,
+            .Input(getAllOrganizations: model.input.database.getOrganizations,
+                   getRepositories: model.input.database.getRepositories(qury:for:),
+                   getFavoriteRepositories: model.input.database.getFavoriteRepositories,
                    fetcher: model.input.fetcher,
                    configuration: model.input.configurtion)
         return GittyTabViewModel(with: modelInput, and: modelOutput)
