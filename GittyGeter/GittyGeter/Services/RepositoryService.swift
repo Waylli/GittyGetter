@@ -10,7 +10,7 @@ import Combine
 
 protocol RepositoryService {
 
-    func getFavoriteOrganizations() -> AnyPublisher<[Organization], Never>
+    func getFavouriteOrganizations() -> AnyPublisher<[Organization], Never>
     func getRepositories(for organization: Organization) -> AnyPublisher<[Repository], CustomError>
 
 }

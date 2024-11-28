@@ -10,7 +10,7 @@ import Combine
 
 class DetailedRepositoryViewModel: ObservableObject {
 
-    @Published var isFavoriteRepository: Bool
+    @Published var isFavouriteRepository: Bool
     @Published var avatar: Photo?
     var cancelBag = CancelBag()
 
@@ -21,7 +21,7 @@ class DetailedRepositoryViewModel: ObservableObject {
          and output: Output) {
         self.input = input
         self.output = output
-        isFavoriteRepository = input.repository.isFavorite
+        isFavouriteRepository = input.repository.isFavourite
         bind()
     }
 

@@ -1,5 +1,5 @@
 //
-//  FavoriteRepositoriesViewModel.swift
+//  FavouriteRepositoriesViewModel.swift
 //  GittyGeter
 //
 //  Created by Petar Perkovski on 28/11/2024.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class FavoriteRepositoriesViewModel: ObservableObject {
+class FavouriteRepositoriesViewModel: ObservableObject {
 
     @Published private(set) var repositories = Repositories()
     private var cancelBag = CancelBag()
@@ -23,10 +23,10 @@ class FavoriteRepositoriesViewModel: ObservableObject {
     }
 }
 
-extension FavoriteRepositoriesViewModel {
+extension FavouriteRepositoriesViewModel {
 
     struct Input {
-        let getFavoriteRepositories: () -> AnyPublisher<Repositories, CustomError>
+        let getFavouriteRepositories: () -> AnyPublisher<Repositories, CustomError>
         let fetcher: Fetcher
         let configuration: Configuration
     }
@@ -36,7 +36,7 @@ extension FavoriteRepositoriesViewModel {
     }
 }
 
-extension FavoriteRepositoriesViewModel {
+extension FavouriteRepositoriesViewModel {
     func makeRepositoriesListViewModel() -> RepositoriesListViewModel {
         let modelInput = RepositoriesListViewModel
             .Input(isScrollable: true,
@@ -50,10 +50,10 @@ extension FavoriteRepositoriesViewModel {
 }
 
 private
-extension FavoriteRepositoriesViewModel {
+extension FavouriteRepositoriesViewModel {
 
     func bind() {
-        input.getFavoriteRepositories()
+        input.getFavouriteRepositories()
             .sink { _ in
                 print("handle error if any")
             } receiveValue: { [weak self] in

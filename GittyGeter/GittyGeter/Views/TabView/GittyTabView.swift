@@ -25,6 +25,14 @@ struct GittyTabView: View {
                         Image(uiImage: UIImage.fork)
                     }
                 }
+            FavouriteRepositoriesView(with: model.makeFavouriteRepositoriesViewModel())
+                .tabItem {
+                    Label {
+                        Text("Favourites")
+                    } icon: {
+                        Image(systemName: "heart.fill")
+                    }
+                }
             OrganizationsView(with: model.makeOrganizationsViewModel())
                 .tabItem {
                     Label("Organizations", systemImage: "building.2")
@@ -41,7 +49,7 @@ import Combine
     let modelInput = GittyTabViewModel
         .Input(getAllOrganizations: database.getOrganizations,
                getRepositories: database.getRepositories(qury:for:),
-               getFavoriteRepositories: database.getFavoriteRepositories,
+               getFavouriteRepositories: database.getFavouriteRepositories,
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = GittyTabViewModel

@@ -11,7 +11,7 @@ import Combine
 protocol Database {
     func getOrganizations() -> AnyPublisher<Organizations, CustomError>
     func getRepositories(qury: String, for: Organizations) -> AnyPublisher<Repositories, CustomError>
-    func getFavoriteRepositories() -> AnyPublisher<Repositories, CustomError>
+    func getFavouriteRepositories() -> AnyPublisher<Repositories, CustomError>
     func getRepositories(for orgnization: Organization) -> AnyPublisher<Repositories, CustomError>
 }
 
@@ -29,7 +29,7 @@ class MockDatabase: Database {
             .eraseToAnyPublisher()
     }
 
-    func getFavoriteRepositories() -> AnyPublisher<Repositories, CustomError> {
+    func getFavouriteRepositories() -> AnyPublisher<Repositories, CustomError> {
         Just(Repository.mocks())
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()

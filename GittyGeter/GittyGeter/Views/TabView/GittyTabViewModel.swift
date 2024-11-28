@@ -26,7 +26,7 @@ extension GittyTabViewModel {
     struct Input {
         let getAllOrganizations: () -> AnyPublisher<Organizations, CustomError>
         let getRepositories: (String, Organizations) -> AnyPublisher<Repositories, CustomError>
-        let getFavoriteRepositories: () -> AnyPublisher<Repositories, CustomError>
+        let getFavouriteRepositories: () -> AnyPublisher<Repositories, CustomError>
         let fetcher: Fetcher
         let configuration: Configuration
     }
@@ -57,13 +57,13 @@ extension GittyTabViewModel {
         return OrganizationsViewModel(with: modelInput, and: modelOutput)
     }
 
-    func makeFavoriteRepositoriesViewModel() -> FavoriteRepositoriesViewModel {
-        let modelInput = FavoriteRepositoriesViewModel
-            .Input(getFavoriteRepositories: input.getFavoriteRepositories,
+    func makeFavouriteRepositoriesViewModel() -> FavouriteRepositoriesViewModel {
+        let modelInput = FavouriteRepositoriesViewModel
+            .Input(getFavouriteRepositories: input.getFavouriteRepositories,
                    fetcher: input.fetcher,
                    configuration: input.configuration)
-        let modelOutput = FavoriteRepositoriesViewModel
+        let modelOutput = FavouriteRepositoriesViewModel
             .Output(userSelectedRepository: output.userSelectedRepository)
-        return FavoriteRepositoriesViewModel(with: modelInput, and: modelOutput)
+        return FavouriteRepositoriesViewModel(with: modelInput, and: modelOutput)
     }
 }

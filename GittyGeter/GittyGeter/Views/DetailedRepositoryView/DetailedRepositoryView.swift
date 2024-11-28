@@ -60,12 +60,12 @@ struct DetailedRepositoryView: View {
         .overlay {
             HStack {
                 Spacer()
-                Image(systemName: model.isFavoriteRepository ? "heart.fill" : "heart")
+                Image(systemName: model.isFavouriteRepository ? "heart.fill" : "heart")
                     .font(.largeTitle)
                     .padding()
                     .foregroundStyle(.orange)
                     .onTapGesture {
-                        model.isFavoriteRepository.toggle()
+                        model.isFavouriteRepository.toggle()
                     }
             }
         }

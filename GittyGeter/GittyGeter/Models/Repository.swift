@@ -20,7 +20,7 @@ struct Repository: Identifiable, Hashable {
     let issues: Int
     let avatarURL: String?
     let organization: String
-    let isFavorite: Bool
+    let isFavourite: Bool
 
 //    enum CodingKeys: String, CodingKey {
 //        case id, name, description, language
@@ -46,7 +46,7 @@ extension Repository {
                    issues: Int.random(in: 1...20),
                    avatarURL: "https://avatars.githubusercontent.com/u/49564161?v=4",
                    organization: "Algorand Foundation",
-                   isFavorite: Int.random(in: 0...4) == 1)
+                   isFavourite: Int.random(in: 0...4) == 1)
     }
 
     static func mocks(count: Int = 10) -> Repositories {
