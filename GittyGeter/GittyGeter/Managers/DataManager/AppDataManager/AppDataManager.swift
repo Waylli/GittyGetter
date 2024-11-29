@@ -66,8 +66,8 @@ extension AppDataManager: DataManager {
         model.input.localDatabase.getRepositories(for: organization)
     }
 
-    func updateFavoriteStatus(for repository: Repository, to isFavorite: Bool) -> AnyPublisher<Success, CustomError> {
-        model.input.localDatabase.updateFavoriteStatus(for: repository, to: isFavorite)
+    func updateFavoriteStatus(of repository: Repository, to newStatus: Bool) -> AnyPublisher<Success, CustomError> {
+        model.input.localDatabase.updateFavoriteStatus(of: repository, to: newStatus)
     }
 }
 

@@ -25,6 +25,7 @@ extension ViewModelFactory {
             .Input(getAllOrganizations: model.input.database.getOrganizations,
                    getRepositories: model.input.database.getRepositories(query:within:),
                    getFavouriteRepositories: model.input.database.getFavouriteRepositories,
+                   updateFavoriteStatus: model.input.database.updateFavoriteStatus(of:to:),
                    fetcher: model.input.fetcher,
                    configuration: model.input.configurtion)
         return GittyTabViewModel(with: modelInput, and: modelOutput)
@@ -35,7 +36,8 @@ extension ViewModelFactory {
         let modelInput = DetailedRepositoryViewModel
             .Input(repository: repository,
                    fetcher: model.input.fetcher,
-                   configuration: model.input.configurtion)
+                   configuration: model.input.configurtion,
+                   updateFavoriteStatus: model.input.database.updateFavoriteStatus(of:to:))
         return DetailedRepositoryViewModel(with: modelInput, and: modelOutput)
 
     }
@@ -46,7 +48,8 @@ extension ViewModelFactory {
             .Input(organization: organization,
                    fetcher: model.input.fetcher,
                    configuration: model.input.configurtion,
-                   getRepositories: model.input.database.getRepositories)
+                   getRepositories: model.input.database.getRepositories,
+                   updateFavoriteStatus: model.input.database.updateFavoriteStatus(of:to:))
         return DetailedOrganizationViewModel(with: modelInput, and: modelOutput)
     }
 

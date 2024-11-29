@@ -12,7 +12,6 @@ protocol DataManager: Database {
     func refreshContent() -> AnyPublisher<Success, CustomError>
     func addOrganizationWith(_ identifier: String) -> AnyPublisher<Success, CustomError>
     func remove(this organization: Organization) -> AnyPublisher<Success, CustomError>
-    func updateFavoriteStatus(for repository: Repository, to isFavorite: Bool) -> AnyPublisher<Success, CustomError>
 }
 
 #if DEBUG
@@ -23,7 +22,7 @@ class MockDataManager: DataManager {
             .eraseToAnyPublisher()
     }
 
-    func updateFavoriteStatus(for repository: Repository,
+    func updateFavoriteStatus(of repository: Repository,
                               to isFavorite: Bool) -> AnyPublisher<Success, CustomError> {
         Just(true)
             .setFailureType(to: CustomError.self)

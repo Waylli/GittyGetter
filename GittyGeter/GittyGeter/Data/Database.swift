@@ -14,6 +14,7 @@ protocol Database {
     func getRepositories(query: String, within organizations: Organizations) -> AnyPublisher<Repositories, CustomError>
     func getFavouriteRepositories() -> AnyPublisher<Repositories, CustomError>
     func getRepositories(for organization: Organization) -> AnyPublisher<Repositories, CustomError>
+    func updateFavoriteStatus(of repository: Repository,to newStatus: Bool) -> AnyPublisher<Success, CustomError>
 }
 
 #if DEBUG
@@ -55,6 +56,12 @@ class MockDatabase: Database {
 
     func getRepositories(for orgnization: Organization) -> AnyPublisher<Repositories, CustomError> {
         Just(getRepositories)
+            .setFailureType(to: CustomError.self)
+            .eraseToAnyPublisher()
+    }
+
+    func updateFavoriteStatus(of repository: Repository, to newStatus: Bool) -> AnyPublisher<Success, CustomError> {
+        Just(true)
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }

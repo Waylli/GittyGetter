@@ -48,6 +48,7 @@ import Combine
     let modelInput = RepositoriesViewModel
         .Input(getAllOrganizations: database.getOrganizations,
                getRepositories: database.getRepositories(query:within:),
+               updateFavoriteStatus: database.updateFavoriteStatus(of:to:),
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = RepositoriesViewModel

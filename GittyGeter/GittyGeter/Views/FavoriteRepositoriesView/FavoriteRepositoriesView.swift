@@ -33,7 +33,11 @@ import Combine
     let modelInput = FavouriteRepositoriesViewModel
         .Input(getFavouriteRepositories: database.getFavouriteRepositories,
                fetcher: MockFetcher(),
-               configuration: Configuration.standard())
+               configuration: Configuration.standard()) { _, _ in
+            Just(true)
+                .setFailureType(to: CustomError.self)
+                .eraseToAnyPublisher()
+        }
     let modelOutput = FavouriteRepositoriesViewModel
         .Output(userSelectedRepository: PassthroughSubject())
     let model = FavouriteRepositoriesViewModel(with: modelInput,

@@ -29,6 +29,7 @@ extension FavouriteRepositoriesViewModel {
         let getFavouriteRepositories: () -> AnyPublisher<Repositories, CustomError>
         let fetcher: Fetcher
         let configuration: Configuration
+        let updateFavoriteStatus: (Repository, Bool) -> AnyPublisher<Success, CustomError>
     }
 
     struct Output {
@@ -42,7 +43,8 @@ extension FavouriteRepositoriesViewModel {
             .Input(isScrollable: true,
                    repositories: repositories,
                    fetcher: input.fetcher,
-                   configuration: input.configuration)
+                   configuration: input.configuration,
+                   updateFavoriteStatus: input.updateFavoriteStatus)
         let modelOutput = RepositoriesListViewModel
             .Output(userSelectedRepository: output.userSelectedRepository)
         return RepositoriesListViewModel(with: modelInput, and: modelOutput)

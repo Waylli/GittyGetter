@@ -17,23 +17,9 @@ struct RepositoryCard: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .top) {
-                getThumbnail()
-                    .resizable()
-                    .frame(width: model.input.configuration.thumbnail.widht,
-                           height: model.input.configuration.thumbnail.height)
-                    .aspectRatio(contentMode: .fit)
-                    .background(Color.red)
+                thumbnail
                 VStack(alignment: .leading) {
-                    Text(model.input.repository.name)
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                    Text(model.input.repository.description ?? "")
-                        .fontWeight(.light)
-                        .italic()
-                        .font(.headline)
-                        .minimumScaleFactor(0.7)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(4)
+                    nameDescription
                     HStack {
                         HStack(alignment: .bottom, spacing: 4) {
                             Image(uiImage: UIImage.star)
@@ -61,11 +47,42 @@ struct RepositoryCard: View {
     }
 
     private
-    func getThumbnail() -> Image {
+    var thumbnail: some View {
         guard let thumbnail = model.thumbnail else {
-            return Image(systemName: "heart")
+            return ThumbnailComponent(thumbnail: Photo.star,
+                                      configuration: model.input.configuration) {
+                ThumbnailBackgroundComponent()
+            }
         }
-        return Image(uiImage: thumbnail)
+        return ThumbnailComponent(thumbnail: thumbnail, configuration: model.input.configuration) {
+            ThumbnailBackgroundComponent()
+        }
+    }
+    private
+    var nameDescription: some View {
+        HStack(alignment: .top) {
+            VStack {
+                Text(model.input.repository.name)
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.7)
+                Text(model.input.repository.description ?? "")
+                    .fontWeight(.light)
+                    .italic()
+                    .font(.headline)
+                    .minimumScaleFactor(0.7)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(4)
+            }
+            Image(systemName: model.isFavorite ? "heart.fill" : "heart")
+                .font(.largeTitle)
+                .foregroundStyle(Color.orange)
+            ///comment out if favorite status can be set from here
+//                .onTapGesture {
+//                    model.isFavoritePressed()
+//                }
+        }
     }
 }
 
@@ -76,7 +93,11 @@ import Combine
     let modelInput = RepositoryCardModel
         .Input(repository: Repository.mock(),
                fetcher: MockFetcher(),
-               configuration: Configuration.standard())
+               configuration: Configuration.standard()) { _, _ in
+            Just(true)
+                .setFailureType(to: CustomError.self)
+                .eraseToAnyPublisher()
+        }
     let modelOutput = RepositoryCardModel
         .Output()
     let model = RepositoryCardModel(with: modelInput,

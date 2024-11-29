@@ -9,10 +9,12 @@ import SwiftUI
 
 struct ThumbnailBackgroundComponent: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Color.black
     }
 }
 
+#if DEBUG
 #Preview {
     ThumbnailBackgroundComponent()
 }
+#endif

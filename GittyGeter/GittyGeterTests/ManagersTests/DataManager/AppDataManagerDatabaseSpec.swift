@@ -71,7 +71,7 @@ class AppDataManagerDatabaseSpec: QuickSpec {
                         .performAndWait(publisher: dataManager.getRepositories(query: "", within: [])).0
                     repos!.forEach { repo in
                         _ = LocalDatabaseTestHelpers
-                            .performAndWait(publisher: dataManager.updateFavoriteStatus(for: repo, to: true))
+                            .performAndWait(publisher: dataManager.updateFavoriteStatus(of: repo, to: true))
                     }
 
                 }

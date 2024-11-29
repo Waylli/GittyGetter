@@ -40,6 +40,7 @@ extension RepositoriesViewModel {
         let getAllOrganizations: () -> AnyPublisher<Organizations, CustomError>
         /// params: query string, filtered organizations if array is empty repos from all orgs will be shown
         let getRepositories: (String, Organizations) -> AnyPublisher<Repositories, CustomError>
+        let updateFavoriteStatus: (Repository, Bool) -> AnyPublisher<Success, CustomError>
         let fetcher: Fetcher
         let configuration: Configuration
     }
@@ -80,7 +81,8 @@ extension RepositoriesViewModel {
             .Input(isScrollable: true,
                    repositories: queriedRepositories,
                    fetcher: input.fetcher,
-                   configuration: input.configuration)
+                   configuration: input.configuration,
+                   updateFavoriteStatus: input.updateFavoriteStatus)
         let modelOutput = RepositoriesListViewModel
             .Output(userSelectedRepository: output.userSelectedRepository)
         return RepositoriesListViewModel(with: modelInput, and: modelOutput)

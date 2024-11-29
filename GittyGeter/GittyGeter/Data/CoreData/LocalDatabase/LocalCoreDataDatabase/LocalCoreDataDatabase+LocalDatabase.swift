@@ -193,7 +193,7 @@ extension LocalCoreDataDatabase: LocalDatabase {
         }
     }
 
-    func updateFavoriteStatus(for repository: Repository,
+    func updateFavoriteStatus(of repository: Repository,
                               to isFavorite: Bool) -> AnyPublisher<Success, CustomError> {
         guard let context = backgroundContext else {
             return Fail(error: CustomError.objectNotFound).eraseToAnyPublisher()

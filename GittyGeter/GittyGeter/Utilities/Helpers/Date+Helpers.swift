@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+extension Date {
+    func readable() -> String {
+        let formater = DateFormatter()
+        formater.timeStyle = .none
+        formater.dateStyle = .medium
+        return formater.string(from: self)
+    }
+}

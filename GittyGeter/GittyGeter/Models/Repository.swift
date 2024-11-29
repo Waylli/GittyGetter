@@ -35,6 +35,7 @@ struct Repository: Identifiable, Hashable, Codable {
     let issues: Int
     let avatarURL: String?
     let organizationName: String
+    let size: Int
     let isFavourite: Bool
 
     enum CodingKeys: String, CodingKey {
@@ -50,6 +51,7 @@ struct Repository: Identifiable, Hashable, Codable {
         case issues = "open_issues_count"
         case avatarURL = "owner.avatar_url"
         case organizationName = "owner"
+        case size
     }
 
     // Custom decoding to handle `identifier` as a String while the JSON contains a number
@@ -66,6 +68,7 @@ struct Repository: Identifiable, Hashable, Codable {
         forksCount = try container.decodeIfPresent(Int.self, forKey: .forksCount) ?? 0
         watchers = try container.decodeIfPresent(Int.self, forKey: .watchers) ?? 0
         issues = try container.decodeIfPresent(Int.self, forKey: .issues) ?? 0
+        size = try container.decode(Int.self, forKey: .size)
         //        avatarURL = try container.decodeIfPresent(String.self, forKey: .avatarURL)
 
         // Decode nested owner object
@@ -106,6 +109,7 @@ struct Repository: Identifiable, Hashable, Codable {
         self.avatarURL = avatarURL
         self.organizationName = organizationName
         self.isFavourite = isFavourite
+        size = Int.random(in: 1000...100000)
     }
 
 }

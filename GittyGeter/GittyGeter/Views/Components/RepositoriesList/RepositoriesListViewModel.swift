@@ -27,6 +27,7 @@ extension RepositoriesListViewModel {
         let repositories: Repositories
         let fetcher: Fetcher
         let configuration: Configuration
+        let updateFavoriteStatus: (Repository, Bool) -> AnyPublisher<Success, CustomError>
     }
 
     struct Output {
@@ -40,7 +41,8 @@ extension RepositoriesListViewModel {
         let modelInput = RepositoryCardModel
             .Input(repository: repo,
                    fetcher: input.fetcher,
-                   configuration: input.configuration)
+                   configuration: input.configuration,
+                   updateFavoriteStatus: input.updateFavoriteStatus)
         let modelOutput = RepositoryCardModel
             .Output()
         return RepositoryCardModel(with: modelInput, and: modelOutput)

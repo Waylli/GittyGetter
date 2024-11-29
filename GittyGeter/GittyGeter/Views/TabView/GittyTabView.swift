@@ -46,10 +46,11 @@ import Combine
 
 #Preview {
     let database = MockDatabase()
+    let mockLocalDatabase = MockLocalDatabase()
     let modelInput = GittyTabViewModel
         .Input(getAllOrganizations: database.getOrganizations,
                getRepositories: database.getRepositories(query:within:),
-               getFavouriteRepositories: database.getFavouriteRepositories,
+               getFavouriteRepositories: database.getFavouriteRepositories, updateFavoriteStatus: mockLocalDatabase.updateFavoriteStatus(of:to:),
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = GittyTabViewModel

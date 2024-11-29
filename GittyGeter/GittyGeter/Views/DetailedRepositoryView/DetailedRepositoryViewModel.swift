@@ -10,7 +10,7 @@ import Combine
 
 class DetailedRepositoryViewModel: ObservableObject {
 
-    @Published var isFavouriteRepository: Bool
+    @Published private(set) var isFavouriteRepository: Bool
     @Published var avatar: Photo?
     var cancelBag = CancelBag()
 
@@ -25,6 +25,17 @@ class DetailedRepositoryViewModel: ObservableObject {
         bind()
     }
 
+    func favoriteIconTapped() {
+        input.updateFavoriteStatus(input.repository, !isFavouriteRepository)
+            .sink { _ in
+
+            } receiveValue: { [weak self] in
+                if $0 {
+                    self?.isFavouriteRepository.toggle()
+                }
+            }
+            .store(in: &cancelBag)
+    }
 }
 
 extension DetailedRepositoryViewModel {
@@ -32,6 +43,7 @@ extension DetailedRepositoryViewModel {
         let repository: Repository
         let fetcher: Fetcher
         let configuration: Configuration
+        let updateFavoriteStatus: (Repository, Bool) -> AnyPublisher<Success, CustomError>
     }
 
     struct Output {

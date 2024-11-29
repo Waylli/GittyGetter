@@ -61,11 +61,11 @@ struct DetailedRepositoryView: View {
             HStack {
                 Spacer()
                 Image(systemName: model.isFavouriteRepository ? "heart.fill" : "heart")
-                    .font(.largeTitle)
+                    .font(.system(size: 60))
                     .padding()
                     .foregroundStyle(.orange)
                     .onTapGesture {
-                        model.isFavouriteRepository.toggle()
+                        model.favoriteIconTapped()
                     }
             }
         }
@@ -103,8 +103,10 @@ struct DetailedRepositoryView: View {
             VStack(spacing: 16) {
                 getInfoBlock(for: "\(model.input.repository.stargazersCount)",
                              and: "Stargazers")
-                getInfoBlock(for: "\(Date())",
-                             and: "Created at")
+                if let createdAt = model.input.repository.createdAt {
+                    getInfoBlock(for: "\(createdAt.readable())",
+                                 and: "created")
+                }
                 getInfoBlock(for: "\(model.input.repository.watchers)",
                              and: "Watchers")
             }
@@ -113,7 +115,7 @@ struct DetailedRepositoryView: View {
             VStack(spacing: 16) {
                 getInfoBlock(for: "\(model.input.repository.forksCount)",
                              and: "forks")
-                getInfoBlock(for: "11mb",
+                getInfoBlock(for: model.input.repository.size.formattedGitHubRepoSize(),
                              and: "Size")
                 getInfoBlock(for: "\(model.input.repository.issues)",
                              and: "Issues")
@@ -146,10 +148,12 @@ struct DetailedRepositoryView: View {
 import Combine
 
 #Preview {
+    let mockDatabase = MockDatabase()
     let modelInput = DetailedRepositoryViewModel
         .Input(repository: Repository.mock(),
                fetcher: MockFetcher(),
-               configuration: Configuration.standard())
+               configuration: Configuration.standard(),
+               updateFavoriteStatus: mockDatabase.updateFavoriteStatus(of:to:))
     let modelOutput = DetailedRepositoryViewModel
         .Output(backButtonTapped: PassthroughSubject())
     let model = DetailedRepositoryViewModel(with: modelInput,

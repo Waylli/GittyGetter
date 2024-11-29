@@ -56,7 +56,11 @@ import Combine
         .Input(isScrollable: true,
                repositories: Repository.mocks(),
                fetcher: MockFetcher(),
-               configuration: Configuration.standard())
+               configuration: Configuration.standard()) { _, _ in
+            Just(true)
+                .setFailureType(to: CustomError.self)
+                .eraseToAnyPublisher()
+        }
     let modelOutput = RepositoriesListViewModel
         .Output(userSelectedRepository: PassthroughSubject())
     let model = RepositoriesListViewModel(with: modelInput, and: modelOutput)
@@ -68,7 +72,11 @@ import Combine
         .Input(isScrollable: false,
                repositories: Repository.mocks(),
                fetcher: MockFetcher(),
-               configuration: Configuration.standard())
+               configuration: Configuration.standard()) { _, _ in
+            Just(true)
+                .setFailureType(to: CustomError.self)
+                .eraseToAnyPublisher()
+        }
     let modelOutput = RepositoriesListViewModel
         .Output(userSelectedRepository: PassthroughSubject())
     let model = RepositoriesListViewModel(with: modelInput, and: modelOutput)

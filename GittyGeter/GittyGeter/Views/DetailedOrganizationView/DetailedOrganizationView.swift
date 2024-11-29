@@ -119,14 +119,13 @@ struct DetailedOrganizationView: View {
 import Combine
 
 #Preview {
+    let database = MockDatabase()
     let modelInput = DetailedOrganizationViewModel
-        .Input(organization: .mock(),
+        .Input(organization: Organization.mock(),
                fetcher: MockFetcher(),
-               configuration: Configuration.standard()) { _ in
-            Just(Repository.mocks())
-                .setFailureType(to: CustomError.self)
-                .eraseToAnyPublisher()
-        }
+               configuration: Configuration.standard(),
+               getRepositories: database.getRepositories(for:),
+               updateFavoriteStatus: database.updateFavoriteStatus(of:to:))
     let modelOutput = DetailedOrganizationViewModel
         .Output(userSelectedRepository: PassthroughSubject(), backButtonTapped: PassthroughSubject())
     let model = DetailedOrganizationViewModel(with: modelInput, and: modelOutput)

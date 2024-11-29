@@ -11,6 +11,7 @@ import Combine
 class RepositoryCardModel: ObservableObject {
 
     @Published var thumbnail: Photo?
+    @Published var isFavorite: Bool
     var cancelBag = CancelBag()
 
     let input: Input
@@ -20,6 +21,7 @@ class RepositoryCardModel: ObservableObject {
          and output: Output) {
         self.input = input
         self.output = output
+        isFavorite = input.repository.isFavourite
         bind()
     }
 
@@ -31,11 +33,17 @@ extension RepositoryCardModel {
         let repository: Repository
         let fetcher: Fetcher
         let configuration: Configuration
+        let updateFavoriteStatus: (Repository, Bool) -> AnyPublisher<Success, CustomError>
     }
 
     struct Output {
 
     }
+
+    ///comment out if favorite status can be set from here
+//    func isFavoritePressed() {
+//        isFavorite.toggle()
+//    }
 
 }
 
@@ -44,6 +52,7 @@ extension RepositoryCardModel {
 
     func bind() {
         fetchThumbnail()
+
     }
 
     func fetchThumbnail() {
