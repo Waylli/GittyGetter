@@ -10,6 +10,8 @@
 		D2902A5B2CF69845006EDE17 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = D2902A5A2CF69845006EDE17 /* WrappingHStack */; };
 		D2E0988A2CF7263900476A6F /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = D2E098892CF7263900476A6F /* Quick */; };
 		D2E0988D2CF7265100476A6F /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = D2E0988C2CF7265100476A6F /* Nimble */; };
+		D2F96AED2CF9DC6200B82F66 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = D2F96AEC2CF9DC6200B82F66 /* CombineMoya */; };
+		D2F96AEF2CF9DC6200B82F66 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = D2F96AEE2CF9DC6200B82F66 /* Moya */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,7 +74,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2F96AED2CF9DC6200B82F66 /* CombineMoya in Frameworks */,
 				D2902A5B2CF69845006EDE17 /* WrappingHStack in Frameworks */,
+				D2F96AEF2CF9DC6200B82F66 /* Moya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,6 +141,8 @@
 			name = GittyGeter;
 			packageProductDependencies = (
 				D2902A5A2CF69845006EDE17 /* WrappingHStack */,
+				D2F96AEC2CF9DC6200B82F66 /* CombineMoya */,
+				D2F96AEE2CF9DC6200B82F66 /* Moya */,
 			);
 			productName = GittyGeter;
 			productReference = D2706FD02CF5EA9D00C909D2 /* GittyGeter.app */;
@@ -226,6 +232,7 @@
 				D2902A592CF69845006EDE17 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 				D2E098882CF7263900476A6F /* XCRemoteSwiftPackageReference "Quick" */,
 				D2E0988B2CF7265100476A6F /* XCRemoteSwiftPackageReference "Nimble" */,
+				D2F96AEB2CF9DC6200B82F66 /* XCRemoteSwiftPackageReference "Moya" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D2706FD12CF5EA9D00C909D2 /* Products */;
@@ -610,16 +617,24 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Quick/Quick.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.6.2;
 			};
 		};
 		D2E0988B2CF7265100476A6F /* XCRemoteSwiftPackageReference "Nimble" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Quick/Nimble.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.6.0;
+			};
+		};
+		D2F96AEB2CF9DC6200B82F66 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -639,6 +654,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D2E0988B2CF7265100476A6F /* XCRemoteSwiftPackageReference "Nimble" */;
 			productName = Nimble;
+		};
+		D2F96AEC2CF9DC6200B82F66 /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D2F96AEB2CF9DC6200B82F66 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		D2F96AEE2CF9DC6200B82F66 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D2F96AEB2CF9DC6200B82F66 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
