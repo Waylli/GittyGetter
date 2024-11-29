@@ -43,9 +43,9 @@ extension ViewModelFactory {
     func makeDetailedOrganizationViewModel(for organization: Organization,
                                            modelOutput: DetailedOrganizationViewModel.Output) -> DetailedOrganizationViewModel {
         let modelInput = DetailedOrganizationViewModel
-            .Input(organization: Organization.mock(),
-                   fetcher: MockFetcher(),
-                   configuration: Configuration.standard(),
+            .Input(organization: organization,
+                   fetcher: model.input.fetcher,
+                   configuration: model.input.configurtion,
                    getRepositories: model.input.database.getRepositories)
         return DetailedOrganizationViewModel(with: modelInput, and: modelOutput)
     }

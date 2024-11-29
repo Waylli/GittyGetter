@@ -43,8 +43,14 @@ class GitHubAPIProvider: NetworkService {
         }
         return provider.requestPublisher(.fetchOrganizationWith(login: login))
             .tryMap { response in
+                if let jsonString = String(data: response.data, encoding: .utf8) {
+                            print("JSON Response: \(jsonString)")
+                        } else {
+                            print("Failed to convert response data to string.")
+                        }
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .iso8601
+
                 let organization = try decoder.decode(Organization.self, from: response.data)
                 if let strongResponse = response.response,
                    let url = URL(string: "https://api.github.com/orgs/\(login)") {

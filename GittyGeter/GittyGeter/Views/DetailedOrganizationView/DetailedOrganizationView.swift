@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct DetailedOrganizationView: View {
 
@@ -26,6 +27,7 @@ struct DetailedOrganizationView: View {
                 .foregroundStyle(.primary)
                 Spacer()
             }
+
             TitleTextComponent(title: model.input.organization.name)
             DescriptionTextComponent(text: model.input.organization.description)
             decoration
@@ -53,27 +55,42 @@ struct DetailedOrganizationView: View {
             }
             .frame(width: 100, height: 100)
             VStack(alignment: .leading, spacing: 16) {
-                if let email = model.input.organization.email,
-                    let url = URL(string: "mailto:\(email)") {
                     HStack(alignment: .center) {
                         Image(systemName: "envelope")
                             .font(.subheadline)
                             .foregroundStyle(.background)
-                        Link(email, destination: url)
-                            .font(.subheadline)
+                        if let email = model.input.organization.email,
+                           let url = URL(string: "mailto:\(email)") {
+                            Link(email, destination: url)
+                                .font(.subheadline)
+                                .minimumScaleFactor(0.2)
+                                .lineLimit(1)
+                        } else {
+                            Text(model.input.organization.email ?? "N/A")
+                                .font(.subheadline)
+                                .foregroundStyle(.background)
+                                .minimumScaleFactor(0.5)
+                        }
 
                     }
-                }
-                if let website = model.input.organization.websiteUrl,
-                   let url = URL(string: website) {
-                    HStack(alignment: .center) {
-                        Image(systemName: "link")
-                            .font(.subheadline)
-                            .foregroundStyle(.background)
+                HStack(alignment: .center) {
+                    Image(systemName: "link")
+                        .font(.subheadline)
+                        .foregroundStyle(.background)
+                    if let website = model.input.organization.websiteUrl,
+                       let url = URL(string: website) {
                         Link(website, destination: url)
                             .font(.subheadline)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.2)
+                    } else {
+                        Text(model.input.organization.websiteUrl ?? "N/A")
+                            .font(.subheadline)
+                            .minimumScaleFactor(0.5)
+                            .foregroundStyle(.background)
                     }
                 }
+
                 HStack(alignment: .center) {
                     Image(systemName: "figure.wave")
                         .font(.subheadline)
@@ -89,7 +106,7 @@ struct DetailedOrganizationView: View {
 
     var repositories: some View {
         VStack(alignment: .leading) {
-            if !model.repositories.isEmpty {
+            if model.repositories.count > 0 {
                 Text("Repositories")
                     .font(.title2)
                 RepositoriesListView(with: model.makeRepositoriesListViewModel())

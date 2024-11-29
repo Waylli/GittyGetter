@@ -28,7 +28,7 @@ struct Organization: Identifiable, Hashable, Codable {
         case updatedAt = "updated_at"
         case name = "login"
         case description
-        case websiteUrl = "websiteUrl"
+        case websiteUrl = "blog"
         case email
         case followers = "followers"
         case avatarURL = "avatar_url"
@@ -83,8 +83,8 @@ extension Organization {
                      updatedAt: Date() - 100,
                      name: name,
                      description: "some description which need to be a bit longer",
-                     websiteUrl: "https://algorand.co/",
-                     email: "some@some.com",
+                     websiteUrl: "https://abitlongertextalgorand.co/",
+                     email: "somelogerandlonger@some.com",
                      followers: Int.random(in: 100...1000),
                      avatarURL: "https://avatars.githubusercontent.com/u/49564161?v=4")
     }

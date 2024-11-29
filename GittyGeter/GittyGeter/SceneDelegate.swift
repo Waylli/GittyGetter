@@ -39,7 +39,7 @@ extension SceneDelegate {
         let appDataManager = AppDataManager(with: appDataManagerModel)
         let factoryModelInput = ViewModelFactoryModel
             .Input(database: localDatabase,
-                   fetcher: MockFetcher(),
+                   fetcher: AppFetcher(),
                    configurtion: Configuration.standard())
         let factoryModel = ViewModelFactoryModel(with: factoryModelInput)
         let viewModelFactory = ViewModelFactory(with: factoryModel)

@@ -11,7 +11,11 @@ import Combine
 class DetailedOrganizationViewModel: ObservableObject {
 
     @Published var orgThumbnail: Photo?
-    @Published var repositories = Repositories()
+    @Published var repositories = Repositories() {
+        didSet {
+            print("----- \(repositories.count)")
+        }
+    }
     private var cancelBag = CancelBag()
 
     let input: Input
