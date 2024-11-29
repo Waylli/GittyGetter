@@ -91,7 +91,7 @@ extension RepositoryEntity {
         repositoryEntity.createdAt = repository.createdAt
         repositoryEntity.updatedAt = repository.updatedAt
         repositoryEntity.repositoryDescription = repository.description
-        repositoryEntity.language = repository.language!
+        repositoryEntity.language = repository.language
         repositoryEntity.stargazersCount = Int32(repository.stargazersCount)
         repositoryEntity.forksCount = Int32(repository.forksCount)
         repositoryEntity.watchersCount = Int32(repository.watchers)

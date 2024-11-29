@@ -15,9 +15,16 @@ class AppDataManager {
     static let hardcodedOrganizationLogins = ["perawallet",
                                               "algorandfoundation",
                                               "algorand"]
+    private var cancelBag = CancelBag()
 
     init(with model: AppDataManagerModel) {
         self.model = model
+        // error not handled
+        model.input.localDatabase
+            .initialize()
+            .sink { _ in } receiveValue: { _ in  }
+            .store(in: &cancelBag)
+
     }
 
 }

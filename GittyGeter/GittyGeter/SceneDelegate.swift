@@ -30,8 +30,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 private
 extension SceneDelegate {
     func createAppManager(with navigationController: NavigationCoordinator) -> AppManager {
+        let localDatabase = LocalCoreDataDatabase()
+        let service = GitHubAPIProvider()
+        let appDataManagerModelInput = AppDataManagerModel
+            .Input(localDatabase: localDatabase,
+                   networkService: service)
+        let appDataManagerModel = AppDataManagerModel(with: appDataManagerModelInput)
+        let appDataManager = AppDataManager(with: appDataManagerModel)
         let factoryModelInput = ViewModelFactoryModel
-            .Input(database: MockDatabase(),
+            .Input(database: localDatabase,
                    fetcher: MockFetcher(),
                    configurtion: Configuration.standard())
         let factoryModel = ViewModelFactoryModel(with: factoryModelInput)
@@ -39,7 +46,7 @@ extension SceneDelegate {
         let modelInput = AppManagerModel
             .Input(navigationCoordinator: navigationController,
                    viewModelFactor: viewModelFactory,
-                   dataManager: MockDataManager())
+                   dataManager: appDataManager)
         let appManagerModel = AppManagerModel(with: modelInput)
         return AppManager(with: appManagerModel)
     }

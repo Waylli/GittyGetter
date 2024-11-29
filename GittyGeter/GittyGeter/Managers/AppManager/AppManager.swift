@@ -23,11 +23,19 @@ class AppManager {
 private
 extension AppManager {
     func start() {
-        let modelOutput = GittyTabViewModel.Output(userSelectedRepository: model.actions.userSelectedRepository,
-                                                   userSelectedOrganization: model.actions.userSelectedOrganization)
-        let viewModel = model.viewModelFactor.makeGittyTabViewModel(with: modelOutput)
-        let entryView = GittyTabView(with: viewModel)
-        self.model.navigator.set(views: [entryView.toViewController()], animated: true)
+        model.input.dataManager.refreshContent()
+            .receive(on: RunLoop.main)
+            .sink { _ in
+
+            } receiveValue: { [weak self] _ in
+                guard let this = self else {return}
+                let modelOutput = GittyTabViewModel.Output(userSelectedRepository: this.model.actions.userSelectedRepository,
+                                                           userSelectedOrganization: this.model.actions.userSelectedOrganization)
+                let viewModel = this.model.viewModelFactor.makeGittyTabViewModel(with: modelOutput)
+                let entryView = GittyTabView(with: viewModel)
+                this.model.navigator.set(views: [entryView.toViewController()], animated: true)
+            }
+            .store(in: &cancelBag)
     }
 
     func bindActions() {
