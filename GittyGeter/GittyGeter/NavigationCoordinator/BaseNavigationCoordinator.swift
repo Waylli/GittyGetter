@@ -20,7 +20,7 @@ class BaseNavigationCoordinator: UINavigationController {
 }
 
 extension BaseNavigationCoordinator: NavigationCoordinator {
-  
+
     func push(view: UIViewController, animated: Bool = true) {
         pushViewController(view, animated: animated)
     }

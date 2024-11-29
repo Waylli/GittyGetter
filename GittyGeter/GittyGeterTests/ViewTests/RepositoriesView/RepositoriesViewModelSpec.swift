@@ -156,5 +156,4 @@ class RepositoriesViewModelSpec: QuickSpec {
         return RepositoriesViewModel(with: modelInput, and: modelOutput, actions: actions)
     }
 
-
 }

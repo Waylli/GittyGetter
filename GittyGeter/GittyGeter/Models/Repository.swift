@@ -11,7 +11,8 @@ struct Repository: Identifiable, Hashable {
 
     let id: String
     let name: String
-    let fullName: String
+    let createdAt: Date?
+    let updatedAt: Date?
     let description: String?
     let language: String?
     let stargazersCount: Int
@@ -22,14 +23,16 @@ struct Repository: Identifiable, Hashable {
     let organization: String
     let isFavourite: Bool
 
+    var identifier: String {id}
 }
 
 #if DEBUG
 extension Repository {
-    static func mock() -> Repository {
+    static func mock(isFavorite: Bool = Int.random(in: 0...4) == 0) -> Repository {
         Repository(id: UUID().uuidString,
-                   name: "some name",
-                   fullName: "some full name",
+                   name: "some name \(UUID().uuidString)",
+                   createdAt: Date() - 10000,
+                   updatedAt: Date(),
                    description: "some description and type some more text to have it be as long as possible \(UUID().uuidString) + \(UUID().uuidString)",
                    language: "Swift",
                    stargazersCount: 10,
@@ -38,19 +41,20 @@ extension Repository {
                    issues: Int.random(in: 1...20),
                    avatarURL: "https://avatars.githubusercontent.com/u/49564161?v=4",
                    organization: "Algorand Foundation",
-                   isFavourite: Int.random(in: 0...4) == 1)
+                   isFavourite: isFavorite)
     }
 
-    static func mocks(count: Int = 10) -> Repositories {
+    static func mocks(count: Int = 10,
+                      isFavorite: Bool = Int.random(in: 0...4) == 1) -> Repositories {
         guard count > 0, count < 1000 else {
             return []
         }
         var repos = Repositories()
         for _ in 1...count {
-            repos.append(Repository.mock())
+            let repo = Repository.mock(isFavorite: isFavorite)
+            repos.append(repo)
         }
         return repos
     }
 }
 #endif
-

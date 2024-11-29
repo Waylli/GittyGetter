@@ -14,8 +14,8 @@ protocol LocalDatabase: Database {
     func storeOrUpdate(repositories: Repositories,
                parentOrganization organization: Organization) -> AnyPublisher<Success, CustomError>
 
-    func delete(organizations: Organizations) -> AnyPublisher<Success, CustomError>
-    func delete(repositories: Repositories) -> AnyPublisher<Success, CustomError>
+    func delete(organization: Organization) -> AnyPublisher<Success, CustomError>
+    func delete(repository: Repository) -> AnyPublisher<Success, CustomError>
 
     func initialize() -> AnyPublisher<Success, CustomError>
     func deleteAllData() -> AnyPublisher<Success, CustomError>
@@ -30,49 +30,49 @@ class MockLocalDatabase: LocalDatabase {
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }
-    
+
     func storeOrUpdate(repositories: Repositories, parentOrganization organization: Organization) -> AnyPublisher<Success, CustomError> {
         Just(true)
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }
-    
-    func delete(organizations: Organizations) -> AnyPublisher<Success, CustomError> {
+
+    func delete(organization: Organization) -> AnyPublisher<Success, CustomError> {
         Just(true)
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }
-    
-    func delete(repositories: Repositories) -> AnyPublisher<Success, CustomError> {
+
+    func delete(repository: Repository) -> AnyPublisher<Success, CustomError> {
         Just(true)
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }
-    
+
     func initialize() -> AnyPublisher<Success, CustomError> {
         Just(true)
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }
-    
+
     func getOrganizations() -> AnyPublisher<Organizations, CustomError> {
         Just(Organization.mocks())
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }
-    
+
     func getRepositories(query: String, within: Organizations) -> AnyPublisher<Repositories, CustomError> {
         Just(Repository.mocks())
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }
-    
+
     func getFavouriteRepositories() -> AnyPublisher<Repositories, CustomError> {
         Just(Repository.mocks())
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }
-    
+
     func getRepositories(for orgnization: Organization) -> AnyPublisher<Repositories, CustomError> {
         Just(Repository.mocks())
             .setFailureType(to: CustomError.self)

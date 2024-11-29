@@ -13,7 +13,7 @@ protocol Database {
     /// if no organization is provided it should fetch all repositories
     func getRepositories(query: String, within organizations: Organizations) -> AnyPublisher<Repositories, CustomError>
     func getFavouriteRepositories() -> AnyPublisher<Repositories, CustomError>
-    func getRepositories(for orgnization: Organization) -> AnyPublisher<Repositories, CustomError>
+    func getRepositories(for organization: Organization) -> AnyPublisher<Repositories, CustomError>
 }
 
 #if DEBUG
@@ -33,12 +33,10 @@ class MockDatabase: Database {
 
     func getRepositories(query: String, within: Organizations) -> AnyPublisher<Repositories, CustomError> {
         guard query.count == 0, within.count == 0 else {
-            print("111111 returning fetchedRepositories\(getRepositories.count) a query = \(query) a orgs = \(within.count)")
             return Just(fetchedRepositories)
                 .setFailureType(to: CustomError.self)
                 .eraseToAnyPublisher()
         }
-        print("111111 returning getRepositories\(fetchedRepositories.count)")
         return Just(getRepositories)
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()

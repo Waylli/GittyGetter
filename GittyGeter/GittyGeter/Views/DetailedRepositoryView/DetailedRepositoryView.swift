@@ -16,7 +16,7 @@ struct DetailedRepositoryView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8){
+        VStack(alignment: .leading, spacing: 8) {
             backView
             Group {
                 TitleTextComponent(title: model.input.repository.name.capitalized)

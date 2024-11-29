@@ -9,7 +9,9 @@ import Foundation
 
 enum CustomError: Error {
     case networkError,
+         objectNotFound,
          dataMappingFailed,
+         localDatabaseError,
          unknown(Error)
 }
 

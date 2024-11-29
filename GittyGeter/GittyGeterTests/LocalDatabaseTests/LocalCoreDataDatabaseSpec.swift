@@ -21,16 +21,60 @@ class LocalCoreDataDatabaseSpec: QuickSpec {
                 cancelBag = CancelBag()
             }
             afterEach {
+                try! localDatabase.forceDeleteAllData()
                 cancelBag = nil
                 localDatabase = nil
             }
-            it("can create NSPersistentContainer") {
+            it("initializes NSPersistentContainer successfully") {
                 localDatabase.initialize()
                     .sink { _ in } receiveValue: { _ in }
                     .store(in: &cancelBag)
                 expect(localDatabase.persistentContainer).toEventuallyNot(beNil(), timeout: .seconds(1))
                 expect(localDatabase.backgroundContext).toEventuallyNot(beNil(), timeout: .seconds(1))
+            }
 
+            context("when working with Entities") {
+                beforeEach {
+                    LocalDatabaseTestHelpers
+                        .initialize(this: localDatabase, cancelBag: &cancelBag)
+                }
+                context("Organization Entity") {
+                    it("saves an organization successfully") {
+                        let organization = Organization.mock()
+                        var isSaved = false
+                        waitUntil { done in
+                            localDatabase
+                                .storeOrUpdate(organizations: [organization])
+                                .sink { _ in
+
+                                } receiveValue: {
+                                    isSaved = $0
+                                    done()
+                                }
+                                .store(in: &cancelBag)
+                        }
+                        expect(isSaved).toEventually(beTrue())
+                    }
+                }
+                context("Repository Entity") {
+                    it("saves a repository successfully") {
+                        let organization = Organization.mock()
+                        let repository = Repository.mock()
+                        var isSaved = false
+                        waitUntil { done in
+                            localDatabase
+                                .storeOrUpdate(repositories: [repository], parentOrganization: organization)
+                                .sink { _ in
+
+                                } receiveValue: {
+                                    isSaved = $0
+                                    done()
+                                }
+                                .store(in: &cancelBag)
+                        }
+                        expect(isSaved).toEventually(beTrue(), timeout: .seconds(3))
+                    }
+                }
             }
         }
     }

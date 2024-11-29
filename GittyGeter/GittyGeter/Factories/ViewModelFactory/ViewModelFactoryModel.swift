@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct ViewModelFactoryModel {
 
     let input: Input
