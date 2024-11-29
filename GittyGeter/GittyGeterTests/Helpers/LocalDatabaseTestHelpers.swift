@@ -36,8 +36,8 @@ struct LocalDatabaseTestHelpers {
 
     static
     func store(orgs: Organizations,
-                      in database: LocalCoreDataDatabase,
-                      cancelBag: inout CancelBag) {
+               in database: LocalCoreDataDatabase,
+               cancelBag: inout CancelBag) {
         expect(database.backgroundContext).toNot(beNil())
         var isSaved = false
         database.storeOrUpdate(organizations: orgs)
@@ -48,8 +48,8 @@ struct LocalDatabaseTestHelpers {
 
     static
     func delete(repo: Repository,
-                       in database: LocalCoreDataDatabase,
-                       cancelBag: inout CancelBag) {
+                in database: LocalCoreDataDatabase,
+                cancelBag: inout CancelBag) {
         var isDeleted = false
         database.delete(repository: repo)
             .sink { _ in } receiveValue: { isDeleted = $0 }
@@ -59,8 +59,8 @@ struct LocalDatabaseTestHelpers {
 
     static
     func delete(org: Organization,
-                       in database: LocalCoreDataDatabase,
-                       cancelBag: inout CancelBag) {
+                in database: LocalCoreDataDatabase,
+                cancelBag: inout CancelBag) {
         var isDeleted = false
         database.delete(organization: org)
             .sink { _ in } receiveValue: { isDeleted = $0 }
@@ -75,4 +75,28 @@ struct LocalDatabaseTestHelpers {
             .store(in: &cancelBag)
         expect(deleted).toEventually(beTrue(), timeout: .seconds(3))
     }
+
+    static func fetchAndWait<T: Decodable>(publisher: AnyPublisher<T, CustomError>,
+                                           timeout: Int = 5) -> (T?, CancelBag) {
+        var fetchedValue: T?
+        var cancelBag = CancelBag()
+        waitUntil(timeout: .seconds(timeout)) { done in
+            publisher
+                .sink { result in
+                    switch result {
+                    case .finished: break
+                    case .failure(let error): fatalError(error.localizedDescription)
+                    }
+                } receiveValue: {
+                    fetchedValue = $0
+                    done()
+                }
+                .store(in: &cancelBag)
+        }
+        expect(fetchedValue).notTo(beNil())
+        return (fetchedValue, cancelBag)
+    }
+
+
+
 }

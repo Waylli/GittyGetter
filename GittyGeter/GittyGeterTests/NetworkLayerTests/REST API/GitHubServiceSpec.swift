@@ -15,56 +15,69 @@ class GitHubServiceSpec: QuickSpec {
 
     override class func spec() {
         var provider: GitHubAPIProvider!
-        var cancelBag: CancelBag!
-
+        let orgLogin = "algorandfoundation"
         beforeEach {
             provider = GitHubAPIProvider()
-            cancelBag = CancelBag()
+            provider.purgeCache()
         }
         afterEach {
-            cancelBag = nil
             provider = nil
         }
         describe("GitHubAPIProvider") {
+
             context("when fetching organization") {
-                it("should return live data") {
-                    var organizaton: Organization?
-                    waitUntil(timeout: .seconds(5)) { done in
-                        provider
-                            .fetchOrganizationWith(login: "algorandfoundation")
-                            .sink { result in
-                                switch result {
-                                case .finished: break
-                                case .failure(let error): fatalError(error.localizedDescription)
-                                }
-                            } receiveValue: {
-                                organizaton = $0
-                                done()
-                            }
-                            .store(in: &cancelBag)
-                    }
-                    expect(organizaton).notTo(beNil())
+                it("should return live data from network request") {
+                    let organization = LocalDatabaseTestHelpers
+                        .fetchAndWait(publisher: provider.fetchOrganizationWith(login: orgLogin))
+                        .0
+                    expect(organization).notTo(beNil())
+                }
+                it("should return cached data from network request") {
+                    _ = LocalDatabaseTestHelpers
+                        .fetchAndWait(publisher: provider.fetchOrganizationWith(login: orgLogin))
+                        .0
+                    let organization = LocalDatabaseTestHelpers
+                        .fetchAndWait(publisher: provider.fetchOrganizationWith(login: orgLogin))
+                        .0
+                    expect(organization).notTo(beNil())
                 }
             }
 
             context("when fetching repositories") {
-               it("should retuen live data") {
-                    var repositories: Repositories?
-                    waitUntil(timeout: .seconds(5)) { done in
-                        provider
-                            .fetchRepositoriesForOrganizationWith(login: "algorandfoundation")
-                            .sink { result in
-                                switch result {
-                                case .finished: break
-                                case .failure(let error): fatalError(error.localizedDescription)
-                                }
-                            } receiveValue: {
-                                repositories = $0
-                                done()
-                            }
-                            .store(in: &cancelBag)
-                    }
+                it("should return live data from network request") {
+                    let repositories = LocalDatabaseTestHelpers
+                        .fetchAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
+                        .0
                     expect(repositories).notTo(beNil())
+                    expect(repositories?.count).to(beGreaterThan(0))
+                }
+                it("should return cached data from network request") {
+                    _ = LocalDatabaseTestHelpers
+                        .fetchAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
+                        .0
+                    let repositories = LocalDatabaseTestHelpers
+                        .fetchAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
+                        .0
+                    expect(repositories).notTo(beNil())
+                    expect(repositories?.count).to(beGreaterThan(0))
+                }
+
+
+
+                context("fetching live data") {
+                    beforeEach {
+                        provider.purgeCache()
+                        let repositories = LocalDatabaseTestHelpers
+                            .fetchAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
+                            .0
+                        expect(repositories).notTo(beNil())
+                    }
+                    it("should return cached data") {
+                        let repositories = LocalDatabaseTestHelpers
+                            .fetchAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
+                            .0
+                        expect(repositories).notTo(beNil())
+                    }
                 }
             }
         }
