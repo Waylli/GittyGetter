@@ -128,7 +128,7 @@ class LocalDatabaseStoringSpec: QuickSpec {
                             .store(in: &cancelBag)
                     }
                     expect(isSaved).to(beTrue())
-                    let updated = Repository(id: repo.id,
+                    let updated = Repository(identifier: repo.id,
                                              name: repo.name,
                                              createdAt: repo.createdAt,
                                              updatedAt: Date() + 1,
@@ -139,7 +139,7 @@ class LocalDatabaseStoringSpec: QuickSpec {
                                              watchers: 211232,
                                              issues: 1,
                                              avatarURL: nil,
-                                             organization: "no org",
+                                             organizationName: "no org",
                                              isFavourite: true)
                     var isUpdated = false
                     waitUntil(timeout: .seconds(2)) { done in

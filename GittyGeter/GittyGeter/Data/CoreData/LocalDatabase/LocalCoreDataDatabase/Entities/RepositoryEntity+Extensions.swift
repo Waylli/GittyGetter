@@ -24,21 +24,21 @@ extension RepositoryEntity {
     func toRepository() throws -> Repository {
         guard let identifier = self.identifier,
               let name = name,
-                let organization = self.organization?.name else {
+              let organization = self.organization?.name else {
             throw CustomError.dataMappingFailed
         }
-        return Repository(id: identifier,
-                   name: name,
-                   createdAt: self.createdAt,
-                   updatedAt: self.updatedAt,
-                   description: self.repositoryDescription,
-                   language: self.language,
-                   stargazersCount: Int(stargazersCount),
-                   forksCount: Int(forksCount),
-                   watchers: Int(watchersCount),
-                   issues: Int(self.issuesCount),
-                   avatarURL: avatarURL,
-                   organization: organization,
+        return Repository(identifier: identifier,
+                          name: name,
+                          createdAt: self.createdAt,
+                          updatedAt: self.updatedAt,
+                          description: self.repositoryDescription,
+                          language: self.language,
+                          stargazersCount: Int(stargazersCount),
+                          forksCount: Int(forksCount),
+                          watchers: Int(watchersCount),
+                          issues: Int(self.issuesCount),
+                          avatarURL: avatarURL,
+                          organizationName: organization,
                           isFavourite: self.isFavourite)
     }
 

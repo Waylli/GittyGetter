@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Organization: Identifiable, Hashable {
+struct Organization: Identifiable, Hashable, Codable {
+
     let identifier: String
     let createdAt: Date?
     let updatedAt: Date?
@@ -17,12 +18,56 @@ struct Organization: Identifiable, Hashable {
     let email: String?
     let followers: Int
     let avatarURL: String?
+
+    enum CodingKeys: String, CodingKey {
+        case identifier = "id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case name = "login"
+        case description
+        case websiteUrl = "websiteUrl"
+        case email
+        case followers = "followers"
+        case avatarURL = "avatar_url"
+    }
+
+    init(identifier: String,
+         createdAt: Date?,
+         updatedAt: Date?,
+         name: String,
+         description: String?,
+         websiteUrl: String?,
+         email: String?,
+         followers: Int,
+         avatarURL: String?) {
+        self.identifier = identifier
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+        self.name = name
+        self.description = description
+        self.websiteUrl = websiteUrl
+        self.email = email
+        self.followers = followers
+        self.avatarURL = avatarURL
+    }
+
+    init(from decoder: Decoder) throws {
+           let container = try decoder.container(keyedBy: CodingKeys.self)
+           let idInt = try container.decode(Int.self, forKey: .identifier)
+           identifier = String(idInt)
+           createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
+           updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
+           name = try container.decode(String.self, forKey: .name)
+           description = try container.decodeIfPresent(String.self, forKey: .description)
+           websiteUrl = try container.decodeIfPresent(String.self, forKey: .websiteUrl)
+           email = try container.decodeIfPresent(String.self, forKey: .email)
+           followers = try container.decodeIfPresent(Int.self, forKey: .followers) ?? 0
+           avatarURL = try container.decodeIfPresent(String.self, forKey: .avatarURL)
+       }
 }
 
 extension Organization {
-
     var id: String {identifier}
-
 }
 
 #if DEBUG

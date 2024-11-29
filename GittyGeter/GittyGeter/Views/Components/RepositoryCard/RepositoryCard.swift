@@ -54,7 +54,7 @@ struct RepositoryCard: View {
                     }
                 }
             }
-            Text(model.input.repository.organization)
+            Text(model.input.repository.organizationName)
                 .font(.title3)
                 .italic()
         }

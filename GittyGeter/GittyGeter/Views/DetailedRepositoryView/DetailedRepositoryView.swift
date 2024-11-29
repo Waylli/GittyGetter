@@ -93,7 +93,7 @@ struct DetailedRepositoryView: View {
         HStack {
             Image(systemName: "building.2")
                 .font(.headline)
-            Text("by: \(model.input.repository.organization)")
+            Text("by: \(model.input.repository.organizationName)")
                 .font(.headline)
         }
     }
