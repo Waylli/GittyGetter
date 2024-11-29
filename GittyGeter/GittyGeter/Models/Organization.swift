@@ -19,6 +19,9 @@ struct Organization: Identifiable, Hashable, Codable {
     let followers: Int
     let avatarURL: String?
 
+    var login: String {identifier}
+    var canBeRemoved: Bool { !AppDataManager.hardcodedOrganizationLogins.contains(identifier) }
+
     enum CodingKeys: String, CodingKey {
         case identifier = "id"
         case createdAt = "created_at"
@@ -74,11 +77,11 @@ extension Organization {
 extension Organization {
 
     static
-    func mock() -> Organization {
+    func mock(name: String = String.random()) -> Organization {
         Organization(identifier: String.random(),
                      createdAt: Date() - 1000000,
                      updatedAt: Date() - 100,
-                     name: String.random(),
+                     name: name,
                      description: "some description which need to be a bit longer",
                      websiteUrl: "https://algorand.co/",
                      email: "some@some.com",

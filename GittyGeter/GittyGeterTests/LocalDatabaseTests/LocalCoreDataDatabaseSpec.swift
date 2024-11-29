@@ -20,7 +20,7 @@ class LocalCoreDataDatabaseSpec: QuickSpec {
                 cancelBag = CancelBag()
             }
             afterEach {
-                try! localDatabase.forceDeleteAllData()
+                LocalDatabaseTestHelpers.deleteAllData(in: localDatabase, cancelBag: &cancelBag)
                 cancelBag = nil
             }
             it("initializes NSPersistentContainer successfully") {

@@ -17,7 +17,7 @@ extension OrganizationEntity {
         fetchRequest.predicate = NSPredicate(format: "identifier == %@", organization.identifier)
         fetchRequest.fetchLimit = 1
         let future = Future<OrganizationEntity, CustomError> { promise in
-            context.perform {
+            context.performAndWait {
                 do {
                     let results = try context.fetch(fetchRequest)
                     let entity: OrganizationEntity

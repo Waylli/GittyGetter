@@ -47,7 +47,7 @@ extension LocalCoreDataDatabase: LocalDatabase {
         return getOrganizationEntity(with: organization.identifier)
             .flatMap { entity -> AnyPublisher<Success, CustomError> in
                 Future<Success, CustomError> { promise in
-                    context.perform {
+                    context.performAndWait {
                         do {
                             context.delete(entity)
                             try context.save()
@@ -116,7 +116,7 @@ extension LocalCoreDataDatabase: LocalDatabase {
     func getOrganizations() -> AnyPublisher<Organizations, CustomError> {
         guard let context = self.backgroundContext else {return Fail(error: CustomError.localDatabaseError).eraseToAnyPublisher()}
         let future = Future<Organizations, CustomError> { promise in
-            context.perform {
+            context.performAndWait {
                 let request = OrganizationEntity.fetchRequest()
                 do {
                     let entities = try context.fetch(request)
@@ -139,7 +139,7 @@ extension LocalCoreDataDatabase: LocalDatabase {
         let request = RepositoryEntity.fetchRequest()
         request.predicate = buildPredicate(for: query, within: organizations)
         let future = Future<Repositories, CustomError> { promise in
-            context.perform {
+            context.performAndWait {
                 do {
                     let results = try context.fetch(request)
                     let repositories = results.map {try? $0.toRepository()}
@@ -159,7 +159,7 @@ extension LocalCoreDataDatabase: LocalDatabase {
     func getFavouriteRepositories() -> AnyPublisher<Repositories, CustomError> {
         guard let context = self.backgroundContext else {return Fail(error: CustomError.localDatabaseError).eraseToAnyPublisher()}
         let future = Future<Repositories, CustomError> { promise in
-            context.perform {
+            context.performAndWait {
                 do {
                     let fetchRequest = RepositoryEntity.fetchRequest()
                     fetchRequest.predicate = NSPredicate(format: "isFavourite == true")
@@ -191,6 +191,29 @@ extension LocalCoreDataDatabase: LocalDatabase {
             return Fail(error: CustomError.from(any: error))
                 .eraseToAnyPublisher()
         }
+    }
+
+    func updateFavoriteStatus(for repository: Repository,
+                              to isFavorite: Bool) -> AnyPublisher<Success, CustomError> {
+        guard let context = backgroundContext else {
+            return Fail(error: CustomError.objectNotFound).eraseToAnyPublisher()
+        }
+        return getRepositoryEntity(with: repository.identifier)
+            .flatMap { entity -> AnyPublisher<Success, CustomError> in
+                Future<Success, CustomError> { promise in
+                    context.performAndWait {
+                        entity.isFavourite = isFavorite
+                        do {
+                            try context.save()
+                            promise(.success(true))
+                        } catch {
+                            promise(.failure(CustomError.from(any: error)))
+                        }
+                    }
+                }
+                .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
     }
 
 }

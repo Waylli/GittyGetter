@@ -76,7 +76,7 @@ struct LocalDatabaseTestHelpers {
         expect(deleted).toEventually(beTrue(), timeout: .seconds(3))
     }
 
-    static func fetchAndWait<T: Decodable>(publisher: AnyPublisher<T, CustomError>,
+    static func performAndWait<T: Decodable>(publisher: AnyPublisher<T, CustomError>,
                                            timeout: Int = 5) -> (T?, CancelBag) {
         var fetchedValue: T?
         var cancelBag = CancelBag()
@@ -96,7 +96,5 @@ struct LocalDatabaseTestHelpers {
         expect(fetchedValue).notTo(beNil())
         return (fetchedValue, cancelBag)
     }
-
-
 
 }

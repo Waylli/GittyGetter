@@ -10,8 +10,9 @@ import Combine
 
 protocol DataManager: Database {
     func refreshContent() -> AnyPublisher<Success, CustomError>
-    func add(this organization: Organization) -> AnyPublisher<Success, CustomError>
+    func addOrganizationWith(_ identifier: String) -> AnyPublisher<Success, CustomError>
     func remove(this organization: Organization) -> AnyPublisher<Success, CustomError>
+    func updateFavoriteStatus(for repository: Repository, to isFavorite: Bool) -> AnyPublisher<Success, CustomError>
 }
 
 #if DEBUG
@@ -22,7 +23,14 @@ class MockDataManager: DataManager {
             .eraseToAnyPublisher()
     }
 
-    func add(this organization: Organization) -> AnyPublisher<Success, CustomError> {
+    func updateFavoriteStatus(for repository: Repository,
+                              to isFavorite: Bool) -> AnyPublisher<Success, CustomError> {
+        Just(true)
+            .setFailureType(to: CustomError.self)
+            .eraseToAnyPublisher()
+    }
+
+    func addOrganizationWith(_ identifier: String) -> AnyPublisher<Success, CustomError> {
         Just(true)
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()

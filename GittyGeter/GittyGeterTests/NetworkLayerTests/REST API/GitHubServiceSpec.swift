@@ -15,7 +15,7 @@ class GitHubServiceSpec: QuickSpec {
 
     override class func spec() {
         var provider: GitHubAPIProvider!
-        let orgLogin = "algorandfoundation"
+        let orgLogin = AppDataManager.hardcodedOrganizationLogins.randomElement() ?? "algorand"
         beforeEach {
             provider = GitHubAPIProvider()
             provider.purgeCache()
@@ -28,16 +28,16 @@ class GitHubServiceSpec: QuickSpec {
             context("when fetching organization") {
                 it("should return live data from network request") {
                     let organization = LocalDatabaseTestHelpers
-                        .fetchAndWait(publisher: provider.fetchOrganizationWith(login: orgLogin))
+                        .performAndWait(publisher: provider.fetchOrganizationWith(login: orgLogin))
                         .0
                     expect(organization).notTo(beNil())
                 }
                 it("should return cached data from network request") {
                     _ = LocalDatabaseTestHelpers
-                        .fetchAndWait(publisher: provider.fetchOrganizationWith(login: orgLogin))
+                        .performAndWait(publisher: provider.fetchOrganizationWith(login: orgLogin))
                         .0
                     let organization = LocalDatabaseTestHelpers
-                        .fetchAndWait(publisher: provider.fetchOrganizationWith(login: orgLogin))
+                        .performAndWait(publisher: provider.fetchOrganizationWith(login: orgLogin))
                         .0
                     expect(organization).notTo(beNil())
                 }
@@ -46,17 +46,17 @@ class GitHubServiceSpec: QuickSpec {
             context("when fetching repositories") {
                 it("should return live data from network request") {
                     let repositories = LocalDatabaseTestHelpers
-                        .fetchAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
+                        .performAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
                         .0
                     expect(repositories).notTo(beNil())
                     expect(repositories?.count).to(beGreaterThan(0))
                 }
                 it("should return cached data from network request") {
                     _ = LocalDatabaseTestHelpers
-                        .fetchAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
+                        .performAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
                         .0
                     let repositories = LocalDatabaseTestHelpers
-                        .fetchAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
+                        .performAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
                         .0
                     expect(repositories).notTo(beNil())
                     expect(repositories?.count).to(beGreaterThan(0))
@@ -68,13 +68,13 @@ class GitHubServiceSpec: QuickSpec {
                     beforeEach {
                         provider.purgeCache()
                         let repositories = LocalDatabaseTestHelpers
-                            .fetchAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
+                            .performAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
                             .0
                         expect(repositories).notTo(beNil())
                     }
                     it("should return cached data") {
                         let repositories = LocalDatabaseTestHelpers
-                            .fetchAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
+                            .performAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
                             .0
                         expect(repositories).notTo(beNil())
                     }

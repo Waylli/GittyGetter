@@ -17,6 +17,8 @@ protocol LocalDatabase: Database {
     func delete(organization: Organization) -> AnyPublisher<Success, CustomError>
     func delete(repository: Repository) -> AnyPublisher<Success, CustomError>
 
+    func updateFavoriteStatus(for repository: Repository, to isFavorite: Bool) -> AnyPublisher<Success, CustomError>
+
     func initialize() -> AnyPublisher<Success, CustomError>
     func deleteAllData() -> AnyPublisher<Success, CustomError>
 
@@ -80,6 +82,13 @@ class MockLocalDatabase: LocalDatabase {
     }
 
     func deleteAllData() -> AnyPublisher<Success, CustomError> {
+        Just(true)
+            .setFailureType(to: CustomError.self)
+            .eraseToAnyPublisher()
+    }
+
+    func updateFavoriteStatus(for repository: Repository,
+                              to isFavorite: Bool) -> AnyPublisher<Success, CustomError> {
         Just(true)
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
