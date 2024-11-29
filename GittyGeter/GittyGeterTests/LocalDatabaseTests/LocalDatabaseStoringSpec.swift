@@ -16,13 +16,12 @@ class LocalDatabaseStoringSpec: QuickSpec {
         describe("Storing and Updating Data in LocalDatabase") {
             var organization: Organization!
             var repos: Repositories!
-            var localDatabase: LocalCoreDataDatabase!
+            let localDatabase = LocalCoreDataDatabase()
             var cancelBag: CancelBag!
             beforeEach {
                 cancelBag = CancelBag()
                 organization = Organization.mock()
                 repos = Repository.mocks(count: 100)
-                localDatabase = LocalCoreDataDatabase()
                 localDatabase.initialize().sink { _ in } receiveValue: { _ in }.store(in: &cancelBag)
                 expect(localDatabase.backgroundContext).toEventuallyNot(beNil())
             }
@@ -34,7 +33,6 @@ class LocalDatabaseStoringSpec: QuickSpec {
                 cancelBag = nil
                 organization = nil
                 repos = nil
-                localDatabase = nil
             }
 
             context("storing organizations") {
