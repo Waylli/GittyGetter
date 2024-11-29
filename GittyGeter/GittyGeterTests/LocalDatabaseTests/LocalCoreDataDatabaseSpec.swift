@@ -14,16 +14,14 @@ import Nimble
 class LocalCoreDataDatabaseSpec: QuickSpec {
     override class func spec() {
         describe("LocalCoreDataDatabase") {
-            var localDatabase: LocalCoreDataDatabase!
+            let localDatabase = LocalCoreDataDatabase()
             var cancelBag: CancelBag!
             beforeEach {
-                localDatabase = LocalCoreDataDatabase()
                 cancelBag = CancelBag()
             }
             afterEach {
                 try! localDatabase.forceDeleteAllData()
                 cancelBag = nil
-                localDatabase = nil
             }
             it("initializes NSPersistentContainer successfully") {
                 localDatabase.initialize()

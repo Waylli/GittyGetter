@@ -16,13 +16,12 @@ class LocalDatabaseFetchingSpec: QuickSpec {
         describe("Fetching Data from LocalDatabase") {
             var organization: Organization!
             var repos: Repositories!
-            var localDatabase: LocalCoreDataDatabase!
+            let localDatabase = LocalCoreDataDatabase()
             var cancelBag: CancelBag!
             beforeEach {
                 cancelBag = CancelBag()
                 organization = Organization.mock()
                 repos = Repository.mocks(count: 10)
-                localDatabase = LocalCoreDataDatabase()
                 LocalDatabaseTestHelpers
                     .initialize(this: localDatabase, cancelBag: &cancelBag)
                 LocalDatabaseTestHelpers
@@ -34,20 +33,8 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                 cancelBag = nil
                 organization = nil
                 repos = nil
-                localDatabase = nil
-
             }
 
-//            context("predicates") {
-//                it("cerates all cases") {
-//                    let first = localDatabase.buildPredicate(for: "", within: [])
-//                    let second = localDatabase.buildPredicate(for: "test", within: [])
-//                    let third = localDatabase.buildPredicate(for: "", within: [organization])
-//                    let forth = localDatabase.buildPredicate(for: "test", within: [organization])
-//                    let equals = Set([first,second,third,forth])
-//                    expect(Array(equals).count).to(equal(4))
-//                }
-//            }
             context("fetching organizations") {
                 beforeEach {
                     LocalDatabaseTestHelpers
