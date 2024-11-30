@@ -42,7 +42,11 @@ class CoreDataEntityObserver<T: NSManagedObject>: NSObject, NSFetchedResultsCont
         fetchObjects(for: entityFetchedResultsController)
     }
 
-    private
+}
+
+private
+extension CoreDataEntityObserver {
+
     func fetchObjects(for frc: NSFetchedResultsController<EntityType>) {
         frc.managedObjectContext.performAndWait {
             do {
@@ -54,7 +58,7 @@ class CoreDataEntityObserver<T: NSManagedObject>: NSObject, NSFetchedResultsCont
         }
     }
 
-    private
+    
     func configureFetchedResultsController(with context: NSManagedObjectContext,
                                            predicate: NSPredicate,
                                            sortingOrder: SortingOrder?) -> NSFetchedResultsController<EntityType> {

@@ -39,6 +39,7 @@ struct RepositoryCard: View {
                         .padding([.trailing])
                     }
                 }
+                Spacer()
             }
             Text(model.input.repository.organizationName)
                 .font(.title3)

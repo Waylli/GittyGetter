@@ -19,14 +19,17 @@ struct OrganizationCard: View {
         VStack {
             VStack(alignment: .leading) {
                 HStack(alignment: .top) {
-                    Image(uiImage: UIImage.star)
+                    Image(uiImage: model.thumbnail)
                         .resizable()
                         .frame(width: model.input.configuration.thumbnail.widht,
                                height: model.input.configuration.thumbnail.height)
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Org name")
-                        Text("Org description")
-                        Text("followers count")
+                        Text(model.input.organization.name)
+                            .font(.title)
+                        if let description = model.input.organization.description {
+                            Text(description)
+                                .font(.title3)
+                        }
                     }
                     Spacer()
                 }
