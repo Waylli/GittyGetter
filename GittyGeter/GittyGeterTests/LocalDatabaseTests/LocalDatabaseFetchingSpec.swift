@@ -64,7 +64,7 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                     var localRepos: Repositories?
                     waitUntil { done in
                         localDatabase
-                            .getRepositories(query: query, within: [organization])
+                            .getRepositories(query: query, within: [organization], sortingOrder: .standard)
                             .sink { _ in } receiveValue: { localRepos = $0; done()}
                             .store(in: &cancelBag)
                     }
@@ -75,7 +75,7 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                     var localRepos: Repositories?
                     waitUntil { done in
                         localDatabase
-                            .getRepositories(query: "", within: [])
+                            .getRepositories(query: "", within: [], sortingOrder: .standard)
                             .sink { _ in } receiveValue: { localRepos = $0; done()}
                             .store(in: &cancelBag)
                     }
@@ -86,7 +86,7 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                     var localRepos: Repositories?
                     waitUntil { done in
                         localDatabase
-                            .getRepositories(query: "", within: [organization])
+                            .getRepositories(query: "", within: [organization], sortingOrder: .standard)
                             .sink { _ in } receiveValue: { localRepos = $0; done()}
                             .store(in: &cancelBag)
                     }
@@ -97,7 +97,7 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                     var localRepos: Repositories?
                     waitUntil { done in
                         localDatabase
-                            .getRepositories(query: repos[0].name, within: [])
+                            .getRepositories(query: repos[0].name, within: [], sortingOrder: .standard)
                             .sink { _ in } receiveValue: { localRepos = $0; done()}
                             .store(in: &cancelBag)
                     }
@@ -108,7 +108,7 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                     var localRepos: Repositories?
                     waitUntil { done in
                         localDatabase
-                            .getRepositories(query: "", within: [organization])
+                            .getRepositories(query: "", within: [organization], sortingOrder: .standard)
                             .sink { _ in } receiveValue: { localRepos = $0; done()}
                             .store(in: &cancelBag)
                     }

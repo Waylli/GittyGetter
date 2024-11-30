@@ -16,10 +16,17 @@ struct FavouriteRepositoriesView: View {
     }
 
     var body: some View {
-        VStack {
-            TitleTextComponent(title: "Favourite")
-            RepositoriesListView(with: model.makeRepositoriesListViewModel())
-            Spacer()
+        ZStack {
+            model.input.configuration.colors.tappableClearColor
+            VStack {
+                if model.repositories.count > 0 {
+                    TitleTextComponent(title: "Favourite")
+                    RepositoriesListView(with: model.makeRepositoriesListViewModel())
+                    Spacer()
+                } else {
+                    noRepos
+                }
+            }
         }
         .overlay {
             HStack {
@@ -36,6 +43,16 @@ struct FavouriteRepositoriesView: View {
             }
         }
         .padding()
+    }
+
+    private
+    var noRepos: some View {
+        VStack(spacing: 64) {
+            Text("No favorite repositories")
+                .font(.largeTitle)
+            Text("You can add a repository to favorites from repositories -> detail")
+                .font(.body)
+        }
     }
 }
 
@@ -55,7 +72,7 @@ import Combine
     let modelOutput = FavouriteRepositoriesViewModel
         .Output(userSelectedRepository: PassthroughSubject())
     let model = FavouriteRepositoriesViewModel(with: modelInput,
-                                              and: modelOutput)
+                                               and: modelOutput)
     FavouriteRepositoriesView(with: model)
 }
 #endif

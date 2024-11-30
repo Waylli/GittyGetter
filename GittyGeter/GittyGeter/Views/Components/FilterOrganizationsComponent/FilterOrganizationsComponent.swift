@@ -19,15 +19,15 @@ struct FilterOrganizationsComponent: View {
     var body: some View {
         VStack(spacing: 16) {
             if !model.input.currentFilteredOrganizations.isEmpty {
-                    VStack(spacing: 7) {
-                        HStack {
-                            filteredOrganizationsView
-                            Spacer()
-                        }
-                        if model.input.currentFilteredOrganizations.count > 1 {
-                            clearLabel
-                        }
+                VStack(spacing: 7) {
+                    HStack {
+                        filteredOrganizationsView
+                        Spacer()
                     }
+                    if model.input.currentFilteredOrganizations.count > 1 {
+                        clearLabel
+                    }
+                }
                 Divider()
             }
             if !model.input.availableOrganizations.isEmpty {
@@ -75,26 +75,22 @@ struct FilterOrganizationsComponent: View {
     private
     var availableOrganizations: some View {
         ScrollView(.horizontal) {
-            VStack {
-                ScrollView(.horizontal) {
-                    HStack {
-                        ForEach(model.input.availableOrganizations,
-                                id: \.self) { organization in
-                            Text(organization.name)
-                                .italic()
-                                .font(.headline)
-                                .foregroundStyle(.primary)
-                                .padding([.top, .bottom], 8)
-                                .padding([.leading, .trailing], 12)
-                                .background {
-                                    RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
-                                        .foregroundStyle(Color.primary.opacity(0.25))
-                                }
-                                .onTapGesture {
-                                    model.applyFilterFrom(this: organization)
-                                }
+            HStack {
+                ForEach(model.input.availableOrganizations,
+                        id: \.self) { organization in
+                    Text(organization.name)
+                        .italic()
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                        .padding([.top, .bottom], 8)
+                        .padding([.leading, .trailing], 12)
+                        .background {
+                            RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
+                                .foregroundStyle(Color.primary.opacity(0.25))
                         }
-                    }
+                        .onTapGesture {
+                            model.applyFilterFrom(this: organization)
+                        }
                 }
             }
         }

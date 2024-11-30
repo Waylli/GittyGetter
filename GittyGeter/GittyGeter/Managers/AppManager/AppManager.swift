@@ -23,17 +23,18 @@ class AppManager {
 private
 extension AppManager {
     func start() {
-        model.input.dataManager.refreshContent()
+        model.input.dataManager
+            .refreshContent()
             .receive(on: RunLoop.main)
-            .sink { _ in
-
-            } receiveValue: { [weak self] _ in
+            .sink { [weak self] _ in
+                // we do not care about error
                 guard let this = self else {return}
                 let modelOutput = GittyTabViewModel.Output(userSelectedRepository: this.model.actions.userSelectedRepository,
                                                            userSelectedOrganization: this.model.actions.userSelectedOrganization)
                 let viewModel = this.model.viewModelFactor.makeGittyTabViewModel(with: modelOutput)
                 let entryView = GittyTabView(with: viewModel)
                 this.model.navigator.set(views: [entryView.toViewController()], animated: true)
+            } receiveValue: { _ in
             }
             .store(in: &cancelBag)
     }

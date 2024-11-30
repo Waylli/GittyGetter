@@ -31,10 +31,13 @@ struct RepositoriesView: View {
                             isFocused: $isSearching,
                             configuration: model.input.configuration)
             FilterOrganizationsComponent(with: model.makeFilterOrganizationsComponentModel())
+                .background {
+                    model.input.configuration.colors.tappableClearColor
+                }
             RepositoriesListView(with: model.makeRepositoriesListViewModel())
             Spacer()
         }
-        .padding()
+        .padding([.top, .leading, .trailing])
         .animation(.easeIn(duration: 0.1), value: model.currentFilteredOrganizations)
         .background {
             model.input.configuration

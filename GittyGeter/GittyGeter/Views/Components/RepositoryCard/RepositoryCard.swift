@@ -66,7 +66,7 @@ struct RepositoryCard: View {
     private
     var nameDescription: some View {
         HStack(alignment: .top) {
-            VStack {
+            VStack(alignment: .leading) {
                 Text(model.input.repository.name)
                     .font(.title3)
                     .fontWeight(.semibold)
