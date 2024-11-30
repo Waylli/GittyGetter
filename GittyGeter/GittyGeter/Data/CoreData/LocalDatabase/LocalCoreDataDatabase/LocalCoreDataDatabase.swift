@@ -34,6 +34,11 @@ class LocalCoreDataDatabase {
         self.dataModelName = dataModelName
     }
 
+    deinit {
+        favoriteRepositoriesCancelable?.cancel()
+        favoriteRepositoriesCancelable = nil
+    }
+
     private
     func makeFavoriteRepositoriesObserver(with context: NSManagedObjectContext) {
         let observer = FavoriteRepositoriesObserver(context: context)

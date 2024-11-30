@@ -129,7 +129,7 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                     var localRepos: Repositories?
                     waitUntil { done in
                         localDatabase
-                            .getFavouriteRepositories()
+                            .getFavouriteRepositories(with: .standard)
                             .sink { _ in } receiveValue: { localRepos = $0; done()}
                             .store(in: &cancelBag)
                     }

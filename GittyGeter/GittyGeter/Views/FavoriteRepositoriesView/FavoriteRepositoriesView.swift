@@ -17,9 +17,30 @@ struct FavouriteRepositoriesView: View {
 
     var body: some View {
         VStack {
-            TitleTextComponent(title: "Favourite Repositories")
+            TitleTextComponent(title: "Favourite")
             RepositoriesListView(with: model.makeRepositoriesListViewModel())
             Spacer()
+        }
+        .overlay {
+            HStack {
+                Spacer()
+                VStack {
+                    Button {
+                        model.sortingOrder = model.sortingOrder.next()
+                    } label: {
+                        Text(model.sortingOrder.readable())
+                            .foregroundStyle(Color.primary)
+                            .font(.callout)
+                            .padding(6)
+                            .background {
+                                RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
+
+                            }
+                    }
+                    Spacer()
+
+                }
+            }
         }
         .padding()
     }

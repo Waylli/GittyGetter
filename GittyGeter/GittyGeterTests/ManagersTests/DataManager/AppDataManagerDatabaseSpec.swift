@@ -77,7 +77,7 @@ class AppDataManagerDatabaseSpec: QuickSpec {
                 }
                 it("should return a list of favourite repositories successfully") {
                     let repos = LocalDatabaseTestHelpers
-                        .performAndWait(publisher: dataManager.getFavouriteRepositories()).0
+                        .performAndWait(publisher: dataManager.getFavouriteRepositories(with: .standard)).0
                     expect(repos).notTo(beNil())
                     expect(repos?.count).to(beGreaterThan(0))
                 }

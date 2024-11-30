@@ -11,6 +11,8 @@ import Combine
 class FavouriteRepositoriesViewModel: ObservableObject {
 
     @Published private(set) var repositories = Repositories()
+    @Published var sortingOrder: SortingOrder
+    private var fetch: AnyCancellable?
     private var cancelBag = CancelBag()
 
     let input: Input
@@ -19,7 +21,13 @@ class FavouriteRepositoriesViewModel: ObservableObject {
     init(with input: Input, and output: Output) {
         self.input = input
         self.output = output
+        sortingOrder = input.configuration.settings.sorting.forFavorites
         bind()
+    }
+
+    deinit {
+        fetch?.cancel()
+        fetch = nil
     }
 }
 
@@ -55,13 +63,21 @@ private
 extension FavouriteRepositoriesViewModel {
 
     func bind() {
-        input.getFavouriteRepositories(.standard)
+        $sortingOrder
+            .sink { [weak self] sortingOrder in
+                self?.fetchFavorites(with: sortingOrder)
+            }
+            .store(in: &cancelBag)
+    }
+
+    func fetchFavorites(with order: SortingOrder) {
+        fetch?.cancel()
+        fetch = input.getFavouriteRepositories(order)
             .sink { _ in
                 print("handle error if any")
             } receiveValue: { [weak self] in
                 self?.repositories = $0
             }
-            .store(in: &cancelBag)
     }
 
 }

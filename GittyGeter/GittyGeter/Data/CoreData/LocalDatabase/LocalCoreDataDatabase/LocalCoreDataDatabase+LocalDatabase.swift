@@ -157,7 +157,8 @@ extension LocalCoreDataDatabase: LocalDatabase {
     }
 
     func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
-        $favoriteRepositories
+        self.changeSortingOrderOfFavorites(to: sortingOrder)
+        return $favoriteRepositories
             .map {$0.map {try? $0.toRepository()}.compactMap{$0}}
             .receive(on: RunLoop.main)
             .setFailureType(to: CustomError.self)
