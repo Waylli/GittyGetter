@@ -11,6 +11,7 @@
 		D2CBC50C2CFA4EBA002BFF53 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D2CBC50B2CFA4EBA002BFF53 /* Kingfisher */; };
 		D2E0988A2CF7263900476A6F /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = D2E098892CF7263900476A6F /* Quick */; };
 		D2E0988D2CF7265100476A6F /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = D2E0988C2CF7265100476A6F /* Nimble */; };
+		D2EB85312CFBB46800EB0611 /* KIF in Frameworks */ = {isa = PBXBuildFile; productRef = D2EB85302CFBB46800EB0611 /* KIF */; };
 		D2F96AED2CF9DC6200B82F66 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = D2F96AEC2CF9DC6200B82F66 /* CombineMoya */; };
 		D2F96AEF2CF9DC6200B82F66 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = D2F96AEE2CF9DC6200B82F66 /* Moya */; };
 /* End PBXBuildFile section */
@@ -86,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2EB85312CFBB46800EB0611 /* KIF in Frameworks */,
 				D2E0988A2CF7263900476A6F /* Quick in Frameworks */,
 				D2E0988D2CF7265100476A6F /* Nimble in Frameworks */,
 			);
@@ -171,6 +173,7 @@
 			packageProductDependencies = (
 				D2E098892CF7263900476A6F /* Quick */,
 				D2E0988C2CF7265100476A6F /* Nimble */,
+				D2EB85302CFBB46800EB0611 /* KIF */,
 			);
 			productName = GittyGeterTests;
 			productReference = D2706FE92CF5EA9E00C909D2 /* GittyGeterTests.xctest */;
@@ -237,6 +240,7 @@
 				D2E0988B2CF7265100476A6F /* XCRemoteSwiftPackageReference "Nimble" */,
 				D2F96AEB2CF9DC6200B82F66 /* XCRemoteSwiftPackageReference "Moya" */,
 				D2CBC50A2CFA4EBA002BFF53 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				D2EB852F2CFBB46800EB0611 /* XCRemoteSwiftPackageReference "KIF" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D2706FD12CF5EA9D00C909D2 /* Products */;
@@ -641,6 +645,14 @@
 				minimumVersion = 13.6.0;
 			};
 		};
+		D2EB852F2CFBB46800EB0611 /* XCRemoteSwiftPackageReference "KIF" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kif-framework/KIF";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.3.1;
+			};
+		};
 		D2F96AEB2CF9DC6200B82F66 /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya.git";
@@ -671,6 +683,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D2E0988B2CF7265100476A6F /* XCRemoteSwiftPackageReference "Nimble" */;
 			productName = Nimble;
+		};
+		D2EB85302CFBB46800EB0611 /* KIF */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D2EB852F2CFBB46800EB0611 /* XCRemoteSwiftPackageReference "KIF" */;
+			productName = KIF;
 		};
 		D2F96AEC2CF9DC6200B82F66 /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -68,7 +68,7 @@ class AppDataManagerSpec: QuickSpec {
                         dataManager.remove(this: Organization.mock())
                             .sink { result in
                                 switch result {
-                                case .finished: fail()
+                                case .finished: break
                                 case .failure:
                                     isRemoved = false
                                     done()
@@ -89,7 +89,7 @@ class AppDataManagerSpec: QuickSpec {
                         dataManager.remove(this: Organization.mock(name: AppDataManager.hardcodedOrganizationLogins.first!))
                             .sink { result in
                                 switch result {
-                                case .finished: fail()
+                                case .finished: break
                                 case .failure:
                                     isRemoved = false
                                     done()

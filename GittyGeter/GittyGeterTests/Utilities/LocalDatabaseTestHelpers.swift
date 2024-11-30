@@ -13,11 +13,11 @@ import Combine
 
 struct LocalDatabaseTestHelpers {
 
-    static
-    func initialize(this database: LocalCoreDataDatabase, cancelBag: inout CancelBag) {
-        database.initialize().sink { _ in } receiveValue: { _ in }.store(in: &cancelBag)
-        expect(database.backgroundContext).toEventuallyNot(beNil())
-    }
+//    static
+//    func initialize(this database: LocalCoreDataDatabase, cancelBag: inout CancelBag) {
+//        database.initialize().sink { _ in } receiveValue: { _ in }.store(in: &cancelBag)
+//        expect(database.backgroundContext).toEventuallyNot(beNil())
+//    }
 
     static
     func storeOrUpdate(repositories: Repositories,
