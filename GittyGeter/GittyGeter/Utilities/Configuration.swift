@@ -20,9 +20,12 @@ struct Configuration {
         let sorting: Sorting
         struct Sorting {
             let forFavorites: SortingOrder
+            let forOrganizationList: SortingOrder
 
-            init(forFavorites: SortingOrder) {
+            init(forFavorites: SortingOrder,
+                 forOrganizationList: SortingOrder) {
                 self.forFavorites = forFavorites
+                self.forOrganizationList = forOrganizationList
             }
         }
     }
@@ -49,7 +52,8 @@ struct Configuration {
 
 extension Configuration {
     static func standard() -> Configuration {
-        let settings = Configuration.Settings(sorting: .init(forFavorites: .standard))
+        let settings = Configuration.Settings(sorting: .init(forFavorites: .standard,
+                                                             forOrganizationList: .standard))
         return Configuration(thumbnail: Thumbnail(widht: 65, height: 65),
                              view: View(cornerRadius: 15),
                              buttons: Buttons(smallSize: CGSize(width: 44, height: 44),

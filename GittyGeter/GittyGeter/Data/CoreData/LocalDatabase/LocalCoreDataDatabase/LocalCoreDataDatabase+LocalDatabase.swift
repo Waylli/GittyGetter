@@ -165,7 +165,7 @@ extension LocalCoreDataDatabase: LocalDatabase {
             .eraseToAnyPublisher()
     }
 
-    func getRepositories(for organization: Organization) -> AnyPublisher<Repositories, CustomError> {
+    func getRepositories(for organization: Organization, sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
         getRepositories(query: "", within: [organization])
     }
 

@@ -89,7 +89,8 @@ class AppDataManagerDatabaseSpec: QuickSpec {
                 }
                 it("should return a list of repositories for the organization successfully") {
                     let repos = LocalDatabaseTestHelpers
-                        .performAndWait(publisher: dataManager.getRepositories(for: service.organization)).0
+                        .performAndWait(publisher: dataManager.getRepositories(for: service.organization,
+                                                                               sortingOrder: SortingOrder.standard)).0
                     expect(repos).notTo(beNil())
                     expect(repos?.count).to(beGreaterThan(0))
                 }

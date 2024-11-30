@@ -124,7 +124,7 @@ import Combine
         .Input(organization: Organization.mock(),
                fetcher: MockFetcher(),
                configuration: Configuration.standard(),
-               getRepositories: database.getRepositories(for:),
+               getRepositories: database.getRepositories(for:sortingOrder:),
                updateFavoriteStatus: database.updateFavoriteStatus(of:to:))
     let modelOutput = DetailedOrganizationViewModel
         .Output(userSelectedRepository: PassthroughSubject(), backButtonTapped: PassthroughSubject())

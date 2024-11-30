@@ -11,11 +11,8 @@ import Combine
 class DetailedOrganizationViewModel: ObservableObject {
 
     @Published var orgThumbnail: Photo?
-    @Published var repositories = Repositories() {
-        didSet {
-            print("----- \(repositories.count)")
-        }
-    }
+    @Published var repositories = Repositories()
+    @Published var sortingOrder: SortingOrder
     private var cancelBag = CancelBag()
 
     let input: Input
@@ -25,6 +22,7 @@ class DetailedOrganizationViewModel: ObservableObject {
          and output: Output) {
         self.input = input
         self.output = output
+        sortingOrder = input.configuration.settings.sorting.forFavorites
         bind()
     }
 }
@@ -35,7 +33,7 @@ extension DetailedOrganizationViewModel {
         let organization: Organization
         let fetcher: Fetcher
         let configuration: Configuration
-        let getRepositories: (Organization) -> AnyPublisher<Repositories, CustomError>
+        let getRepositories: (Organization, SortingOrder) -> AnyPublisher<Repositories, CustomError>
         let updateFavoriteStatus: (Repository, Bool) -> AnyPublisher<Success, CustomError>
     }
 
@@ -84,7 +82,7 @@ extension DetailedOrganizationViewModel {
     }
 
     func getRepositories() {
-        input.getRepositories(input.organization)
+        input.getRepositories(input.organization, sortingOrder)
             .sink { [weak self] result in
                 switch result {
                 case .finished: break

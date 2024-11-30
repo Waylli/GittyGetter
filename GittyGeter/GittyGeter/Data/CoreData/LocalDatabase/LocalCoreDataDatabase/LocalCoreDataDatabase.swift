@@ -17,7 +17,7 @@ class LocalCoreDataDatabase {
 
     @Published private(set) var favoriteRepositories = [RepositoryEntity]()
     private
-    var favoriteRepositoriesObserver: FavoriteRepositoriesObserver?
+    var favoriteRepositoriesObserver: CoreDataEntityObserver<RepositoryEntity>?
     var persistentContainer: NSPersistentContainer?
     var backgroundContext: NSManagedObjectContext? {
         didSet {
@@ -41,11 +41,12 @@ class LocalCoreDataDatabase {
 
     private
     func makeFavoriteRepositoriesObserver(with context: NSManagedObjectContext) {
-        let observer = FavoriteRepositoriesObserver(context: context)
-        favoriteRepositoriesCancelable = observer.$favoriteRepos
-            .sink { [weak self] in
+        let predicate = NSPredicate(format: "isFavourite == true")
+        let observer: CoreDataEntityObserver<RepositoryEntity> = CoreDataEntityObserver(context: context, predicate: predicate, sortingOrder: .standard)
+        favoriteRepositoriesCancelable = observer.$observedEntities
+            .sink(receiveValue: { [weak self] in
                 self?.favoriteRepositories = $0
-            }
+            })
         favoriteRepositoriesObserver = observer
     }
 
@@ -54,7 +55,8 @@ class LocalCoreDataDatabase {
             assertionFailure()
             return
         }
-        favoriteRepositoriesObserver.change(order: sortOrder)
+        let predicate = NSPredicate(format: "isFavourite == true")
+        favoriteRepositoriesObserver.change(predicate: predicate, sortingOrder: sortOrder)
     }
 
 

@@ -147,7 +147,7 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                 }
                 it("should fetch repositories for a given organization successfully") {
                     var localRepos: Repositories?
-                    localDatabase.getRepositories(for: organization)
+                    localDatabase.getRepositories(for: organization, sortingOrder: .standard)
                         .sink { _ in } receiveValue: { localRepos = $0 }.store(in: &cancelBag)
                     expect(localRepos).toEventuallyNot(beNil())
                     expect(localRepos?.count).to(equal(repos.count))
