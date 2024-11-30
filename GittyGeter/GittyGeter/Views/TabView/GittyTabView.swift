@@ -49,7 +49,7 @@ import Combine
     let mockLocalDatabase = MockLocalDatabase()
     let modelInput = GittyTabViewModel
         .Input(getAllOrganizations: database.getOrganizations,
-               getRepositories: database.getRepositories(query:within:),
+               getRepositories: database.getRepositories(query:within:sortingOrder:),
                getFavouriteRepositories: database.getFavouriteRepositories(with:),
                updateFavoriteStatus: mockLocalDatabase.updateFavoriteStatus(of:to:),
                fetcher: MockFetcher(),

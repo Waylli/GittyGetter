@@ -25,17 +25,10 @@ struct FavouriteRepositoriesView: View {
             HStack {
                 Spacer()
                 VStack {
-                    Button {
+                    SortingOrderButtonComponent(sortingOrder: model.sortingOrder,
+                                                configuration: model.input.configuration)
+                    .onTapGesture {
                         model.sortingOrder = model.sortingOrder.next()
-                    } label: {
-                        Text(model.sortingOrder.readable())
-                            .foregroundStyle(Color.primary)
-                            .font(.callout)
-                            .padding(6)
-                            .background {
-                                RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
-
-                            }
                     }
                     Spacer()
 

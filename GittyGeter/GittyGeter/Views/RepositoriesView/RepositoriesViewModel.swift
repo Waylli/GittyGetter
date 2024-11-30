@@ -14,6 +14,7 @@ class RepositoriesViewModel: ObservableObject {
     @Published var queriedRepositories = Repositories()
     @Published var currentFilteredOrganizations = Organizations()
     @Published private var allOrganizations = Organizations()
+    @Published var sortingOrder: SortingOrder
     var availableOrganizations: Organizations {allOrganizations.filter {!currentFilteredOrganizations.contains($0)}}
     private var cancelBag = CancelBag()
 
@@ -27,6 +28,7 @@ class RepositoriesViewModel: ObservableObject {
         self.input = input
         self.output = output
         self.actions = actions
+        sortingOrder = input.configuration.settings.sorting.forFavorites
         bind()
         bindSearch()
         bindActions()
@@ -39,7 +41,7 @@ extension RepositoriesViewModel {
     struct Input {
         let getAllOrganizations: () -> AnyPublisher<Organizations, CustomError>
         /// params: query string, filtered organizations if array is empty repos from all orgs will be shown
-        let getRepositories: (String, Organizations) -> AnyPublisher<Repositories, CustomError>
+        let getRepositories: (String, Organizations, SortingOrder) -> AnyPublisher<Repositories, CustomError>
         let updateFavoriteStatus: (Repository, Bool) -> AnyPublisher<Success, CustomError>
         let fetcher: Fetcher
         let configuration: Configuration
@@ -95,7 +97,7 @@ extension RepositoriesViewModel {
     func bind() {
         input.getAllOrganizations()
             .sink(receiveCompletion: { _ in
-                print("handle erro if any")
+                print("handle error if any")
             }, receiveValue: { [weak self] in
                 self?.allOrganizations = $0
             })
@@ -104,10 +106,10 @@ extension RepositoriesViewModel {
 
     func bindSearch() {
         Publishers
-            .CombineLatest($query.throttle(for: 0.2, scheduler: RunLoop.main, latest: true), $currentFilteredOrganizations)
-            .flatMap { [weak self] (query, organizations) -> AnyPublisher<Repositories, Never> in
+            .CombineLatest3($query, $currentFilteredOrganizations, $sortingOrder)
+            .flatMap { [weak self] (query, organizations, sortingOrder) -> AnyPublisher<Repositories, Never> in
                 guard let this = self else {return Empty().eraseToAnyPublisher()}
-                return this.input.getRepositories(query, organizations)
+                return this.input.getRepositories(query, organizations, sortingOrder)
                     .mapError { error -> CustomError in
                         this.handle(this: error)
                         return error

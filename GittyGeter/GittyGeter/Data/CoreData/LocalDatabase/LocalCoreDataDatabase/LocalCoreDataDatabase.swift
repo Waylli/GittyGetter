@@ -42,7 +42,9 @@ class LocalCoreDataDatabase {
     private
     func makeFavoriteRepositoriesObserver(with context: NSManagedObjectContext) {
         let predicate = NSPredicate(format: "isFavourite == true")
-        let observer: CoreDataEntityObserver<RepositoryEntity> = CoreDataEntityObserver(context: context, predicate: predicate, sortingOrder: .standard)
+        let observer: CoreDataEntityObserver<RepositoryEntity> = CoreDataEntityObserver(context: context,
+                                                                                        predicate: predicate,
+                                                                                        sortingOrder: .standard)
         favoriteRepositoriesCancelable = observer.$observedEntities
             .sink(receiveValue: { [weak self] in
                 self?.favoriteRepositories = $0
@@ -51,12 +53,8 @@ class LocalCoreDataDatabase {
     }
 
     func changeSortingOrderOfFavorites(to sortOrder: SortingOrder) {
-        guard let favoriteRepositoriesObserver = favoriteRepositoriesObserver else {
-            assertionFailure()
-            return
-        }
         let predicate = NSPredicate(format: "isFavourite == true")
-        favoriteRepositoriesObserver.change(predicate: predicate, sortingOrder: sortOrder)
+        favoriteRepositoriesObserver?.change(predicate: predicate, sortingOrder: sortOrder)
     }
 
 
@@ -65,57 +63,4 @@ class LocalCoreDataDatabase {
 private
 extension LocalCoreDataDatabase {
 
-    class FavoriteRepositoriesObserver: NSObject, NSFetchedResultsControllerDelegate {
-        private lazy var favoritesFRC: NSFetchedResultsController<RepositoryEntity> = {
-            createFetchResoultsControllerFavoriteRepositories(with: context, order: .standard)
-        }()
-        var context: NSManagedObjectContext
-        @Published var favoriteRepos = [RepositoryEntity]()
-
-        init(context: NSManagedObjectContext) {
-            self.context = context
-            super.init()
-            fetchObjects(for: favoritesFRC)
-        }
-
-        func change(order: SortingOrder) {
-            favoritesFRC = createFetchResoultsControllerFavoriteRepositories(with: context, order: order)
-        }
-
-        func controllerDidChangeContent(_ controller: NSFetchedResultsController<any NSFetchRequestResult>) {
-            guard controller == favoritesFRC else {
-                return
-            }
-            fetchObjects(for: favoritesFRC)
-        }
-
-        private
-        func fetchObjects(for frc: NSFetchedResultsController<RepositoryEntity>) {
-            frc.managedObjectContext.performAndWait {
-                do {
-                    try frc.performFetch()
-                    favoriteRepos = frc.fetchedObjects ?? []
-                } catch {
-                    fatalError()
-                }
-            }
-        }
-
-        private
-        func createFetchResoultsControllerFavoriteRepositories(with context: NSManagedObjectContext,
-                                                               order: SortingOrder) -> NSFetchedResultsController<RepositoryEntity> {
-            let request = RepositoryEntity.fetchRequest()
-            request.predicate = NSPredicate(format: "isFavourite == true")
-            request.sortDescriptors = [order.toNSSortDescriptor()]
-            let frc = NSFetchedResultsController(fetchRequest: request,
-                                                 managedObjectContext: context,
-                                                 sectionNameKeyPath: nil,
-                                                 cacheName: nil)
-            frc.delegate = self
-            fetchObjects(for: frc)
-            assert(frc.delegate === self, "Delegate is not set correctly")
-            return frc
-        }
-
-    }
 }

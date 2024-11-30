@@ -58,7 +58,6 @@ class AppDataManagerDatabaseSpec: QuickSpec {
                         .performAndWait(publisher: dataManager.getRepositories(query: "", within: [])).0
                     expect(repos).notTo(beNil())
                     expect(repos?.count).to(beGreaterThan(0))
-                    print(repos!.map {$0.isFavourite})
                 }
             }
 

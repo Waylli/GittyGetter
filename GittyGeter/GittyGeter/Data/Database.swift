@@ -11,7 +11,7 @@ import Combine
 protocol Database {
     func getOrganizations() -> AnyPublisher<Organizations, CustomError>
     /// if no organization is provided it should fetch all repositories
-    func getRepositories(query: String, within organizations: Organizations) -> AnyPublisher<Repositories, CustomError>
+    func getRepositories(query: String, within organizations: Organizations, sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError>
     func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError>
     func getRepositories(for organization: Organization, sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError>
     func updateFavoriteStatus(of repository: Repository,to newStatus: Bool) -> AnyPublisher<Success, CustomError>
@@ -32,7 +32,9 @@ class MockDatabase: Database {
         self.fetchedRepositories = fetchedRepositories
     }
 
-    func getRepositories(query: String, within: Organizations) -> AnyPublisher<Repositories, CustomError> {
+    func getRepositories(query: String,
+                         within: Organizations,
+                         sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
         guard query.count == 0, within.count == 0 else {
             return Just(fetchedRepositories)
                 .setFailureType(to: CustomError.self)

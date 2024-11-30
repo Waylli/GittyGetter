@@ -50,25 +50,6 @@ extension AppDataManager: DataManager {
             .delete(organization: organization)
     }
 
-    func getOrganizations() -> AnyPublisher<Organizations, CustomError> {
-        model.input.localDatabase.getOrganizations()
-    }
-
-    func getRepositories(query: String, within organizations: Organizations) -> AnyPublisher<Repositories, CustomError> {
-        model.input.localDatabase.getRepositories(query: query, within: organizations)
-    }
-
-    func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
-        model.input.localDatabase.getFavouriteRepositories(with: sortingOrder)
-    }
-
-    func getRepositories(for organization: Organization, sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
-        model.input.localDatabase.getRepositories(for: organization, sortingOrder: sortingOrder)
-    }
-
-    func updateFavoriteStatus(of repository: Repository, to newStatus: Bool) -> AnyPublisher<Success, CustomError> {
-        model.input.localDatabase.updateFavoriteStatus(of: repository, to: newStatus)
-    }
 }
 
 

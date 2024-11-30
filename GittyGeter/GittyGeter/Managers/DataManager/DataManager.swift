@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-protocol DataManager: Database {
+protocol DataManager {
     func refreshContent() -> AnyPublisher<Success, CustomError>
     func addOrganizationWith(_ identifier: String) -> AnyPublisher<Success, CustomError>
     func remove(this organization: Organization) -> AnyPublisher<Success, CustomError>
@@ -47,7 +47,7 @@ class MockDataManager: DataManager {
             .eraseToAnyPublisher()
     }
 
-    func getRepositories(query: String, within: Organizations) -> AnyPublisher<Repositories, CustomError> {
+    func getRepositories(query: String, within: Organizations, sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
         Just(Repository.mocks())
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()

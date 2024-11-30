@@ -134,10 +134,12 @@ extension LocalCoreDataDatabase: LocalDatabase {
     }
 
     func getRepositories(query: String,
-                         within organizations: Organizations) -> AnyPublisher<Repositories, CustomError> {
+                         within organizations: Organizations,
+                         sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
         guard let context = self.backgroundContext else {return Fail(error: CustomError.localDatabaseError).eraseToAnyPublisher()}
         let request = RepositoryEntity.fetchRequest()
         request.predicate = buildPredicate(for: query, within: organizations)
+        request.sortDescriptors = [sortingOrder.toNSSortDescriptor()]
         let future = Future<Repositories, CustomError> { promise in
             context.performAndWait {
                 do {
@@ -166,7 +168,7 @@ extension LocalCoreDataDatabase: LocalDatabase {
     }
 
     func getRepositories(for organization: Organization, sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
-        getRepositories(query: "", within: [organization])
+        getRepositories(query: "", within: [organization], sortingOrder: sortingOrder)
     }
 
     func deleteAllData() -> AnyPublisher<Success, CustomError> {

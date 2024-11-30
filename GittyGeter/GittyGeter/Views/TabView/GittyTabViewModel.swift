@@ -25,7 +25,7 @@ extension GittyTabViewModel {
 
     struct Input {
         let getAllOrganizations: () -> AnyPublisher<Organizations, CustomError>
-        let getRepositories: (String, Organizations) -> AnyPublisher<Repositories, CustomError>
+        let getRepositories: (String, Organizations, SortingOrder) -> AnyPublisher<Repositories, CustomError>
         let getFavouriteRepositories: (SortingOrder) -> AnyPublisher<Repositories, CustomError>
         let updateFavoriteStatus: (Repository, Bool) -> AnyPublisher<Success, CustomError>
         let fetcher: Fetcher

@@ -18,7 +18,15 @@ struct RepositoriesView: View {
 
     var body: some View {
         VStack {
-            TitleTextComponent(title: "Repositories")
+            HStack(alignment: .top) {
+                TitleTextComponent(title: "Repositories")
+                Spacer()
+                SortingOrderButtonComponent(sortingOrder: model.sortingOrder,
+                                            configuration: model.input.configuration)
+                .onTapGesture {
+                    model.sortingOrder = model.sortingOrder.next()
+                }
+            }
             SearchComponent(query: $model.query,
                             isFocused: $isSearching,
                             configuration: model.input.configuration)
@@ -37,6 +45,9 @@ struct RepositoriesView: View {
                     }
                 }
         }
+        .onAppear {
+            model.sortingOrder = model.sortingOrder
+        }
     }
 
 }
@@ -47,7 +58,7 @@ import Combine
     let database = MockDatabase()
     let modelInput = RepositoriesViewModel
         .Input(getAllOrganizations: database.getOrganizations,
-               getRepositories: database.getRepositories(query:within:),
+               getRepositories: database.getRepositories(query:within:sortingOrder:),
                updateFavoriteStatus: database.updateFavoriteStatus(of:to:),
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
