@@ -132,6 +132,7 @@ class RepositoriesViewModelSpec: QuickSpec {
                                                   actions: RepositoriesViewModel.Actions) -> RepositoriesViewModel {
         let modelInput = RepositoriesViewModel.Input(getAllOrganizations: database.getOrganizations,
                                                      getRepositories: database.getRepositories(query:within:),
+                                                     updateFavoriteStatus: database.updateFavoriteStatus(of:to:),
                                                      fetcher: MockFetcher(),
                                                      configuration: Configuration.standard())
         let modelOutput = RepositoriesViewModel
@@ -149,6 +150,7 @@ class RepositoriesViewModelSpec: QuickSpec {
         let modelInput = RepositoriesViewModel
             .Input(getAllOrganizations: database.getOrganizations,
                    getRepositories: errorFunction(query:orgs:),
+                   updateFavoriteStatus: database.updateFavoriteStatus(of:to:),
                    fetcher: MockFetcher(),
                    configuration: Configuration.standard())
         let modelOutput = RepositoriesViewModel

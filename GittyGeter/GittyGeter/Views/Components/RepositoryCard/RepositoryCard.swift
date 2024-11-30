@@ -43,6 +43,10 @@ struct RepositoryCard: View {
             Text(model.input.repository.organizationName)
                 .font(.title3)
                 .italic()
+            if let createdAt = model.input.repository.createdAt {
+                Text(createdAt.readable())
+                    .font(.footnote)
+            }
         }
     }
 
@@ -75,6 +79,7 @@ struct RepositoryCard: View {
                     .multilineTextAlignment(.leading)
                     .lineLimit(4)
             }
+            Spacer()
             Image(systemName: model.isFavorite ? "heart.fill" : "heart")
                 .font(.largeTitle)
                 .foregroundStyle(Color.orange)

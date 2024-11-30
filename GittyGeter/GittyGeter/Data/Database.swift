@@ -12,7 +12,7 @@ protocol Database {
     func getOrganizations() -> AnyPublisher<Organizations, CustomError>
     /// if no organization is provided it should fetch all repositories
     func getRepositories(query: String, within organizations: Organizations) -> AnyPublisher<Repositories, CustomError>
-    func getFavouriteRepositories() -> AnyPublisher<Repositories, CustomError>
+    func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError>
     func getRepositories(for organization: Organization) -> AnyPublisher<Repositories, CustomError>
     func updateFavoriteStatus(of repository: Repository,to newStatus: Bool) -> AnyPublisher<Success, CustomError>
 }
@@ -48,7 +48,7 @@ class MockDatabase: Database {
             .eraseToAnyPublisher()
     }
 
-    func getFavouriteRepositories() -> AnyPublisher<Repositories, CustomError> {
+    func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
         Just(getRepositories)
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()

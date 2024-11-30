@@ -53,7 +53,7 @@ class MockDataManager: DataManager {
             .eraseToAnyPublisher()
     }
 
-    func getFavouriteRepositories() -> AnyPublisher<Repositories, CustomError> {
+    func getFavouriteRepositories(with sortOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
         Just(Repository.mocks())
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()

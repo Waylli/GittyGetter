@@ -50,7 +50,8 @@ import Combine
     let modelInput = GittyTabViewModel
         .Input(getAllOrganizations: database.getOrganizations,
                getRepositories: database.getRepositories(query:within:),
-               getFavouriteRepositories: database.getFavouriteRepositories, updateFavoriteStatus: mockLocalDatabase.updateFavoriteStatus(of:to:),
+               getFavouriteRepositories: database.getFavouriteRepositories(with:),
+               updateFavoriteStatus: mockLocalDatabase.updateFavoriteStatus(of:to:),
                fetcher: MockFetcher(),
                configuration: Configuration.standard())
     let modelOutput = GittyTabViewModel

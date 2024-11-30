@@ -91,21 +91,21 @@ extension LocalCoreDataDatabase: LocalDatabase {
                 .eraseToAnyPublisher()
         }
         return Future<Success, CustomError> { [weak self] promise in
-            guard let self = self, !self.dataModelName.isEmpty else {
+            guard let this = self, !this.dataModelName.isEmpty else {
                 promise(.failure(CustomError.localDatabaseError))
                 return
             }
-            let container = NSPersistentContainer(name: self.dataModelName)
+            let container = NSPersistentContainer(name: this.dataModelName)
             container.loadPersistentStores { (_, error) in
                 if let error = error {
                     promise(.failure(CustomError.from(any: error)))
                     return
                 }
-                self.persistentContainer = container
+                this.persistentContainer = container
                 let context = container.newBackgroundContext()
                 context.automaticallyMergesChangesFromParent = true
                 context.shouldDeleteInaccessibleFaults = true
-                self.backgroundContext = context
+                this.backgroundContext = context
                 promise(.success(true))
             }
         }
@@ -156,25 +156,12 @@ extension LocalCoreDataDatabase: LocalDatabase {
         .eraseToAnyPublisher()
     }
 
-    func getFavouriteRepositories() -> AnyPublisher<Repositories, CustomError> {
-        guard let context = self.backgroundContext else {return Fail(error: CustomError.localDatabaseError).eraseToAnyPublisher()}
-        let future = Future<Repositories, CustomError> { promise in
-            context.performAndWait {
-                do {
-                    let fetchRequest = RepositoryEntity.fetchRequest()
-                    fetchRequest.predicate = NSPredicate(format: "isFavourite == true")
-                    let results = try context.fetch(fetchRequest)
-                    let repositories = results.map {try? $0.toRepository()}.compactMap {$0}
-                    promise(.success(repositories))
-                } catch {
-                    promise(.failure(CustomError.from(any: error)))
-                }
-            }
-        }
-        return Deferred {
-            future
-        }
-        .eraseToAnyPublisher()
+    func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
+        $favoriteRepositories
+            .map {$0.map {try? $0.toRepository()}.compactMap{$0}}
+            .receive(on: RunLoop.main)
+            .setFailureType(to: CustomError.self)
+            .eraseToAnyPublisher()
     }
 
     func getRepositories(for organization: Organization) -> AnyPublisher<Repositories, CustomError> {
@@ -183,7 +170,7 @@ extension LocalCoreDataDatabase: LocalDatabase {
 
     func deleteAllData() -> AnyPublisher<Success, CustomError> {
         do {
-            try forceDeleteAllData()
+            try _DeleteAllData()
             return Just(true)
                 .setFailureType(to: CustomError.self)
                 .eraseToAnyPublisher()
@@ -248,6 +235,27 @@ extension LocalCoreDataDatabase {
                         NSPredicate(format: "repositoryDescription CONTAINS[cd] %@", query)
                     ])
                 ])
+            }
+        }
+    }
+
+    func _DeleteAllData() throws {
+        guard let persistentContainer = persistentContainer else {
+            throw CustomError.localDatabaseError
+        }
+        let context = persistentContainer.viewContext
+        let entities = persistentContainer.managedObjectModel.entities
+
+        for entity in entities {
+            guard let entityName = entity.name else { continue }
+
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+            do {
+                try persistentContainer.persistentStoreCoordinator.execute(deleteRequest, with: context)
+            } catch {
+                throw CustomError.localDatabaseError
             }
         }
     }

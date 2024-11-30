@@ -58,8 +58,8 @@ extension AppDataManager: DataManager {
         model.input.localDatabase.getRepositories(query: query, within: organizations)
     }
 
-    func getFavouriteRepositories() -> AnyPublisher<Repositories, CustomError> {
-        model.input.localDatabase.getFavouriteRepositories()
+    func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
+        model.input.localDatabase.getFavouriteRepositories(with: sortingOrder)
     }
 
     func getRepositories(for organization: Organization) -> AnyPublisher<Repositories, CustomError> {

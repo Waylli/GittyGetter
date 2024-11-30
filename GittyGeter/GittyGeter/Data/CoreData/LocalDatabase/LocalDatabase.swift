@@ -67,7 +67,7 @@ class MockLocalDatabase: LocalDatabase {
             .eraseToAnyPublisher()
     }
 
-    func getFavouriteRepositories() -> AnyPublisher<Repositories, CustomError> {
+    func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
         Just(Repository.mocks())
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()

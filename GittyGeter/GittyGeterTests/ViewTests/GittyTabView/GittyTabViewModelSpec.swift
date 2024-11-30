@@ -46,6 +46,7 @@ class GittyTabViewModelSpec: QuickSpec {
             .Input(getAllOrganizations: database.getOrganizations,
                    getRepositories: database.getRepositories(query:within:),
                    getFavouriteRepositories: database.getFavouriteRepositories,
+                   updateFavoriteStatus: database.updateFavoriteStatus(of:to:),
                    fetcher: MockFetcher(),
                    configuration: Configuration.standard())
         let modelOutput = GittyTabViewModel

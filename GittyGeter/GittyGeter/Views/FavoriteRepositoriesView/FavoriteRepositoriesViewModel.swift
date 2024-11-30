@@ -26,7 +26,7 @@ class FavouriteRepositoriesViewModel: ObservableObject {
 extension FavouriteRepositoriesViewModel {
 
     struct Input {
-        let getFavouriteRepositories: () -> AnyPublisher<Repositories, CustomError>
+        let getFavouriteRepositories: (SortingOrder) -> AnyPublisher<Repositories, CustomError>
         let fetcher: Fetcher
         let configuration: Configuration
         let updateFavoriteStatus: (Repository, Bool) -> AnyPublisher<Success, CustomError>
@@ -55,7 +55,7 @@ private
 extension FavouriteRepositoriesViewModel {
 
     func bind() {
-        input.getFavouriteRepositories()
+        input.getFavouriteRepositories(.standard)
             .sink { _ in
                 print("handle error if any")
             } receiveValue: { [weak self] in
