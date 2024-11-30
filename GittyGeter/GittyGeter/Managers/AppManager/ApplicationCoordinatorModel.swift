@@ -1,5 +1,5 @@
 //
-//  AppManagerModel.swift
+//  ApplicationCoordinatorModel.swift
 //  GittyGeter
 //
 //  Created by Petar Perkovski on 27/11/2024.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-struct AppManagerModel {
+struct ApplicationCoordinatorModel {
 
     let input: Input
     let actions = Actions()
@@ -18,7 +18,7 @@ struct AppManagerModel {
     }
 }
 
-extension AppManagerModel {
+extension ApplicationCoordinatorModel {
 
     struct Input {
         let navigationCoordinator: NavigationCoordinator
@@ -34,7 +34,7 @@ extension AppManagerModel {
 
 }
 
-extension AppManagerModel {
+extension ApplicationCoordinatorModel {
 
     var viewModelFactor: ViewModelFactory {
         input.viewModelFactor

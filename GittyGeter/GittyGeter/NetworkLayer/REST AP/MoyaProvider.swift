@@ -11,7 +11,7 @@ import CombineMoya
 import Combine
 
 
-class GitHubAPIProvider: NetworkService {
+class GitHubAPIProvider: RepositoryNetworkService {
     // Define the Moya provider
     private let memoryCapacity = 10 * 1024 * 1024 // 10 MB
     private let diskCapacity = 50 * 1024 * 1024 // 50 MB

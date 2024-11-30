@@ -15,23 +15,24 @@ import Combine
 class AppDataManagerSpec: QuickSpec {
     override class func spec() {
         var dataManager: AppDataManager!
-        let localDatabase = LocalCoreDataDatabase()
+        let persistentRepositoryStore = LocalCoreDataDatabase()
         let service = MockNetworkService()
         var cancelBag: CancelBag!
         describe("AppDataManager") {
             beforeEach {
                 cancelBag = CancelBag()
-                _ = LocalDatabaseTestHelpers.performAndWait(publisher: localDatabase.initialize())
-                let model = AppDataManagerModel(with: AppDataManagerModel.Input(localDatabase: localDatabase,
+                _ = LocalDatabaseTestHelpers.performAndWait(publisher: persistentRepositoryStore.initialize())
+                let model = AppDataManagerModel(with: AppDataManagerModel.Input(persistentRepositoryStore: persistentRepositoryStore,
+                                                                                repositoryProvider: persistentRepositoryStore,
                                                                                 networkService: service))
                 dataManager = AppDataManager(with: model)
                 LocalDatabaseTestHelpers
-                    .deleteAllData(in: localDatabase, cancelBag: &cancelBag)
+                    .deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
             }
 
             afterEach {
                 LocalDatabaseTestHelpers
-                    .deleteAllData(in: localDatabase, cancelBag: &cancelBag)
+                    .deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
                 dataManager = nil
                 cancelBag = nil
             }

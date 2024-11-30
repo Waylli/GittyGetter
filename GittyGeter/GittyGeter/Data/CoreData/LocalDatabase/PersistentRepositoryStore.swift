@@ -1,5 +1,5 @@
 //
-//  LocalDatabase.swift
+//  PersistentRepositoryStore.swift
 //  GittyGeter
 //
 //  Created by Petar Perkovski on 28/11/2024.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-protocol LocalDatabase: Database {
+protocol PersistentRepositoryStore {
 
     func storeOrUpdate(organizations: Organizations) -> AnyPublisher<Success, CustomError>
     func storeOrUpdate(repositories: Repositories,
@@ -23,7 +23,7 @@ protocol LocalDatabase: Database {
 }
 
 #if DEBUG
-class MockLocalDatabase: LocalDatabase {
+class MockLocalDatabase: PersistentRepositoryStore {
 
     func storeOrUpdate(organizations: Organizations) -> AnyPublisher<Success, CustomError> {
         Just(true)

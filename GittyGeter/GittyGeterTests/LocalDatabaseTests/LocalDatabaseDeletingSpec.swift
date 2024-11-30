@@ -17,18 +17,18 @@ class LocalDatabaseDeletingSpec: QuickSpec {
         describe("Deleting Data in LocalDatabase") {
             var orgs: Organizations!
             var repos: Repositories!
-            let localDatabase: LocalCoreDataDatabase = LocalCoreDataDatabase()
+            let persistentRepositoryStore: LocalCoreDataDatabase = LocalCoreDataDatabase()
             var cancelBag: CancelBag!
             
             beforeEach {
                 cancelBag = CancelBag()
                 orgs = Organization.mocks(count: 10)
                 repos = Repository.mocks(count: 20)
-                LocalDatabaseTestHelpers.initialize(this: localDatabase, cancelBag: &cancelBag)
-                LocalDatabaseTestHelpers.deleteAllData(in: localDatabase, cancelBag: &cancelBag)
+                LocalDatabaseTestHelpers.initialize(this: persistentRepositoryStore, cancelBag: &cancelBag)
+                LocalDatabaseTestHelpers.deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
             }
             afterEach {
-                LocalDatabaseTestHelpers.deleteAllData(in: localDatabase, cancelBag: &cancelBag)
+                LocalDatabaseTestHelpers.deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
                 cancelBag = nil
                 orgs = nil
                 repos = nil
@@ -37,10 +37,10 @@ class LocalDatabaseDeletingSpec: QuickSpec {
             context("deleting organizations") {
                 beforeEach {
                     LocalDatabaseTestHelpers
-                        .store(orgs: orgs, in: localDatabase, cancelBag: &cancelBag)
+                        .store(orgs: orgs, in: persistentRepositoryStore, cancelBag: &cancelBag)
                     var allOrgs = Organizations()
                     waitUntil { done in
-                        localDatabase.getOrganizations()
+                        persistentRepositoryStore.getOrganizations()
                             .sink { _ in
 
                             } receiveValue: {
@@ -53,14 +53,14 @@ class LocalDatabaseDeletingSpec: QuickSpec {
                 }
                 it("should delete a single organization successfully") {
                     LocalDatabaseTestHelpers.delete(org: orgs[0],
-                                                    in: localDatabase,
+                                                    in: persistentRepositoryStore,
                                                     cancelBag: &cancelBag)
                 }
                 it("should handle errors when deleting an organization") {
-                    LocalDatabaseTestHelpers.delete(org: orgs[0], in: localDatabase, cancelBag: &cancelBag)
+                    LocalDatabaseTestHelpers.delete(org: orgs[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
                     var gottenError: CustomError?
                     waitUntil { done in
-                        localDatabase
+                        persistentRepositoryStore
                             .getOrganizationEntity(with: orgs[0].identifier)
                             .sink { result in
                                 switch result {
@@ -77,7 +77,7 @@ class LocalDatabaseDeletingSpec: QuickSpec {
                 it("should not delete a non-existent organization") {
                     var gottenError: CustomError?
                     waitUntil { done in
-                        localDatabase
+                        persistentRepositoryStore
                             .getOrganizationEntity(with: Organization.mock().identifier)
                             .sink { result in
                                 switch result {
@@ -96,27 +96,27 @@ class LocalDatabaseDeletingSpec: QuickSpec {
             context("deleting repositories") {
                 beforeEach {
                     LocalDatabaseTestHelpers
-                        .storeOrUpdate(repositories: [repos[0], repos[1]], organization: orgs[0], in: localDatabase, cancelBag: &cancelBag)
+                        .storeOrUpdate(repositories: [repos[0], repos[1]], organization: orgs[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
                     LocalDatabaseTestHelpers
-                        .storeOrUpdate(repositories: [repos[2], repos[3], repos[4]], organization: orgs[1], in: localDatabase, cancelBag: &cancelBag)
+                        .storeOrUpdate(repositories: [repos[2], repos[3], repos[4]], organization: orgs[1], in: persistentRepositoryStore, cancelBag: &cancelBag)
                 }
                 it("should delete a single repository successfully") {
                     LocalDatabaseTestHelpers
-                        .delete(repo: repos[0], in: localDatabase, cancelBag: &cancelBag)
+                        .delete(repo: repos[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
                 }
                 it("should delete multiple repositories successfully") {
                     LocalDatabaseTestHelpers
-                        .delete(repo: repos[0], in: localDatabase, cancelBag: &cancelBag)
+                        .delete(repo: repos[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
                     LocalDatabaseTestHelpers
-                        .delete(repo: repos[1], in: localDatabase, cancelBag: &cancelBag)
+                        .delete(repo: repos[1], in: persistentRepositoryStore, cancelBag: &cancelBag)
                     LocalDatabaseTestHelpers
-                        .delete(repo: repos[3], in: localDatabase, cancelBag: &cancelBag)
+                        .delete(repo: repos[3], in: persistentRepositoryStore, cancelBag: &cancelBag)
                 }
                 it("should handle errors when deleting a repository") {
                     LocalDatabaseTestHelpers
-                        .delete(repo: repos[0], in: localDatabase, cancelBag: &cancelBag)
+                        .delete(repo: repos[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
                     var gottenError: CustomError?
-                    localDatabase.delete(repository: repos[0])
+                    persistentRepositoryStore.delete(repository: repos[0])
                         .sink { result in
                             switch result {
                             case .finished: break
@@ -130,7 +130,7 @@ class LocalDatabaseDeletingSpec: QuickSpec {
                 }
                 it("should not delete a non-existent repository") {
                     var gottenError: CustomError?
-                    localDatabase.delete(repository: Repository.mock())
+                    persistentRepositoryStore.delete(repository: Repository.mock())
                         .sink { result in
                             switch result {
                             case .finished: break
@@ -147,13 +147,13 @@ class LocalDatabaseDeletingSpec: QuickSpec {
             context("edge cases for deleting data") {
                 beforeEach {
                     LocalDatabaseTestHelpers
-                        .storeOrUpdate(repositories: [repos[0], repos[1]], organization: orgs[0], in: localDatabase, cancelBag: &cancelBag)
+                        .storeOrUpdate(repositories: [repos[0], repos[1]], organization: orgs[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
                     LocalDatabaseTestHelpers
-                        .storeOrUpdate(repositories: [repos[2], repos[3], repos[4]], organization: orgs[1], in: localDatabase, cancelBag: &cancelBag)
+                        .storeOrUpdate(repositories: [repos[2], repos[3], repos[4]], organization: orgs[1], in: persistentRepositoryStore, cancelBag: &cancelBag)
                 }
                 it("should allow re-adding entities after deletion") {
-                    LocalDatabaseTestHelpers.delete(repo: repos[0], in: localDatabase, cancelBag: &cancelBag)
-                    LocalDatabaseTestHelpers.storeOrUpdate(repositories: [repos[0]], organization: orgs[3], in: localDatabase, cancelBag: &cancelBag)
+                    LocalDatabaseTestHelpers.delete(repo: repos[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
+                    LocalDatabaseTestHelpers.storeOrUpdate(repositories: [repos[0]], organization: orgs[3], in: persistentRepositoryStore, cancelBag: &cancelBag)
                 }
             }
         }

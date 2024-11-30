@@ -34,7 +34,7 @@ extension OrganizationEntity {
                     try context.save()
                     promise(.success(entity))
                 } catch {
-                    promise(.failure(CustomError.localDatabaseError))
+                    promise(.failure(CustomError.persistentRepositoryStoreError))
                 }
             }
         }

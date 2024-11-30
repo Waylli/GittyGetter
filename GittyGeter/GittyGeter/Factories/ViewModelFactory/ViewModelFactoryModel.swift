@@ -18,7 +18,7 @@ struct ViewModelFactoryModel {
 
 extension ViewModelFactoryModel {
     struct Input {
-        let database: Database
+        let database: RepositoryProvider
         let fetcher: Fetcher
         let configurtion: Configuration
     }

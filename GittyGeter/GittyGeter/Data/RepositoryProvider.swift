@@ -1,5 +1,5 @@
 //
-//  Database.swift
+//  RepositoryProvider.swift
 //  GittyGeter
 //
 //  Created by Petar Perkovski on 27/11/2024.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-protocol Database {
+protocol RepositoryProvider {
     func getOrganizations() -> AnyPublisher<Organizations, CustomError>
     /// if no organization is provided it should fetch all repositories
     func getRepositories(query: String, within organizations: Organizations, sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError>
@@ -18,7 +18,43 @@ protocol Database {
 }
 
 #if DEBUG
-class MockDatabase: Database {
+class MockDatabase: FullRepositoryService {
+    func storeOrUpdate(organizations: Organizations) -> AnyPublisher<Success, CustomError> {
+        Just(true)
+            .setFailureType(to: CustomError.self)
+            .eraseToAnyPublisher()
+    }
+
+    func storeOrUpdate(repositories: Repositories, parentOrganization organization: Organization) -> AnyPublisher<Success, CustomError> {
+        Just(true)
+            .setFailureType(to: CustomError.self)
+            .eraseToAnyPublisher()
+    }
+
+    func delete(organization: Organization) -> AnyPublisher<Success, CustomError> {
+        Just(true)
+            .setFailureType(to: CustomError.self)
+            .eraseToAnyPublisher()
+    }
+
+    func delete(repository: Repository) -> AnyPublisher<Success, CustomError> {
+        Just(true)
+            .setFailureType(to: CustomError.self)
+            .eraseToAnyPublisher()
+    }
+
+    func initialize() -> AnyPublisher<Success, CustomError> {
+        Just(true)
+            .setFailureType(to: CustomError.self)
+            .eraseToAnyPublisher()
+    }
+
+    func deleteAllData() -> AnyPublisher<Success, CustomError> {
+        Just(true)
+            .setFailureType(to: CustomError.self)
+            .eraseToAnyPublisher()
+    }
+
 
     let organizations: Organizations
     let getRepositories: Repositories

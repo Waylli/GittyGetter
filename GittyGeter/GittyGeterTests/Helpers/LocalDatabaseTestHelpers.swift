@@ -69,7 +69,7 @@ struct LocalDatabaseTestHelpers {
     }
 
     static
-    func deleteAllData(in database: LocalDatabase, cancelBag: inout CancelBag) {
+    func deleteAllData(in database: PersistentRepositoryStore, cancelBag: inout CancelBag) {
         var deleted = false
         database.deleteAllData().sink { _ in } receiveValue: { deleted = $0}
             .store(in: &cancelBag)

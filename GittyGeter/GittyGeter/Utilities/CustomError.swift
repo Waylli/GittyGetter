@@ -11,7 +11,7 @@ enum CustomError: Error {
     case networkError,
          objectNotFound,
          dataMappingFailed,
-         localDatabaseError,
+         persistentRepositoryStoreError,
          unknown(Error)
 }
 

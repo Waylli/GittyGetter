@@ -1,5 +1,5 @@
 //
-//  AppManager.swift
+//  ApplicationCoordinator.swift
 //  GittyGeter
 //
 //  Created by Petar Perkovski on 27/11/2024.
@@ -7,12 +7,12 @@
 
 import Foundation
 
-class AppManager {
+class ApplicationCoordinator {
 
-    let model: AppManagerModel
+    let model: ApplicationCoordinatorModel
     private var cancelBag = CancelBag()
 
-    init(with model: AppManagerModel) {
+    init(with model: ApplicationCoordinatorModel) {
         self.model = model
         bindActions()
         start()
@@ -21,7 +21,7 @@ class AppManager {
 }
 
 private
-extension AppManager {
+extension ApplicationCoordinator {
     func start() {
         model.input.dataManager
             .refreshContent()
@@ -62,7 +62,7 @@ extension AppManager {
 }
 
 private
-extension AppManager {
+extension ApplicationCoordinator {
 
     func showDetail(for repository: Repository) {
         let modelOutput = DetailedRepositoryViewModel

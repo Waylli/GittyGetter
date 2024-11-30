@@ -9,10 +9,10 @@ import Foundation
 import CoreData
 import Combine
 
-extension LocalCoreDataDatabase: LocalDatabase {
+extension LocalCoreDataDatabase: PersistentRepositoryStore {
 
     func storeOrUpdate(organizations: Organizations) -> AnyPublisher<Success, CustomError> {
-        guard let context = self.backgroundContext else {return Fail(error: CustomError.localDatabaseError).eraseToAnyPublisher()}
+        guard let context = self.backgroundContext else {return Fail(error: CustomError.persistentRepositoryStoreError).eraseToAnyPublisher()}
         return organizations
             .publisher
             .flatMap { organization -> AnyPublisher<Success, CustomError> in
@@ -27,7 +27,7 @@ extension LocalCoreDataDatabase: LocalDatabase {
 
     func storeOrUpdate(repositories: Repositories,
                        parentOrganization organization: Organization) -> AnyPublisher<Success, CustomError> {
-        guard let context = self.backgroundContext else {return Fail(error: CustomError.localDatabaseError).eraseToAnyPublisher()}
+        guard let context = self.backgroundContext else {return Fail(error: CustomError.persistentRepositoryStoreError).eraseToAnyPublisher()}
         guard repositories.count > 0 else {return Fail(error: CustomError.dataMappingFailed).eraseToAnyPublisher()}
         return repositories
             .publisher
@@ -43,7 +43,7 @@ extension LocalCoreDataDatabase: LocalDatabase {
     }
 
     func delete(organization: Organization) -> AnyPublisher<Success, CustomError> {
-        guard let context = self.backgroundContext else {return Fail(error: CustomError.localDatabaseError).eraseToAnyPublisher()}
+        guard let context = self.backgroundContext else {return Fail(error: CustomError.persistentRepositoryStoreError).eraseToAnyPublisher()}
         return getOrganizationEntity(with: organization.identifier)
             .flatMap { entity -> AnyPublisher<Success, CustomError> in
                 Future<Success, CustomError> { promise in
@@ -62,7 +62,7 @@ extension LocalCoreDataDatabase: LocalDatabase {
     }
 
     func delete(repository: Repository) -> AnyPublisher<Success, CustomError> {
-        guard let context = self.backgroundContext else {return Fail(error: CustomError.localDatabaseError).eraseToAnyPublisher()}
+        guard let context = self.backgroundContext else {return Fail(error: CustomError.persistentRepositoryStoreError).eraseToAnyPublisher()}
         return getRepositoryEntity(with: repository.identifier)
             .flatMap { entity -> AnyPublisher<Success, CustomError> in
                 Future<Success, CustomError> { promise in
@@ -87,12 +87,12 @@ extension LocalCoreDataDatabase: LocalDatabase {
         }
         guard let modelURL = Bundle.main.url(forResource: dataModelName, withExtension: "momd"),
               let _ = NSManagedObjectModel(contentsOf: modelURL) else {
-            return Fail(error: CustomError.localDatabaseError)
+            return Fail(error: CustomError.persistentRepositoryStoreError)
                 .eraseToAnyPublisher()
         }
         return Future<Success, CustomError> { [weak self] promise in
             guard let this = self, !this.dataModelName.isEmpty else {
-                promise(.failure(CustomError.localDatabaseError))
+                promise(.failure(CustomError.persistentRepositoryStoreError))
                 return
             }
             let container = NSPersistentContainer(name: this.dataModelName)
@@ -113,64 +113,6 @@ extension LocalCoreDataDatabase: LocalDatabase {
     }
 
 
-    func getOrganizations() -> AnyPublisher<Organizations, CustomError> {
-        guard let context = self.backgroundContext else {return Fail(error: CustomError.localDatabaseError).eraseToAnyPublisher()}
-        let future = Future<Organizations, CustomError> { promise in
-            context.performAndWait {
-                let request = OrganizationEntity.fetchRequest()
-                do {
-                    let entities = try context.fetch(request)
-                    let orgs = entities.map {try? $0.toOrganization()}.compactMap{$0}
-                    promise(.success(orgs))
-                } catch {
-                    promise(.failure(CustomError.from(any: error)))
-                }
-            }
-        }
-        return Deferred {
-            future
-        }
-        .eraseToAnyPublisher()
-    }
-
-    func getRepositories(query: String,
-                         within organizations: Organizations,
-                         sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
-        guard let context = self.backgroundContext else {return Fail(error: CustomError.localDatabaseError).eraseToAnyPublisher()}
-        let request = RepositoryEntity.fetchRequest()
-        request.predicate = buildPredicate(for: query, within: organizations)
-        request.sortDescriptors = [sortingOrder.toNSSortDescriptor()]
-        let future = Future<Repositories, CustomError> { promise in
-            context.performAndWait {
-                do {
-                    let results = try context.fetch(request)
-                    let repositories = results.map {try? $0.toRepository()}
-                        .compactMap{$0}
-                    promise(.success(repositories))
-                } catch {
-                    promise(.failure(CustomError.from(any: error)))
-                }
-            }
-        }
-        return Deferred {
-            future
-        }
-        .eraseToAnyPublisher()
-    }
-
-    func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
-        self.changeSortingOrderOfFavorites(to: sortingOrder)
-        return $favoriteRepositories
-            .map {$0.map {try? $0.toRepository()}.compactMap{$0}}
-            .receive(on: RunLoop.main)
-            .setFailureType(to: CustomError.self)
-            .eraseToAnyPublisher()
-    }
-
-    func getRepositories(for organization: Organization, sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
-        getRepositories(query: "", within: [organization], sortingOrder: sortingOrder)
-    }
-
     func deleteAllData() -> AnyPublisher<Success, CustomError> {
         do {
             try _DeleteAllData()
@@ -183,68 +125,15 @@ extension LocalCoreDataDatabase: LocalDatabase {
         }
     }
 
-    func updateFavoriteStatus(of repository: Repository,
-                              to isFavorite: Bool) -> AnyPublisher<Success, CustomError> {
-        guard let context = backgroundContext else {
-            return Fail(error: CustomError.objectNotFound).eraseToAnyPublisher()
-        }
-        return getRepositoryEntity(with: repository.identifier)
-            .flatMap { entity -> AnyPublisher<Success, CustomError> in
-                Future<Success, CustomError> { promise in
-                    context.performAndWait {
-                        entity.isFavourite = isFavorite
-                        do {
-                            try context.save()
-                            promise(.success(true))
-                        } catch {
-                            promise(.failure(CustomError.from(any: error)))
-                        }
-                    }
-                }
-                .eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
-    }
-
 }
 
 
 private
 extension LocalCoreDataDatabase {
 
-    func buildPredicate(for query: String,
-                        within organizations: Organizations) -> NSCompoundPredicate {
-        let identifiers = organizations.map { $0.identifier }
-
-        if query.isEmpty {
-            if identifiers.isEmpty {
-                return NSCompoundPredicate(andPredicateWithSubpredicates: [])
-            } else {
-                return NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    NSPredicate(format: "organization.identifier IN %@", identifiers)
-                ])
-            }
-        } else {
-            if identifiers.isEmpty {
-                return NSCompoundPredicate(orPredicateWithSubpredicates: [
-                    NSPredicate(format: "name CONTAINS[cd] %@", query),
-                    NSPredicate(format: "repositoryDescription CONTAINS[cd] %@", query)
-                ])
-            } else {
-                return NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    NSPredicate(format: "organization.identifier IN %@", identifiers),
-                    NSCompoundPredicate(orPredicateWithSubpredicates: [
-                        NSPredicate(format: "name CONTAINS[cd] %@", query),
-                        NSPredicate(format: "repositoryDescription CONTAINS[cd] %@", query)
-                    ])
-                ])
-            }
-        }
-    }
-
     func _DeleteAllData() throws {
         guard let persistentContainer = persistentContainer else {
-            throw CustomError.localDatabaseError
+            throw CustomError.persistentRepositoryStoreError
         }
         let context = persistentContainer.viewContext
         let entities = persistentContainer.managedObjectModel.entities
@@ -258,7 +147,7 @@ extension LocalCoreDataDatabase {
             do {
                 try persistentContainer.persistentStoreCoordinator.execute(deleteRequest, with: context)
             } catch {
-                throw CustomError.localDatabaseError
+                throw CustomError.persistentRepositoryStoreError
             }
         }
     }
@@ -267,7 +156,7 @@ extension LocalCoreDataDatabase {
 
 extension LocalCoreDataDatabase {
     func getOrganizationEntity(with identifier: String) -> AnyPublisher<OrganizationEntity, CustomError> {
-        guard let context = self.backgroundContext else {return Fail(error: CustomError.localDatabaseError).eraseToAnyPublisher()}
+        guard let context = self.backgroundContext else {return Fail(error: CustomError.persistentRepositoryStoreError).eraseToAnyPublisher()}
         let future = Future<OrganizationEntity, CustomError> { promise in
             let request = OrganizationEntity.fetchRequest()
             request.predicate = NSPredicate(format: "identifier == %@", identifier)
@@ -288,7 +177,7 @@ extension LocalCoreDataDatabase {
 
     func getRepositoryEntity(with identifier: String) -> AnyPublisher<RepositoryEntity, CustomError> {
         guard let context = backgroundContext else {
-            return Fail(error: CustomError.localDatabaseError)
+            return Fail(error: CustomError.persistentRepositoryStoreError)
                 .eraseToAnyPublisher()
         }
         let future = Future<RepositoryEntity, CustomError> { promise in

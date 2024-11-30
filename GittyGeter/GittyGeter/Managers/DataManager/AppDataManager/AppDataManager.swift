@@ -20,7 +20,7 @@ class AppDataManager {
     init(with model: AppDataManagerModel) {
         self.model = model
         // error not handled
-        model.input.localDatabase
+        model.input.persistentRepositoryStore
             .initialize()
             .sink { _ in } receiveValue: { _ in  }
             .store(in: &cancelBag)
@@ -39,14 +39,14 @@ extension AppDataManager: DataManager {
         Publishers.CombineLatest(model.input.networkService.fetchOrganizationWith(login: identifier), model.input.networkService.fetchRepositoriesForOrganizationWith(login: identifier))
             .flatMap { [weak self] (org, repos) -> AnyPublisher<Success, CustomError> in
                 guard let this = self else {return Fail(error: CustomError.objectNotFound).eraseToAnyPublisher()}
-                return this.model.input.localDatabase.storeOrUpdate(repositories: repos, parentOrganization: org)
+                return this.model.input.persistentRepositoryStore.storeOrUpdate(repositories: repos, parentOrganization: org)
             }
             .eraseToAnyPublisher()
     }
 
     func remove(this organization: Organization) -> AnyPublisher<Success, CustomError> {
         guard organization.canBeRemoved else { return Fail(error: CustomError.dataMappingFailed).eraseToAnyPublisher() }
-        return model.input.localDatabase
+        return model.input.persistentRepositoryStore
             .delete(organization: organization)
     }
 
@@ -70,7 +70,7 @@ extension AppDataManager {
     }
 
     private func getOrganizationIdentifiers() -> AnyPublisher<[String], CustomError> {
-        model.input.localDatabase.getOrganizations()
+        model.input.repositoryProvider.getOrganizations()
             .map { $0.map { $0.identifier } }
             .eraseToAnyPublisher()
     }
@@ -93,8 +93,10 @@ extension AppDataManager {
             .eraseToAnyPublisher()
     }
 
-    private func storeRepositoriesAndOrganization(organization: Organization, repositories: Repositories) -> AnyPublisher<Success, CustomError> {
-        model.input.localDatabase.storeOrUpdate(repositories: repositories, parentOrganization: organization)
+    private func storeRepositoriesAndOrganization(organization: Organization,
+                                                  repositories: Repositories) -> AnyPublisher<Success, CustomError> {
+        model.input.persistentRepositoryStore
+            .storeOrUpdate(repositories: repositories, parentOrganization: organization)
     }
 
 }

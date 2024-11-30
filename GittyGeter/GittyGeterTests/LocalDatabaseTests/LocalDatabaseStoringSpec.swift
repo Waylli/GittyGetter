@@ -16,18 +16,18 @@ class LocalDatabaseStoringSpec: QuickSpec {
         describe("Storing and Updating Data in LocalDatabase") {
             var organization: Organization!
             var repos: Repositories!
-            let localDatabase = LocalCoreDataDatabase()
+            let persistentRepositoryStore = LocalCoreDataDatabase()
             var cancelBag: CancelBag!
             beforeEach {
                 cancelBag = CancelBag()
                 organization = Organization.mock()
                 repos = Repository.mocks(count: 100)
-                localDatabase.initialize().sink { _ in } receiveValue: { _ in }.store(in: &cancelBag)
-                expect(localDatabase.backgroundContext).toEventuallyNot(beNil())
+                persistentRepositoryStore.initialize().sink { _ in } receiveValue: { _ in }.store(in: &cancelBag)
+                expect(persistentRepositoryStore.backgroundContext).toEventuallyNot(beNil())
             }
             afterEach {
                 var deleted = false
-                localDatabase.deleteAllData().sink { _ in } receiveValue: { deleted = $0}
+                persistentRepositoryStore.deleteAllData().sink { _ in } receiveValue: { deleted = $0}
                     .store(in: &cancelBag)
                 expect(deleted).toEventually(beTrue(), timeout: .seconds(3))
                 cancelBag = nil
@@ -39,7 +39,7 @@ class LocalDatabaseStoringSpec: QuickSpec {
                 it("should store a single organization successfully") {
                     var saved = false
                     waitUntil(timeout: .seconds(10)) { done in
-                        localDatabase.storeOrUpdate(organizations: [organization])
+                        persistentRepositoryStore.storeOrUpdate(organizations: [organization])
                             .sink { _ in
 
                             } receiveValue: {
@@ -53,7 +53,7 @@ class LocalDatabaseStoringSpec: QuickSpec {
                 it("should store multiple organizations successfully") {
                     var saved = false
                     waitUntil(timeout: .seconds(10)) { done in
-                        localDatabase.storeOrUpdate(organizations: [organization, Organization.mock(), Organization.mock()])
+                        persistentRepositoryStore.storeOrUpdate(organizations: [organization, Organization.mock(), Organization.mock()])
                             .sink { _ in
 
                             } receiveValue: {
@@ -67,7 +67,7 @@ class LocalDatabaseStoringSpec: QuickSpec {
                 it("should update an existing organization with new data") {
                     var saved = false
                     waitUntil(timeout: .seconds(10)) { done in
-                        localDatabase.storeOrUpdate(organizations: [organization])
+                        persistentRepositoryStore.storeOrUpdate(organizations: [organization])
                             .sink { _ in
 
                             } receiveValue: {
@@ -88,7 +88,7 @@ class LocalDatabaseStoringSpec: QuickSpec {
                                                avatarURL: organization.avatarURL)
                     var isUpdated = false
                     waitUntil(timeout: .seconds(10)) { done in
-                        localDatabase.storeOrUpdate(organizations: [updated])
+                        persistentRepositoryStore.storeOrUpdate(organizations: [updated])
                             .sink { _ in
 
                             } receiveValue: {
@@ -105,7 +105,7 @@ class LocalDatabaseStoringSpec: QuickSpec {
                 it("should store a single repository successfully under a parent organization") {
                     var isSaved = false
                     waitUntil(timeout: .seconds(2)) { done in
-                        localDatabase.storeOrUpdate(repositories: [repos.first!], parentOrganization: organization)
+                        persistentRepositoryStore.storeOrUpdate(repositories: [repos.first!], parentOrganization: organization)
                             .sink { _ in } receiveValue: { isSaved = $0; done() }
                             .store(in: &cancelBag)
                     }
@@ -113,7 +113,7 @@ class LocalDatabaseStoringSpec: QuickSpec {
                 }
                 it("should store multiple repositories successfully under a parent organization") { var isSaved = false
                     waitUntil(timeout: .seconds(2)) { done in
-                        localDatabase.storeOrUpdate(repositories: repos, parentOrganization: organization)
+                        persistentRepositoryStore.storeOrUpdate(repositories: repos, parentOrganization: organization)
                             .sink { _ in } receiveValue: { isSaved = $0; done() }
                             .store(in: &cancelBag)
                     }
@@ -123,7 +123,7 @@ class LocalDatabaseStoringSpec: QuickSpec {
                     let repo = repos.first!
                     var isSaved = false
                     waitUntil(timeout: .seconds(2)) { done in
-                        localDatabase.storeOrUpdate(repositories: [repo], parentOrganization: organization)
+                        persistentRepositoryStore.storeOrUpdate(repositories: [repo], parentOrganization: organization)
                             .sink { _ in } receiveValue: { isSaved = $0; done() }
                             .store(in: &cancelBag)
                     }
@@ -143,7 +143,7 @@ class LocalDatabaseStoringSpec: QuickSpec {
                                              isFavourite: true)
                     var isUpdated = false
                     waitUntil(timeout: .seconds(2)) { done in
-                        localDatabase.storeOrUpdate(repositories: [updated], parentOrganization: organization)
+                        persistentRepositoryStore.storeOrUpdate(repositories: [updated], parentOrganization: organization)
                             .sink { _ in } receiveValue: { isUpdated = $0; done() }
                             .store(in: &cancelBag)
                     }

@@ -15,3 +15,4 @@ typealias CancelBag = Set<AnyCancellable>
 typealias Photo = UIImage
 typealias Navigator = NavigationCoordinator
 typealias Success = Bool
+typealias FullRepositoryService = RepositoryProvider & PersistentRepositoryStore

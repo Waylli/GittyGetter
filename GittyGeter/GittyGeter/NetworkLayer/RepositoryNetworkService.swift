@@ -1,5 +1,5 @@
 //
-//  NetworkService.swift
+//  RepositoryNetworkService.swift
 //  GittyGeter
 //
 //  Created by Petar Perkovski on 29/11/2024.
@@ -8,13 +8,13 @@
 import Foundation
 import Combine
 
-protocol NetworkService {
+protocol RepositoryNetworkService {
     func fetchOrganizationWith(login: String) -> AnyPublisher<Organization, CustomError>
     func fetchRepositoriesForOrganizationWith(login: String) -> AnyPublisher<Repositories, CustomError>
 }
 
 #if DEBUG
-class MockNetworkService: NetworkService {
+class MockNetworkService: RepositoryNetworkService {
     var error: CustomError?
     var organization = Organization.mock()
     var repos = Repository.mocks(count: 30, isFavorite: Bool.random())

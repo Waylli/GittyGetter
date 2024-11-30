@@ -18,7 +18,8 @@ class AppDataManagerModel {
 
 extension AppDataManagerModel {
     struct Input {
-        let localDatabase: LocalDatabase
-        let networkService: NetworkService
+        let persistentRepositoryStore: PersistentRepositoryStore
+        let repositoryProvider: RepositoryProvider
+        let networkService: RepositoryNetworkService
     }
 }

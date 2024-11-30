@@ -14,34 +14,34 @@ import Nimble
 class LocalCoreDataDatabaseSpec: QuickSpec {
     override class func spec() {
         describe("LocalCoreDataDatabase") {
-            let localDatabase = LocalCoreDataDatabase()
+            let persistentRepositoryStore = LocalCoreDataDatabase()
             var cancelBag: CancelBag!
             beforeEach {
                 cancelBag = CancelBag()
             }
             afterEach {
-                LocalDatabaseTestHelpers.deleteAllData(in: localDatabase, cancelBag: &cancelBag)
+                LocalDatabaseTestHelpers.deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
                 cancelBag = nil
             }
             it("initializes NSPersistentContainer successfully") {
-                localDatabase.initialize()
+                persistentRepositoryStore.initialize()
                     .sink { _ in } receiveValue: { _ in }
                     .store(in: &cancelBag)
-                expect(localDatabase.persistentContainer).toEventuallyNot(beNil(), timeout: .seconds(1))
-                expect(localDatabase.backgroundContext).toEventuallyNot(beNil(), timeout: .seconds(1))
+                expect(persistentRepositoryStore.persistentContainer).toEventuallyNot(beNil(), timeout: .seconds(1))
+                expect(persistentRepositoryStore.backgroundContext).toEventuallyNot(beNil(), timeout: .seconds(1))
             }
 
             context("when working with Entities") {
                 beforeEach {
                     LocalDatabaseTestHelpers
-                        .initialize(this: localDatabase, cancelBag: &cancelBag)
+                        .initialize(this: persistentRepositoryStore, cancelBag: &cancelBag)
                 }
                 context("Organization Entity") {
                     it("saves an organization successfully") {
                         let organization = Organization.mock()
                         var isSaved = false
                         waitUntil { done in
-                            localDatabase
+                            persistentRepositoryStore
                                 .storeOrUpdate(organizations: [organization])
                                 .sink { _ in
 
@@ -60,7 +60,7 @@ class LocalCoreDataDatabaseSpec: QuickSpec {
                         let repository = Repository.mock()
                         var isSaved = false
                         waitUntil { done in
-                            localDatabase
+                            persistentRepositoryStore
                                 .storeOrUpdate(repositories: [repository], parentOrganization: organization)
                                 .sink { _ in
 

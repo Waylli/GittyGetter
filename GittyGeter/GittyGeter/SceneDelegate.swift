@@ -10,7 +10,7 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    private var appManager: AppManager?
+    private var applicationCoordinator: ApplicationCoordinator?
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
@@ -22,32 +22,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = navigator
         self.window = window
         window.makeKeyAndVisible()
-        appManager = createAppManager(with: navigator)
+        applicationCoordinator = createApplicationCoordinator(with: navigator)
     }
 
 }
 
 private
 extension SceneDelegate {
-    func createAppManager(with navigationController: NavigationCoordinator) -> AppManager {
-        let localDatabase = LocalCoreDataDatabase()
+    func createApplicationCoordinator(with navigationController: NavigationCoordinator) -> ApplicationCoordinator {
+        let persistentRepositoryStore = LocalCoreDataDatabase()
         let service = GitHubAPIProvider()
         let appDataManagerModelInput = AppDataManagerModel
-            .Input(localDatabase: localDatabase,
+            .Input(persistentRepositoryStore: persistentRepositoryStore,
+                   repositoryProvider: persistentRepositoryStore,
                    networkService: service)
         let appDataManagerModel = AppDataManagerModel(with: appDataManagerModelInput)
         let appDataManager = AppDataManager(with: appDataManagerModel)
         let factoryModelInput = ViewModelFactoryModel
-            .Input(database: localDatabase,
+            .Input(database: persistentRepositoryStore,
                    fetcher: AppFetcher(),
                    configurtion: Configuration.standard())
         let factoryModel = ViewModelFactoryModel(with: factoryModelInput)
         let viewModelFactory = ViewModelFactory(with: factoryModel)
-        let modelInput = AppManagerModel
+        let modelInput = ApplicationCoordinatorModel
             .Input(navigationCoordinator: navigationController,
                    viewModelFactor: viewModelFactory,
                    dataManager: appDataManager)
-        let appManagerModel = AppManagerModel(with: modelInput)
-        return AppManager(with: appManagerModel)
+        let applicationCoordinatorModel = ApplicationCoordinatorModel(with: modelInput)
+        return ApplicationCoordinator(with: applicationCoordinatorModel)
     }
 }

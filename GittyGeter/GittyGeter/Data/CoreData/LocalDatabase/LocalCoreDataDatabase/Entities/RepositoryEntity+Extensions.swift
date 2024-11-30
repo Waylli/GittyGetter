@@ -57,7 +57,7 @@ extension RepositoryEntity {
                     repoFetchRequest.predicate = NSPredicate(format: "identifier == %@", repository.id)
                     let results = try context.fetch(repoFetchRequest)
                     guard results.count <= 1 else {
-                        promise(.failure(CustomError.localDatabaseError))
+                        promise(.failure(CustomError.persistentRepositoryStoreError))
                         return
                     }
                     if let existingEntity = results.first {

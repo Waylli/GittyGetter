@@ -15,23 +15,24 @@ class AppDataManagerDatabaseSpec: QuickSpec {
     override class func spec() {
         describe("AppDataManager-Database") {
             var dataManager: AppDataManager!
-            let localDatabase = LocalCoreDataDatabase()
+            let persistentRepositoryStore = LocalCoreDataDatabase()
             let service = MockNetworkService()
             var cancelBag: CancelBag!
             let identifier = AppDataManager.hardcodedOrganizationLogins.randomElement()!
             beforeEach {
                 cancelBag = CancelBag()
-                _ = LocalDatabaseTestHelpers.performAndWait(publisher: localDatabase.initialize())
-                let model = AppDataManagerModel(with: AppDataManagerModel.Input(localDatabase: localDatabase,
+                _ = LocalDatabaseTestHelpers.performAndWait(publisher: persistentRepositoryStore.initialize())
+                let model = AppDataManagerModel(with: AppDataManagerModel.Input(persistentRepositoryStore: persistentRepositoryStore,
+                                                                                repositoryProvider: persistentRepositoryStore,
                                                                                 networkService: service))
                 dataManager = AppDataManager(with: model)
                 LocalDatabaseTestHelpers
-                    .deleteAllData(in: localDatabase, cancelBag: &cancelBag)
+                    .deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
             }
 
             afterEach {
                 LocalDatabaseTestHelpers
-                    .deleteAllData(in: localDatabase, cancelBag: &cancelBag)
+                    .deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
                 dataManager = nil
                 cancelBag = nil
             }
@@ -42,7 +43,7 @@ class AppDataManagerDatabaseSpec: QuickSpec {
                     expect(success).notTo(beNil())
                 }
                 it("should return a list of organizations successfully") {
-                    let orgs = LocalDatabaseTestHelpers.performAndWait(publisher: localDatabase.getOrganizations()).0
+                    let orgs = LocalDatabaseTestHelpers.performAndWait(publisher: persistentRepositoryStore.getOrganizations()).0
                     expect(orgs).notTo(beNil())
                     expect(orgs?.count).to(beGreaterThan(0))
                 }
@@ -55,7 +56,7 @@ class AppDataManagerDatabaseSpec: QuickSpec {
                 }
                 it("should return a list of repositories successfully") {
                     let repos = LocalDatabaseTestHelpers
-                        .performAndWait(publisher: localDatabase.getRepositories(query: "", within: [], sortingOrder: .standard)).0
+                        .performAndWait(publisher: persistentRepositoryStore.getRepositories(query: "", within: [], sortingOrder: .standard)).0
                     expect(repos).notTo(beNil())
                     expect(repos?.count).to(beGreaterThan(0))
                 }
@@ -67,16 +68,16 @@ class AppDataManagerDatabaseSpec: QuickSpec {
                     let success = LocalDatabaseTestHelpers.performAndWait(publisher: dataManager.addOrganizationWith(identifier))
                     expect(success).notTo(beNil())
                     let repos = LocalDatabaseTestHelpers
-                        .performAndWait(publisher: localDatabase.getRepositories(query: "", within: [], sortingOrder: .standard)).0
+                        .performAndWait(publisher: persistentRepositoryStore.getRepositories(query: "", within: [], sortingOrder: .standard)).0
                     repos!.forEach { repo in
                         _ = LocalDatabaseTestHelpers
-                            .performAndWait(publisher: localDatabase.updateFavoriteStatus(of: repo, to: true))
+                            .performAndWait(publisher: persistentRepositoryStore.updateFavoriteStatus(of: repo, to: true))
                     }
 
                 }
                 it("should return a list of favourite repositories successfully") {
                     let repos = LocalDatabaseTestHelpers
-                        .performAndWait(publisher: localDatabase.getFavouriteRepositories(with: .standard)).0
+                        .performAndWait(publisher: persistentRepositoryStore.getFavouriteRepositories(with: .standard)).0
                     expect(repos).notTo(beNil())
                     expect(repos?.count).to(beGreaterThan(0))
                 }
@@ -88,7 +89,7 @@ class AppDataManagerDatabaseSpec: QuickSpec {
                 }
                 it("should return a list of repositories for the organization successfully") {
                     let repos = LocalDatabaseTestHelpers
-                        .performAndWait(publisher: localDatabase.getRepositories(for: service.organization,
+                        .performAndWait(publisher: persistentRepositoryStore.getRepositories(for: service.organization,
                                                                                sortingOrder: SortingOrder.standard)).0
                     expect(repos).notTo(beNil())
                     expect(repos?.count).to(beGreaterThan(0))

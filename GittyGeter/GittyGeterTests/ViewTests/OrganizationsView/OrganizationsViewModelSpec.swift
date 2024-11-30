@@ -17,7 +17,7 @@ class OrganizationsViewModelSpec: QuickSpec {
         describe("OrganizationsViewModel") {
             var model: OrganizationsViewModel!
             var organizations: Organizations!
-            var database: Database!
+            var database: RepositoryProvider!
             beforeEach {
                 organizations = Organization.mocks()
                 database = MockDatabase(organizations: organizations)
@@ -45,7 +45,7 @@ class OrganizationsViewModelSpec: QuickSpec {
     }
 
     static
-    private func createModel(with database: Database) -> OrganizationsViewModel {
+    private func createModel(with database: RepositoryProvider) -> OrganizationsViewModel {
         let modelInput = OrganizationsViewModel
             .Input(getAllOragnizations: database.getOrganizations,
                    fetcher: MockFetcher(),

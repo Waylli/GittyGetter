@@ -16,20 +16,20 @@ class LocalDatabaseFetchingSpec: QuickSpec {
         describe("Fetching Data from LocalDatabase") {
             var organization: Organization!
             var repos: Repositories!
-            let localDatabase = LocalCoreDataDatabase()
+            let persistentRepositoryStore = LocalCoreDataDatabase()
             var cancelBag: CancelBag!
             beforeEach {
                 cancelBag = CancelBag()
                 organization = Organization.mock()
                 repos = Repository.mocks(count: 10)
                 LocalDatabaseTestHelpers
-                    .initialize(this: localDatabase, cancelBag: &cancelBag)
+                    .initialize(this: persistentRepositoryStore, cancelBag: &cancelBag)
                 LocalDatabaseTestHelpers
-                    .deleteAllData(in: localDatabase, cancelBag: &cancelBag)
+                    .deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
             }
             afterEach {
                 LocalDatabaseTestHelpers
-                    .deleteAllData(in: localDatabase, cancelBag: &cancelBag)
+                    .deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
                 cancelBag = nil
                 organization = nil
                 repos = nil
@@ -38,11 +38,11 @@ class LocalDatabaseFetchingSpec: QuickSpec {
             context("fetching organizations") {
                 beforeEach {
                     LocalDatabaseTestHelpers
-                        .storeOrUpdate(repositories: repos, organization: organization, in: localDatabase, cancelBag: &cancelBag)
+                        .storeOrUpdate(repositories: repos, organization: organization, in: persistentRepositoryStore, cancelBag: &cancelBag)
                 }
                 it("should fetch all organizations successfully") {
                     var org: Organization?
-                    localDatabase
+                    persistentRepositoryStore
                         .getOrganizations()
                         .sink { _ in  } receiveValue: { org = $0.first }
                         .store(in: &cancelBag)
@@ -56,14 +56,14 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                     LocalDatabaseTestHelpers
                         .storeOrUpdate(repositories: repos,
                                   organization: organization,
-                                  in: localDatabase,
+                                  in: persistentRepositoryStore,
                                   cancelBag: &cancelBag)
                 }
                 it("should fetch repositories successfully for a valid query") {
                     let query = repos.first!.name
                     var localRepos: Repositories?
                     waitUntil { done in
-                        localDatabase
+                        persistentRepositoryStore
                             .getRepositories(query: query, within: [organization], sortingOrder: .standard)
                             .sink { _ in } receiveValue: { localRepos = $0; done()}
                             .store(in: &cancelBag)
@@ -74,7 +74,7 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                 it("should fetch repositories for an empty query (all repositories)") {
                     var localRepos: Repositories?
                     waitUntil { done in
-                        localDatabase
+                        persistentRepositoryStore
                             .getRepositories(query: "", within: [], sortingOrder: .standard)
                             .sink { _ in } receiveValue: { localRepos = $0; done()}
                             .store(in: &cancelBag)
@@ -85,7 +85,7 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                 it("should fetch repositories within specific organizations") {
                     var localRepos: Repositories?
                     waitUntil { done in
-                        localDatabase
+                        persistentRepositoryStore
                             .getRepositories(query: "", within: [organization], sortingOrder: .standard)
                             .sink { _ in } receiveValue: { localRepos = $0; done()}
                             .store(in: &cancelBag)
@@ -96,7 +96,7 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                 it("should fetch repositories without specific organizations") {
                     var localRepos: Repositories?
                     waitUntil { done in
-                        localDatabase
+                        persistentRepositoryStore
                             .getRepositories(query: repos[0].name, within: [], sortingOrder: .standard)
                             .sink { _ in } receiveValue: { localRepos = $0; done()}
                             .store(in: &cancelBag)
@@ -107,7 +107,7 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                 it("should handle errors when fetching repositories by query") {
                     var localRepos: Repositories?
                     waitUntil { done in
-                        localDatabase
+                        persistentRepositoryStore
                             .getRepositories(query: "", within: [organization], sortingOrder: .standard)
                             .sink { _ in } receiveValue: { localRepos = $0; done()}
                             .store(in: &cancelBag)
@@ -123,12 +123,12 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                     LocalDatabaseTestHelpers
                         .storeOrUpdate(repositories: repos,
                                        organization: organization,
-                                       in: localDatabase, cancelBag: &cancelBag)
+                                       in: persistentRepositoryStore, cancelBag: &cancelBag)
                 }
                 it("should fetch favourite repositories successfully") {
                     var localRepos: Repositories?
                     waitUntil { done in
-                        localDatabase
+                        persistentRepositoryStore
                             .getFavouriteRepositories(with: .standard)
                             .sink { _ in } receiveValue: { localRepos = $0; done()}
                             .store(in: &cancelBag)
@@ -143,11 +143,11 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                     LocalDatabaseTestHelpers
                         .storeOrUpdate(repositories: repos,
                                        organization: organization,
-                                       in: localDatabase, cancelBag: &cancelBag)
+                                       in: persistentRepositoryStore, cancelBag: &cancelBag)
                 }
                 it("should fetch repositories for a given organization successfully") {
                     var localRepos: Repositories?
-                    localDatabase.getRepositories(for: organization, sortingOrder: .standard)
+                    persistentRepositoryStore.getRepositories(for: organization, sortingOrder: .standard)
                         .sink { _ in } receiveValue: { localRepos = $0 }.store(in: &cancelBag)
                     expect(localRepos).toEventuallyNot(beNil())
                     expect(localRepos?.count).to(equal(repos.count))
