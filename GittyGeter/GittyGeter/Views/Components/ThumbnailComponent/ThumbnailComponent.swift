@@ -22,7 +22,7 @@ struct ThumbnailComponent<Content: View>: View {
             .background {
                 background()
             }
-            .clipShape (
+            .clipShape(
                 RoundedRectangle(cornerRadius: configuration.view.cornerRadius)
             )
     }

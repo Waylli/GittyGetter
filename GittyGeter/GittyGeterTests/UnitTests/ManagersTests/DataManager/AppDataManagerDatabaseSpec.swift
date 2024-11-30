@@ -17,24 +17,21 @@ class AppDataManagerDatabaseSpec: QuickSpec {
             var dataManager: AppDataManager!
             let persistentRepositoryStore = LocalCoreDataDatabase()
             let service = MockNetworkService()
-            var cancelBag: CancelBag!
             let identifier = AppDataManager.hardcodedOrganizationLogins.randomElement()!
             beforeEach {
-                cancelBag = CancelBag()
                 _ = LocalDatabaseTestHelpers.performAndWait(publisher: persistentRepositoryStore.initialize())
                 let model = AppDataManagerModel(with: AppDataManagerModel.Input(persistentRepositoryStore: persistentRepositoryStore,
                                                                                 repositoryProvider: persistentRepositoryStore,
                                                                                 networkService: service))
                 dataManager = AppDataManager(with: model)
-                LocalDatabaseTestHelpers
-                    .deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
+                _ = LocalDatabaseTestHelpers
+                    .performAndWait(publisher: persistentRepositoryStore.deleteAllData()).0
             }
 
             afterEach {
-                LocalDatabaseTestHelpers
-                    .deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
+                _ = LocalDatabaseTestHelpers
+                    .performAndWait(publisher: persistentRepositoryStore.deleteAllData()).0
                 dataManager = nil
-                cancelBag = nil
             }
 
             context("when getOrganizations is called") {

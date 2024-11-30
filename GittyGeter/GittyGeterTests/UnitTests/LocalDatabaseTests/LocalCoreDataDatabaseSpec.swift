@@ -20,21 +20,18 @@ class LocalCoreDataDatabaseSpec: QuickSpec {
                 cancelBag = CancelBag()
             }
             afterEach {
-                LocalDatabaseTestHelpers.deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
+                _ = LocalDatabaseTestHelpers.performAndWait(publisher: persistentRepositoryStore.deleteAllData()).0
                 cancelBag = nil
             }
             it("initializes NSPersistentContainer successfully") {
-                persistentRepositoryStore.initialize()
-                    .sink { _ in } receiveValue: { _ in }
-                    .store(in: &cancelBag)
+                _ = LocalDatabaseTestHelpers.performAndWait(publisher: persistentRepositoryStore.initialize()).0
                 expect(persistentRepositoryStore.persistentContainer).toEventuallyNot(beNil(), timeout: .seconds(1))
                 expect(persistentRepositoryStore.backgroundContext).toEventuallyNot(beNil(), timeout: .seconds(1))
             }
 
             context("when working with Entities") {
                 beforeEach {
-                    LocalDatabaseTestHelpers
-                        .initialize(this: persistentRepositoryStore, cancelBag: &cancelBag)
+                    _ = LocalDatabaseTestHelpers.performAndWait(publisher: persistentRepositoryStore.initialize()).0
                 }
                 context("Organization Entity") {
                     it("saves an organization successfully") {

@@ -40,7 +40,7 @@ extension RepositoryCardModel {
 
     }
 
-    ///comment out if favorite status can be set from here
+    /// comment out if favorite status can be set from here
 //    func isFavoritePressed() {
 //        isFavorite.toggle()
 //    }

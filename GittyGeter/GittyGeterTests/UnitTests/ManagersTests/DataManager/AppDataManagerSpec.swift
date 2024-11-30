@@ -11,7 +11,6 @@ import Nimble
 import Combine
 @testable import GittyGeter
 
-
 class AppDataManagerSpec: QuickSpec {
     override class func spec() {
         var dataManager: AppDataManager!
@@ -26,13 +25,15 @@ class AppDataManagerSpec: QuickSpec {
                                                                                 repositoryProvider: persistentRepositoryStore,
                                                                                 networkService: service))
                 dataManager = AppDataManager(with: model)
-                LocalDatabaseTestHelpers
-                    .deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
+                _ = LocalDatabaseTestHelpers
+                    .performAndWait(publisher: persistentRepositoryStore.deleteAllData())
+                    .0
             }
 
             afterEach {
-                LocalDatabaseTestHelpers
-                    .deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
+                _ = LocalDatabaseTestHelpers
+                    .performAndWait(publisher: persistentRepositoryStore.deleteAllData())
+                    .0
                 dataManager = nil
                 cancelBag = nil
             }

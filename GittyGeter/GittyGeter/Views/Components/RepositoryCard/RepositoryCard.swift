@@ -84,7 +84,7 @@ struct RepositoryCard: View {
             Image(systemName: model.isFavorite ? "heart.fill" : "heart")
                 .font(.largeTitle)
                 .foregroundStyle(Color.orange)
-            ///comment out if favorite status can be set from here
+            /// comment out if favorite status can be set from here
 //                .onTapGesture {
 //                    model.isFavoritePressed()
 //                }

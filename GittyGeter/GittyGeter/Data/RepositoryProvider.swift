@@ -14,7 +14,7 @@ protocol RepositoryProvider {
     func getRepositories(query: String, within organizations: Organizations, sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError>
     func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError>
     func getRepositories(for organization: Organization, sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError>
-    func updateFavoriteStatus(of repository: Repository,to newStatus: Bool) -> AnyPublisher<Success, CustomError>
+    func updateFavoriteStatus(of repository: Repository, to newStatus: Bool) -> AnyPublisher<Success, CustomError>
 }
 
 #if DEBUG

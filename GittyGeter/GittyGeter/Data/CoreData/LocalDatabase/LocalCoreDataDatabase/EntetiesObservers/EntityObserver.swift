@@ -58,7 +58,6 @@ extension CoreDataEntityObserver {
         }
     }
 
-    
     func configureFetchedResultsController(with context: NSManagedObjectContext,
                                            predicate: NSPredicate,
                                            sortingOrder: SortingOrder?) -> NSFetchedResultsController<EntityType> {

@@ -19,16 +19,18 @@ class LocalDatabaseDeletingSpec: QuickSpec {
             var repos: Repositories!
             let persistentRepositoryStore: LocalCoreDataDatabase = LocalCoreDataDatabase()
             var cancelBag: CancelBag!
-            
+
             beforeEach {
                 cancelBag = CancelBag()
                 orgs = Organization.mocks(count: 10)
                 repos = Repository.mocks(count: 20)
-                LocalDatabaseTestHelpers.initialize(this: persistentRepositoryStore, cancelBag: &cancelBag)
-                LocalDatabaseTestHelpers.deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
+                _ = LocalDatabaseTestHelpers.performAndWait(publisher: persistentRepositoryStore.initialize()).0
+                _ = LocalDatabaseTestHelpers
+                    .performAndWait(publisher: persistentRepositoryStore.deleteAllData()).0
             }
             afterEach {
-                LocalDatabaseTestHelpers.deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
+                _ = LocalDatabaseTestHelpers
+                    .performAndWait(publisher: persistentRepositoryStore.deleteAllData()).0
                 cancelBag = nil
                 orgs = nil
                 repos = nil
@@ -36,8 +38,8 @@ class LocalDatabaseDeletingSpec: QuickSpec {
 
             context("deleting organizations") {
                 beforeEach {
-                    LocalDatabaseTestHelpers
-                        .store(orgs: orgs, in: persistentRepositoryStore, cancelBag: &cancelBag)
+                    _ = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore.storeOrUpdate(organizations: orgs)).0
                     var allOrgs = Organizations()
                     waitUntil { done in
                         persistentRepositoryStore.getOrganizations()
@@ -52,27 +54,18 @@ class LocalDatabaseDeletingSpec: QuickSpec {
                     expect(allOrgs.count).to(equal(orgs.count))
                 }
                 it("should delete a single organization successfully") {
-                    LocalDatabaseTestHelpers.delete(org: orgs[0],
-                                                    in: persistentRepositoryStore,
-                                                    cancelBag: &cancelBag)
+                    let isDeleted = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore.delete(organization: orgs[0])).0
+                    expect(isDeleted).to(beTrue())
                 }
                 it("should handle errors when deleting an organization") {
-                    LocalDatabaseTestHelpers.delete(org: orgs[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
-                    var gottenError: CustomError?
-                    waitUntil { done in
-                        persistentRepositoryStore
-                            .getOrganizationEntity(with: orgs[0].identifier)
-                            .sink { result in
-                                switch result {
-                                case .finished: break
-                                case .failure(let error):
-                                    gottenError = error
-                                    done()
-                                }
-                            } receiveValue: { _ in }
-                            .store(in: &cancelBag)
-                    }
-                    expect(gottenError).notTo(beNil())
+                    _ = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore.delete(organization: orgs[0])).0
+                    do {
+                        let isDeleted = try LocalDatabaseTestHelpers
+                            .throwingPerformAndWait(publisher: persistentRepositoryStore.delete(organization: orgs[0])).0
+                        expect(isDeleted).to(beNil())
+                    } catch { }
                 }
                 it("should not delete a non-existent organization") {
                     var gottenError: CustomError?
@@ -95,26 +88,35 @@ class LocalDatabaseDeletingSpec: QuickSpec {
 
             context("deleting repositories") {
                 beforeEach {
-                    LocalDatabaseTestHelpers
-                        .storeOrUpdate(repositories: [repos[0], repos[1]], organization: orgs[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
-                    LocalDatabaseTestHelpers
-                        .storeOrUpdate(repositories: [repos[2], repos[3], repos[4]], organization: orgs[1], in: persistentRepositoryStore, cancelBag: &cancelBag)
+                    _ = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore.storeOrUpdate(repositories: [repos[0], repos[1]], parentOrganization: orgs[0]))
+                    _ = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore.storeOrUpdate(repositories: [repos[2], repos[3]], parentOrganization: orgs.first!)).0
                 }
                 it("should delete a single repository successfully") {
-                    LocalDatabaseTestHelpers
-                        .delete(repo: repos[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
+                    let isDeleted = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore.delete(repository: repos[0])).0
+                    expect(isDeleted).to(beTrue())
                 }
                 it("should delete multiple repositories successfully") {
-                    LocalDatabaseTestHelpers
-                        .delete(repo: repos[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
-                    LocalDatabaseTestHelpers
-                        .delete(repo: repos[1], in: persistentRepositoryStore, cancelBag: &cancelBag)
-                    LocalDatabaseTestHelpers
-                        .delete(repo: repos[3], in: persistentRepositoryStore, cancelBag: &cancelBag)
+                    let isDeleted = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore.delete(repository: repos[0])).0
+                    expect(isDeleted).to(beTrue())
+                    do {
+                        _ = try LocalDatabaseTestHelpers
+                            .throwingPerformAndWait(publisher: persistentRepositoryStore.delete(repository: repos[0]))
+                        _ = try LocalDatabaseTestHelpers
+                            .throwingPerformAndWait(publisher: persistentRepositoryStore.delete(repository: repos[0]))
+                        _ = try LocalDatabaseTestHelpers
+                            .throwingPerformAndWait(publisher: persistentRepositoryStore.delete(repository: repos[0]))
+                        fatalError()
+                    } catch {
+                    }
                 }
                 it("should handle errors when deleting a repository") {
-                    LocalDatabaseTestHelpers
-                        .delete(repo: repos[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
+                    let candidate = repos[0]
+                    _ = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore.delete(repository: candidate), timeout: 2).0
                     var gottenError: CustomError?
                     persistentRepositoryStore.delete(repository: repos[0])
                         .sink { result in
@@ -146,14 +148,15 @@ class LocalDatabaseDeletingSpec: QuickSpec {
 
             context("edge cases for deleting data") {
                 beforeEach {
-                    LocalDatabaseTestHelpers
-                        .storeOrUpdate(repositories: [repos[0], repos[1]], organization: orgs[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
-                    LocalDatabaseTestHelpers
-                        .storeOrUpdate(repositories: [repos[2], repos[3], repos[4]], organization: orgs[1], in: persistentRepositoryStore, cancelBag: &cancelBag)
+                    _ = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore.storeOrUpdate(repositories: [repos[0], repos[1]], parentOrganization: orgs[0])).0
+                    _ = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore.storeOrUpdate(repositories: [repos[2], repos[3], repos[4]], parentOrganization: orgs[1])).0
                 }
                 it("should allow re-adding entities after deletion") {
-                    LocalDatabaseTestHelpers.delete(repo: repos[0], in: persistentRepositoryStore, cancelBag: &cancelBag)
-                    LocalDatabaseTestHelpers.storeOrUpdate(repositories: [repos[0]], organization: orgs[3], in: persistentRepositoryStore, cancelBag: &cancelBag)
+                    _ = LocalDatabaseTestHelpers.performAndWait(publisher: persistentRepositoryStore.delete(repository: repos[0])).0
+                    _ = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore.storeOrUpdate(repositories: [repos[0], repos[3], repos[4]], parentOrganization: orgs[0])).0
                 }
             }
         }

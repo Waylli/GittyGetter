@@ -52,7 +52,6 @@ extension AppDataManager: DataManager {
 
 }
 
-
 private
 extension AppDataManager {
 

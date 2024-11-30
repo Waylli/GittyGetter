@@ -10,7 +10,6 @@ import Quick
 import Nimble
 @testable import GittyGeter
 
-
 class LocalDatabaseFetchingSpec: QuickSpec {
     override class func spec() {
         describe("Fetching Data from LocalDatabase") {
@@ -22,14 +21,13 @@ class LocalDatabaseFetchingSpec: QuickSpec {
                 cancelBag = CancelBag()
                 organization = Organization.mock()
                 repos = Repository.mocks(count: 10)
-                LocalDatabaseTestHelpers
-                    .initialize(this: persistentRepositoryStore, cancelBag: &cancelBag)
-                LocalDatabaseTestHelpers
-                    .deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
+                _ = LocalDatabaseTestHelpers.performAndWait(publisher: persistentRepositoryStore.initialize()).0
+                _ = LocalDatabaseTestHelpers
+                    .performAndWait(publisher: persistentRepositoryStore.deleteAllData()).0
             }
             afterEach {
-                LocalDatabaseTestHelpers
-                    .deleteAllData(in: persistentRepositoryStore, cancelBag: &cancelBag)
+                _ = LocalDatabaseTestHelpers
+                    .performAndWait(publisher: persistentRepositoryStore.deleteAllData()).0
                 cancelBag = nil
                 organization = nil
                 repos = nil
@@ -37,8 +35,9 @@ class LocalDatabaseFetchingSpec: QuickSpec {
 
             context("fetching organizations") {
                 beforeEach {
-                    LocalDatabaseTestHelpers
-                        .storeOrUpdate(repositories: repos, organization: organization, in: persistentRepositoryStore, cancelBag: &cancelBag)
+                    let isSaved = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore.storeOrUpdate(repositories: repos, parentOrganization: organization)).0
+                    expect(isSaved).to(beTrue())
                 }
                 it("should fetch all organizations successfully") {
                     var org: Organization?
@@ -53,11 +52,8 @@ class LocalDatabaseFetchingSpec: QuickSpec {
 
             context("fetching repositories by query") {
                 beforeEach {
-                    LocalDatabaseTestHelpers
-                        .storeOrUpdate(repositories: repos,
-                                  organization: organization,
-                                  in: persistentRepositoryStore,
-                                  cancelBag: &cancelBag)
+                    _ = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore.storeOrUpdate(repositories: repos, parentOrganization: organization)).0
                 }
                 it("should fetch repositories successfully for a valid query") {
                     let query = repos.first!.name
@@ -120,10 +116,9 @@ class LocalDatabaseFetchingSpec: QuickSpec {
             context("fetching favourite repositories") {
                 beforeEach {
                     repos = Repository.mocks(count: 10, isFavorite: true)
-                    LocalDatabaseTestHelpers
-                        .storeOrUpdate(repositories: repos,
-                                       organization: organization,
-                                       in: persistentRepositoryStore, cancelBag: &cancelBag)
+                    _ = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore
+                            .storeOrUpdate(repositories: repos, parentOrganization: organization))
                 }
                 it("should fetch favourite repositories successfully") {
                     var localRepos: Repositories?
@@ -140,10 +135,10 @@ class LocalDatabaseFetchingSpec: QuickSpec {
 
             context("fetching repositories for a specific organization") {
                 beforeEach {
-                    LocalDatabaseTestHelpers
-                        .storeOrUpdate(repositories: repos,
-                                       organization: organization,
-                                       in: persistentRepositoryStore, cancelBag: &cancelBag)
+                    _ = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: persistentRepositoryStore
+                            .storeOrUpdate(repositories: repos,
+                                           parentOrganization: organization))
                 }
                 it("should fetch repositories for a given organization successfully") {
                     var localRepos: Repositories?

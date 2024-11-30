@@ -29,7 +29,6 @@ class LocalCoreDataDatabase {
     }
     private var favoriteRepositoriesCancelable: AnyCancellable?
 
-
     init(dataModelName: String =  LocalCoreDataDatabase._dataModelName) {
         self.dataModelName = dataModelName
     }
@@ -56,7 +55,6 @@ class LocalCoreDataDatabase {
         let predicate = NSPredicate(format: "isFavourite == true")
         favoriteRepositoriesObserver?.change(predicate: predicate, sortingOrder: sortOrder)
     }
-
 
 }
 

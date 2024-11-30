@@ -26,7 +26,7 @@ class MockNetworkService: RepositoryNetworkService {
         }
         return Fail(error: error).eraseToAnyPublisher()
     }
-    
+
     func fetchRepositoriesForOrganizationWith(login: String) -> AnyPublisher<Repositories, CustomError> {
         guard let error = error else {
             return Just(repos)

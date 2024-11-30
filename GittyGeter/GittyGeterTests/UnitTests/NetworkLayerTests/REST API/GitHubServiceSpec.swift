@@ -62,8 +62,6 @@ class GitHubServiceSpec: QuickSpec {
                     expect(repositories?.count).to(beGreaterThan(0))
                 }
 
-
-
                 context("fetching live data") {
                     beforeEach {
                         provider.purgeCache()

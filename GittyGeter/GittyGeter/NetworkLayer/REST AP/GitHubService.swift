@@ -58,5 +58,5 @@ extension GitHubService: TargetType {
         }
     }
 
-    static var authToken: String? = nil
+    static var authToken: String?
 }

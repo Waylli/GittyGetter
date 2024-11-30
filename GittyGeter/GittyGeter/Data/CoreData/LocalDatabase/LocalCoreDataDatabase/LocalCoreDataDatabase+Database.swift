@@ -16,7 +16,7 @@ extension LocalCoreDataDatabase: RepositoryProvider {
                 let request = OrganizationEntity.fetchRequest()
                 do {
                     let entities = try context.fetch(request)
-                    let orgs = entities.map {try? $0.toOrganization()}.compactMap{$0}
+                    let orgs = entities.map {try? $0.toOrganization()}.compactMap {$0}
                     promise(.success(orgs))
                 } catch {
                     promise(.failure(CustomError.from(any: error)))
@@ -41,7 +41,7 @@ extension LocalCoreDataDatabase: RepositoryProvider {
                 do {
                     let results = try context.fetch(request)
                     let repositories = results.map {try? $0.toRepository()}
-                        .compactMap{$0}
+                        .compactMap {$0}
                     promise(.success(repositories))
                 } catch {
                     promise(.failure(CustomError.from(any: error)))
@@ -57,7 +57,7 @@ extension LocalCoreDataDatabase: RepositoryProvider {
     func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
         self.changeSortingOrderOfFavorites(to: sortingOrder)
         return $favoriteRepositories
-            .map {$0.map {try? $0.toRepository()}.compactMap{$0}}
+            .map {$0.map {try? $0.toRepository()}.compactMap {$0}}
             .receive(on: RunLoop.main)
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()

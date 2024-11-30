@@ -56,7 +56,7 @@ class KIFSpec: QuickSpec {
      */
     override public class func tearDown() {
         currentKIFActorDelegate = nil
-        let _ = Prepare()
+        _ = Prepare()
         super.tearDown()
     }
 

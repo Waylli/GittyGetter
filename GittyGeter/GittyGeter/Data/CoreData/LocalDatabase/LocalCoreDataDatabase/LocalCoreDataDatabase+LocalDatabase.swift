@@ -112,7 +112,6 @@ extension LocalCoreDataDatabase: PersistentRepositoryStore {
         .eraseToAnyPublisher()
     }
 
-
     func deleteAllData() -> AnyPublisher<Success, CustomError> {
         do {
             try _DeleteAllData()
@@ -126,7 +125,6 @@ extension LocalCoreDataDatabase: PersistentRepositoryStore {
     }
 
 }
-
 
 private
 extension LocalCoreDataDatabase {

@@ -87,7 +87,6 @@ class MockLocalDatabase: PersistentRepositoryStore {
             .eraseToAnyPublisher()
     }
 
-
     func updateFavoriteStatus(of repository: Repository, to newStatus: Bool) -> AnyPublisher<Success, CustomError> {
         Just(true)
             .setFailureType(to: CustomError.self)

@@ -10,7 +10,6 @@ import Moya
 import CombineMoya
 import Combine
 
-
 class GitHubAPIProvider: RepositoryNetworkService {
     // Define the Moya provider
     private let memoryCapacity = 10 * 1024 * 1024 // 10 MB
@@ -93,4 +92,3 @@ class GitHubAPIProvider: RepositoryNetworkService {
     }
 
 }
-
