@@ -11,10 +11,11 @@ import Combine
 struct ApplicationCoordinatorModel {
 
     let input: Input
-    let actions = Actions()
+    let events: Events
 
-    init(with input: Input) {
+    init(input: Input) {
         self.input = input
+        self.events = Events()
     }
 }
 
@@ -22,26 +23,26 @@ extension ApplicationCoordinatorModel {
 
     struct Input {
         let navigationCoordinator: NavigationCoordinator
-        let viewModelFactor: ViewModelFactory
+        let viewModelFactory: ViewModelFactory
         let dataManager: DataManager
     }
 
-    struct Actions {
-        let userSelectedRepository = PassthroughSubject<Repository, Never>()
-        let userSelectedOrganization = PassthroughSubject<Organization, Never>()
-        let backButtonTapped = PassthroughSubject<Void, Never>()
+    struct Events {
+        let repositorySelected = PassthroughSubject<Repository, Never>()
+        let organizationSelected = PassthroughSubject<Organization, Never>()
+        let backTapped = PassthroughSubject<Void, Never>()
     }
-
 }
+
+// MARK: - Computed Properties
 
 extension ApplicationCoordinatorModel {
 
-    var viewModelFactor: ViewModelFactory {
-        input.viewModelFactor
+    var viewModelFactory: ViewModelFactory {
+        input.viewModelFactory
     }
 
     var navigator: Navigator {
         input.navigationCoordinator
     }
-
 }

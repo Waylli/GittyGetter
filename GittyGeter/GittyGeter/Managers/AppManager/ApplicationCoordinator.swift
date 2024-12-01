@@ -29,9 +29,9 @@ extension ApplicationCoordinator {
             .sink { [weak self] _ in
                 // we do not care about error
                 guard let this = self else {return}
-                let modelOutput = GittyTabViewModel.Output(userSelectedRepository: this.model.actions.userSelectedRepository,
-                                                           userSelectedOrganization: this.model.actions.userSelectedOrganization)
-                let viewModel = this.model.viewModelFactor.makeGittyTabViewModel(with: modelOutput)
+                let modelOutput = GittyTabViewModel.Output(userSelectedRepository: this.model.events.repositorySelected,
+                                                           userSelectedOrganization: this.model.events.organizationSelected)
+                let viewModel = this.model.viewModelFactory.makeGittyTabViewModel(with: modelOutput)
                 let entryView = GittyTabView(with: viewModel)
                 this.model.navigator.set(views: [entryView.toViewController()], animated: true)
             } receiveValue: { _ in
@@ -40,20 +40,20 @@ extension ApplicationCoordinator {
     }
 
     func bindActions() {
-        model.actions
-            .userSelectedRepository
+        model.events
+            .repositorySelected
             .sink { [weak self] repository in
                 self?.showDetail(for: repository)
             }
             .store(in: &cancelBag)
-        model.actions
-            .userSelectedOrganization
+        model.events
+            .organizationSelected
             .sink { [weak self] organization in
                 self?.showDetail(for: organization)
             }
             .store(in: &cancelBag)
-        model.actions
-            .backButtonTapped
+        model.events
+            .backTapped
             .sink { [weak self] _ in
                 self?.model.navigator.pop(animated: true)
             }
@@ -66,8 +66,8 @@ extension ApplicationCoordinator {
 
     func showDetail(for repository: Repository) {
         let modelOutput = DetailedRepositoryViewModel
-            .Output(backButtonTapped: model.actions.backButtonTapped)
-        let repoDetailView = model.viewModelFactor.makeDetailModel(for: repository, modelOutput: modelOutput)
+            .Output(backButtonTapped: model.events.backTapped)
+        let repoDetailView = model.viewModelFactory.makeDetailedRepositoryViewModel(for: repository, modelOutput: modelOutput)
         let detailedRepositoryView = DetailedRepositoryView(with: repoDetailView)
         model.navigator.push(view: detailedRepositoryView.toViewController(),
                              animated: true)
@@ -75,9 +75,9 @@ extension ApplicationCoordinator {
 
     func showDetail(for organization: Organization) {
         let modelOutput = DetailedOrganizationViewModel
-            .Output(userSelectedRepository: model.actions.userSelectedRepository,
-                    backButtonTapped: model.actions.backButtonTapped)
-        let viewModel = model.viewModelFactor
+            .Output(userSelectedRepository: model.events.repositorySelected,
+                    backButtonTapped: model.events.backTapped)
+        let viewModel = model.viewModelFactory
             .makeDetailedOrganizationViewModel(for: organization, modelOutput: modelOutput)
         let view = DetailedOrganizationView(with: viewModel)
         model.input.navigationCoordinator.push(view: view.toViewController(), animated: true)

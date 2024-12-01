@@ -31,7 +31,7 @@ extension ViewModelFactory {
         return GittyTabViewModel(with: modelInput, and: modelOutput)
     }
 
-    func makeDetailModel(for repository: Repository,
+    func makeDetailedRepositoryViewModel(for repository: Repository,
                          modelOutput: DetailedRepositoryViewModel.Output) -> DetailedRepositoryViewModel {
         let modelInput = DetailedRepositoryViewModel
             .Input(repository: repository,
