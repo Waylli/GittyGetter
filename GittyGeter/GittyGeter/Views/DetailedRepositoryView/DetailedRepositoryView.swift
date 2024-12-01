@@ -141,6 +141,7 @@ struct DetailedRepositoryView: View {
             Text(subtitle)
                 .font(.title3)
         }
+        .accessibilityLabel("DetailedRepositoryView.\(title)")
     }
 }
 

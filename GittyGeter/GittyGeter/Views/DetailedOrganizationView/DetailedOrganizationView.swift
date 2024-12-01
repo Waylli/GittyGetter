@@ -102,6 +102,7 @@ struct DetailedOrganizationView: View {
             }
             Spacer()
         }
+        .accessibilityLabel(TestingIdentifiers.decorationView)
     }
 
     var repositories: some View {
@@ -112,6 +113,12 @@ struct DetailedOrganizationView: View {
                 RepositoriesListView(with: model.makeRepositoriesListViewModel())
             }
         }
+    }
+}
+
+extension DetailedOrganizationView {
+    struct TestingIdentifiers {
+        static let decorationView = "DetailedOrganizationView.DecorationView"
     }
 }
 
