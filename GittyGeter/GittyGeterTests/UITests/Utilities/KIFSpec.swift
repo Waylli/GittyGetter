@@ -107,4 +107,14 @@ extension KIFSpec {
         expect(view).toNot(beNil(), description: description ?? "View with accessibility label '\(label)' should exist.")
     }
 
+    static func assertViewDoesNotExist(withAccessibilityLabel label: String,
+                                       description: String? = nil) {
+        tester().waitForAbsenceOfView(withAccessibilityLabel: label)
+        do {
+            try tester().tryFindingView(withAccessibilityLabel: label)
+            XCTFail(description ?? "View with accessibility label '\(label)' was unexpectedly found.")
+        } catch { }
+    }
+
+
 }

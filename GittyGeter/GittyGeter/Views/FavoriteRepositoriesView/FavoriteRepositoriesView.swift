@@ -22,10 +22,13 @@ struct FavouriteRepositoriesView: View {
             VStack {
                 if model.repositories.count > 0 {
                     TitleTextComponent(title: "Favourite")
+                        .accessibilityLabel(TestingIdentifiers.titleView)
                     RepositoriesListView(with: model.makeRepositoriesListViewModel())
+                        .accessibilityLabel(TestingIdentifiers.repositoriesView)
                     Spacer()
                 } else {
                     noRepos
+                        .accessibilityLabel(TestingIdentifiers.noRepositoriesView)
                 }
             }
         }
@@ -60,6 +63,9 @@ struct FavouriteRepositoriesView: View {
 extension FavouriteRepositoriesView {
     struct TestingIdentifiers {
         static let placeholderView = "FavouriteRepositories.PlaceholderView"
+        static let titleView = "FavouriteRepositories.TitleView"
+        static let repositoriesView = "FavouriteRepositories.RepositoriesView"
+        static let noRepositoriesView = "FavouriteRepositories.NoRepositories"
     }
 }
 

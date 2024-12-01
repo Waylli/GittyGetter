@@ -12,7 +12,7 @@ class FavouriteRepositoriesViewModel: ObservableObject {
 
     @Published private(set) var repositories = Repositories()
     @Published var sortingOrder: SortingOrder
-    private var fetch: AnyCancellable?
+    private(set) var fetch: AnyCancellable?
     private var cancelBag = CancelBag()
 
     let input: Input

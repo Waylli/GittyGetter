@@ -23,13 +23,16 @@ class MockDatabase: FullRepositoryService {
     let organizations: Organizations
     let repositories: Repositories
     var fetchedRepositories: Repositories
+    let initialSortingOrder: SortingOrder
 
     init(organizations: Organizations = Organization.mocks(),
-         repositories: Repositories = Repository.mocks(),
-         fetchedRepositories: Repositories = Repository.mocks()) {
+         repositories: Repositories = Repository.mocks(count: 20),
+         fetchedRepositories: Repositories = Repository.mocks(),
+         sortingOrder: SortingOrder = Configuration.standard().settings.sorting.forFavorites) {
         self.organizations = organizations
         self.repositories = repositories
         self.fetchedRepositories = fetchedRepositories
+        self.initialSortingOrder = sortingOrder
     }
 
     func getRepositories(query: String,
@@ -51,13 +54,23 @@ class MockDatabase: FullRepositoryService {
     }
 
     func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
-        Just(repositories)
+        guard sortingOrder == initialSortingOrder else {
+            return Just(fetchedRepositories)
+                .setFailureType(to: CustomError.self)
+                .eraseToAnyPublisher()
+        }
+        return Just(repositories)
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }
 
     func getRepositories(for orgnization: Organization, sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
-        Just(repositories)
+        guard sortingOrder == initialSortingOrder else {
+            return Just(fetchedRepositories)
+                .setFailureType(to: CustomError.self)
+                .eraseToAnyPublisher()
+        }
+        return Just(repositories)
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }

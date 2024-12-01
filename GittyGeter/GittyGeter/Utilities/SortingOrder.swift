@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-enum SortingOrder {
+enum SortingOrder: Equatable {
     case createdAt(ascending: Bool)
     case updatedAt(ascending: Bool)
     case name(ascending: Bool)
