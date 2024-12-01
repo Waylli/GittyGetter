@@ -18,6 +18,7 @@ struct FavouriteRepositoriesView: View {
     var body: some View {
         ZStack {
             model.input.configuration.colors.tappableClearColor
+                .accessibilityLabel(TestingIdentifiers.placeholderView)
             VStack {
                 if model.repositories.count > 0 {
                     TitleTextComponent(title: "Favourite")
@@ -53,6 +54,12 @@ struct FavouriteRepositoriesView: View {
             Text("You can add a repository to favorites from repositories -> detail")
                 .font(.body)
         }
+    }
+}
+
+extension FavouriteRepositoriesView {
+    struct TestingIdentifiers {
+        static let placeholderView = "FavouriteRepositories.PlaceholderView"
     }
 }
 

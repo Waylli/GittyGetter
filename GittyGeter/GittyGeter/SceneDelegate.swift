@@ -17,11 +17,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         // make a Transient view
-        let navigator = BaseNavigationCoordinator(rootViewController: UIViewController())
+        let viewController = UIViewController()
+        let navigator = BaseNavigationCoordinator(rootViewController: viewController)
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = navigator
         self.window = window
         window.makeKeyAndVisible()
+        let isTesting = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+        guard !isTesting else {
+            viewController.view.backgroundColor = .yellow
+            return
+        }
         applicationCoordinator = createApplicationCoordinator(with: navigator)
     }
 

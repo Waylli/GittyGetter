@@ -20,9 +20,11 @@ struct RepositoriesView: View {
         VStack {
             HStack(alignment: .top) {
                 TitleTextComponent(title: "Repositories")
+                    .accessibilityLabel(TestingIdentifiers.titleView)
                 Spacer()
                 SortingOrderButtonComponent(sortingOrder: model.sortingOrder,
                                             configuration: model.input.configuration)
+                .accessibilityLabel(TestingIdentifiers.sortingView)
                 .onTapGesture {
                     model.sortingOrder = model.sortingOrder.next()
                 }
@@ -31,10 +33,12 @@ struct RepositoriesView: View {
                             isFocused: $isSearching,
                             configuration: model.input.configuration)
             FilterOrganizationsComponent(with: model.makeFilterOrganizationsComponentModel())
+                .accessibilityLabel(TestingIdentifiers.searchComponent)
                 .background {
                     model.input.configuration.colors.tappableClearColor
                 }
             RepositoriesListView(with: model.makeRepositoriesListViewModel())
+                .accessibilityLabel(TestingIdentifiers.repositoryListComponent)
             Spacer()
         }
         .padding([.top, .leading, .trailing])
@@ -47,12 +51,23 @@ struct RepositoriesView: View {
                         isSearching = false
                     }
                 }
+                .accessibilityLabel(TestingIdentifiers.backgroundView)
         }
         .onAppear {
             model.sortingOrder = model.sortingOrder
         }
     }
 
+}
+
+extension RepositoriesView {
+    struct TestingIdentifiers {
+        static let titleView = "RepositoriesView.Title"
+        static let sortingView = "RepositoriesView.SortingButton"
+        static let searchComponent = "RepositoriesView.SearchView"
+        static let repositoryListComponent = "RepositoriesView.RepositorytList"
+        static let backgroundView = "RepositoriesView.BackgroundView"
+     }
 }
 
 #if DEBUG

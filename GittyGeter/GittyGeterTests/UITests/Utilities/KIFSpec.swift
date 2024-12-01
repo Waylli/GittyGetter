@@ -38,7 +38,7 @@ class KIFSpec: QuickSpec {
     fileprivate class func getCurrentKIFActorDelegate() -> KIFTestActorDelegate {
         let delegate = KIFSpec.currentKIFActorDelegate
         precondition(delegate != nil, "Test actor delegate should be configured. " +
-            "Did you attempt to use a KIFTestActor outside of a test?")
+                     "Did you attempt to use a KIFTestActor outside of a test?")
         return delegate!
     }
 
@@ -82,4 +82,29 @@ class KIFSpec: QuickSpec {
             Nimble.fail(exception.description)
         }
     }
+}
+
+import SwiftUI
+extension KIFSpec {
+
+    static
+    func presentView<T: View>(view: T) -> (view: T, rootView: UIViewController) {
+        let rootView = try! UIApplication.getVisibleViewController()
+        rootView.present(view.toViewController(), animated: false)
+        tester().waitForAnimationsToFinish()
+        return (view, rootView)
+    }
+
+    static
+    func cleanUp(rootView: UIViewController) {
+        rootView.dismiss(animated: false)
+        tester().waitForAnimationsToFinish()
+    }
+
+    static
+    func assertViewExists(withAccessibilityLabel label: String, description: String? = nil) {
+        let view = tester().waitForView(withAccessibilityLabel: label)
+        expect(view).toNot(beNil(), description: description ?? "View with accessibility label '\(label)' should exist.")
+    }
+
 }

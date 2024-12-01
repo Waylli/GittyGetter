@@ -18,16 +18,18 @@ struct OrganizationsView: View {
     var body: some View {
         VStack {
             TitleTextComponent(title: "Organizations")
+                .accessibilityLabel(TestingIdentifiers.titleView)
                 .overlay {
                     HStack {
                         Spacer()
                         VStack {
                             Button {
-
+                                print("aad orga not implemented")
                             } label: {
                                 Image(systemName: "plus.circle")
                                     .font(.title)
                                     .padding([.top, .trailing])
+                                    .accessibilityLabel(TestingIdentifiers.addOrgaButton)
                             }
                             Spacer()
                         }
@@ -39,6 +41,13 @@ struct OrganizationsView: View {
         .padding()
     }
 
+}
+
+extension OrganizationsView {
+    struct TestingIdentifiers {
+        static let titleView = "OrganizationsView.TitleView"
+        static let addOrgaButton = "OrganizationsView.AddButton"
+    }
 }
 
 #if DEBUG

@@ -10,6 +10,8 @@ import Combine
 
 class GittyTabViewModel: ObservableObject {
 
+    @Published var selectedTab = GittyTabView.GittyTabViewTab.repositories
+
     let input: Input
     let output: Output
 
