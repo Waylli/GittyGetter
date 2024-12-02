@@ -13,7 +13,7 @@ import UIKit
 @testable import GittyGeter
 
 class ApplicationCoordinatorSpec: KIFSpec {
-    
+
     override class func spec() {
         describe("ApplicationCoordinator") {
             var coordinator: ApplicationCoordinator!

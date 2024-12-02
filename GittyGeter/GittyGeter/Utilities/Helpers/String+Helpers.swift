@@ -17,7 +17,6 @@ extension String {
 }
 #endif
 
-
 import SwiftUI
 
 extension String {
