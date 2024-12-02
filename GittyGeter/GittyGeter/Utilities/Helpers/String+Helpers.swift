@@ -7,7 +7,7 @@
 
 import Foundation
 
-#if DEBUG
+#if DEBUG || TESTING
 extension String {
     static
     func random() -> String {

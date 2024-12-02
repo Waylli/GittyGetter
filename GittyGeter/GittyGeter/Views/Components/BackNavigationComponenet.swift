@@ -35,7 +35,7 @@ extension BackNavigationComponenet {
         static let backButton = "BackNavigationComponenet.Back.Button"
     }
 }
-#if DEBUG
+#if DEBUG && !TESTING
 #Preview {
     BackNavigationComponenet(configuration: Configuration.standard())
 }

@@ -24,7 +24,7 @@ struct SortingOrderButtonComponent: View {
     }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 #Preview {
     SortingOrderButtonComponent(sortingOrder: .standard, configuration: Configuration.standard())
 }

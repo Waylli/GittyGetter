@@ -73,7 +73,7 @@ extension Organization {
     var id: String {identifier}
 }
 
-#if DEBUG
+#if DEBUG || TESTING
 extension Organization {
 
     static

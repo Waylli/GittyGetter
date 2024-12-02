@@ -1,23 +1,15 @@
 //
-//  RepositoryProvider.swift
-//  GittyGeter
+//  MockDatabase.swift
+//  GittyGeterTests
 //
-//  Created by Petar Perkovski on 27/11/2024.
+//  Created by Petar Perkovski on 02/12/2024.
 //
 
 import Foundation
 import Combine
 
-protocol RepositoryProvider {
-    func getOrganizations() -> AnyPublisher<Organizations, CustomError>
-    /// if no organization is provided it should fetch all repositories
-    func getRepositories(query: String, within organizations: Organizations, sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError>
-    func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError>
-    func getRepositories(for organization: Organization, sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError>
-    func updateFavoriteStatus(of repository: Repository, to newStatus: Bool) -> AnyPublisher<Success, CustomError>
-}
+@testable import GittyGeter
 
-#if DEBUG && !TESTING
 class MockDatabase: FullRepositoryService {
 
     let organizations: Organizations
@@ -122,4 +114,3 @@ class MockDatabase: FullRepositoryService {
             .eraseToAnyPublisher()
     }
 }
-#endif

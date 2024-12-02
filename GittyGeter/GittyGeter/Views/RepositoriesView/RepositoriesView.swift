@@ -75,7 +75,7 @@ extension RepositoriesView {
      }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 import Combine
 #Preview {
     let database = MockDatabase()

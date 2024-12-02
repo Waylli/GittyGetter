@@ -1,19 +1,15 @@
 //
-//  RepositoryNetworkService.swift
-//  GittyGeter
+//  MockNetworkService.swift
+//  GittyGeterTests
 //
-//  Created by Petar Perkovski on 29/11/2024.
+//  Created by Petar Perkovski on 02/12/2024.
 //
 
 import Foundation
 import Combine
 
-protocol RepositoryNetworkService {
-    func fetchOrganizationWith(login: String) -> AnyPublisher<Organization, CustomError>
-    func fetchRepositoriesForOrganizationWith(login: String) -> AnyPublisher<Repositories, CustomError>
-}
+@testable import GittyGeter
 
-#if DEBUG && !TESTING
 class MockNetworkService: RepositoryNetworkService {
     var error: CustomError?
     var organization = Organization.mock()
@@ -37,4 +33,3 @@ class MockNetworkService: RepositoryNetworkService {
     }
 
 }
-#endif

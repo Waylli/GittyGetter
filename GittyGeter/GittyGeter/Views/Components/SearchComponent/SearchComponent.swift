@@ -55,7 +55,7 @@ struct SearchComponent: View {
     }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 #Preview {
     struct PreviewWrapper: View {
         @State private var query = "petar"

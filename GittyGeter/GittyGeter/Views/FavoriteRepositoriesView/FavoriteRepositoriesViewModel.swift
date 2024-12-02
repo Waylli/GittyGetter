@@ -74,7 +74,7 @@ extension FavouriteRepositoriesViewModel {
         fetch?.cancel()
         fetch = input.getFavouriteRepositories(order)
             .sink { _ in
-                print("handle error if any")
+                print("handle error")
             } receiveValue: { [weak self] in
                 self?.repositories = $0
             }

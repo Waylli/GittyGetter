@@ -75,7 +75,7 @@ extension FavouriteRepositoriesView {
     }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 import Combine
 
 #Preview {

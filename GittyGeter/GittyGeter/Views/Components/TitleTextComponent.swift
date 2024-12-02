@@ -20,7 +20,7 @@ struct TitleTextComponent: View {
     }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 #Preview {
     TitleTextComponent(title: "Repos")
 }

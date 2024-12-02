@@ -12,7 +12,7 @@ protocol Fetcher {
     func fetchPhoto(from string: String) -> AnyPublisher<Photo, CustomError>
 }
 
-#if DEBUG
+#if DEBUG || TESTING
 class MockFetcher: Fetcher {
 
     var canFetch: Bool

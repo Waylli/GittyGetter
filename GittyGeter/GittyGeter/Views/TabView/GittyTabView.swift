@@ -77,7 +77,7 @@ extension GittyTabView {
     }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 import Combine
 
 #Preview {

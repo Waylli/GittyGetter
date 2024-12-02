@@ -20,7 +20,7 @@ struct DescriptionTextComponent: View {
     }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 #Preview {
     DescriptionTextComponent(text: "ds")
 }

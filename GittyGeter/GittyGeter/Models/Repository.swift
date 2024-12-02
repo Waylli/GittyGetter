@@ -118,7 +118,7 @@ extension Repository {
     var id: String {identifier}
 }
 
-#if DEBUG
+#if DEBUG || TESTING
 extension Repository {
     static func mock(isFavorite: Bool = Int.random(in: 0...4) == 0) -> Repository {
         Repository(identifier: UUID().uuidString,

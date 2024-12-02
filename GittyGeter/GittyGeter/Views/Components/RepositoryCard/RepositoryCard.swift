@@ -92,7 +92,7 @@ struct RepositoryCard: View {
     }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 import Combine
 
 #Preview {

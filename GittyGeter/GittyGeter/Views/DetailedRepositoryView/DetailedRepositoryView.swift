@@ -154,7 +154,7 @@ extension DetailedRepositoryView {
     }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 import Combine
 
 #Preview {

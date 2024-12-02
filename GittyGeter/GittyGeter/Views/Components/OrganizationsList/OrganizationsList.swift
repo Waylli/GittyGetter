@@ -40,7 +40,7 @@ struct OrganizationsList: View {
     }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 import Combine
 #Preview {
     let modelInput = OrganizationsListModel

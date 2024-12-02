@@ -38,7 +38,7 @@ struct OrganizationCard: View {
     }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 #Preview {
     let modelInput = OrganizationCardModel
         .Input(organization: Organization.mock(),

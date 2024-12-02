@@ -22,7 +22,7 @@ protocol PersistentRepositoryStore {
 
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 class MockLocalDatabase: PersistentRepositoryStore {
 
     func storeOrUpdate(organizations: Organizations) -> AnyPublisher<Success, CustomError> {

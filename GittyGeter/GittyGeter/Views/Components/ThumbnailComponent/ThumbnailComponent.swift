@@ -28,7 +28,7 @@ struct ThumbnailComponent<Content: View>: View {
     }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 #Preview {
     ThumbnailComponent(thumbnail: UIImage.star, configuration: .standard()) {
         Color.red

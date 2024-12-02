@@ -50,7 +50,7 @@ struct RepositoriesListView: View {
     }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 import Combine
 
 #Preview {

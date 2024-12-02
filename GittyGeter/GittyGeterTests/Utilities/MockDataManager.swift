@@ -1,20 +1,15 @@
 //
-//  DataManager.swift
-//  GittyGeter
+//  MockDataManager.swift
+//  GittyGeterTests
 //
-//  Created by Petar Perkovski on 28/11/2024.
+//  Created by Petar Perkovski on 02/12/2024.
 //
 
 import Foundation
 import Combine
 
-protocol DataManager {
-    func refreshContent() -> AnyPublisher<Success, CustomError>
-    func addOrganizationWith(_ identifier: String) -> AnyPublisher<Success, CustomError>
-    func remove(this organization: Organization) -> AnyPublisher<Success, CustomError>
-}
+@testable import GittyGeter
 
-#if DEBUG && !TESTING
 class MockDataManager: DataManager {
     func refreshContent() -> AnyPublisher<Success, CustomError> {
         Just(true)
@@ -66,4 +61,3 @@ class MockDataManager: DataManager {
     }
 
 }
-#endif

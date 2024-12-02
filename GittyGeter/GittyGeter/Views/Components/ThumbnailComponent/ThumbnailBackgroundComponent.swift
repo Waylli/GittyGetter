@@ -13,7 +13,7 @@ struct ThumbnailBackgroundComponent: View {
     }
 }
 
-#if DEBUG
+#if DEBUG && !TESTING
 #Preview {
     ThumbnailBackgroundComponent()
 }
