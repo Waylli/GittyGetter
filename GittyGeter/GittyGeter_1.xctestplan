@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "99866CDF-CC0E-45B9-BDAA-33DE6A33D93C",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:GittyGeter.xcodeproj",
+        "identifier" : "D2706FE82CF5EA9E00C909D2",
+        "name" : "GittyGeterTests"
+      }
+    }
+  ],
+  "version" : 1
+}

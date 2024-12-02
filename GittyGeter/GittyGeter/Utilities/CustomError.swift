@@ -8,14 +8,17 @@
 import Foundation
 
 enum CustomError: Error {
-    case dataMappingFailed,
+    case networkError,
+         objectNotFound,
+         dataMappingFailed,
+         persistentRepositoryStoreError,
          unknown(Error)
 }
 
 extension CustomError {
     static
     func from(any error: Error) -> CustomError {
-        //handle it better when you have the time
+        // handle it better when you have the time
         .unknown(error)
     }
 }
