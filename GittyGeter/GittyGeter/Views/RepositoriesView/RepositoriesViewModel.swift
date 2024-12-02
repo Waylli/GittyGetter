@@ -68,14 +68,14 @@ extension RepositoriesViewModel {
     func makeFilterOrganizationsComponentModel() -> FilterOrganizationsComponentModel {
         let modelInput = FilterOrganizationsComponentModel
             .Input(availableOrganizations: availableOrganizations,
-                   currentFilteredOrganizations: currentFilteredOrganizations,
+                   filteredOrganizations: currentFilteredOrganizations,
                    configuration: input.configuration)
         let modelOutput = FilterOrganizationsComponentModel
             .Output(removeFilteredOrganization: actions.removeFilteredOrganization,
                     removeAllFilteredOrganizations: actions.removeAllFilteredOrganizations,
                     applyFilterFromOrganization: actions.applyFilterToOrganization)
-        return FilterOrganizationsComponentModel(with: modelInput,
-                                                 and: modelOutput)
+        return FilterOrganizationsComponentModel(input: modelInput,
+                                                 output: modelOutput)
     }
 
     func makeRepositoriesListViewModel() -> RepositoriesListViewModel {

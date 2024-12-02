@@ -10,106 +10,88 @@ import WrappingHStack
 
 struct FilterOrganizationsComponent: View {
 
-    private let model: FilterOrganizationsComponentModel
+    private let viewModel: FilterOrganizationsComponentModel
 
-    init(with model: FilterOrganizationsComponentModel) {
-        self.model = model
+    init(model: FilterOrganizationsComponentModel) {
+        self.viewModel = model
     }
 
     var body: some View {
         VStack(spacing: 16) {
-            if !model.input.currentFilteredOrganizations.isEmpty {
-                VStack(spacing: 7) {
-                    HStack {
-                        filteredOrganizationsView
-                        Spacer()
-                    }
-                    if model.input.currentFilteredOrganizations.count > 1 {
-                        clearLabel
-                    }
-                }
-                Divider()
+            if !viewModel.input.filteredOrganizations.isEmpty {
+                filteredOrganizationsSection
             }
-            if !model.input.availableOrganizations.isEmpty {
-                availableOrganizations
-                Divider()
+            if !viewModel.input.availableOrganizations.isEmpty {
+                availableOrganizationsSection
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(TestingIdentifiers.mainView)
     }
 
-    private
-    var filteredOrganizationsView: some View {
-        WrappingHStack(model.input.currentFilteredOrganizations, id: \.self) { org in
+    private var filteredOrganizationsSection: some View {
+        VStack(spacing: 7) {
             HStack {
-                Text(org.name)
-                    .font(.footnote)
-                Image(systemName: "xmark.circle")
+                filteredOrganizationsView
+                Spacer()
             }
-            .padding(4)
-            .background {
-                RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
-                    .foregroundStyle(Color.blue.opacity(0.4))
+            if viewModel.input.filteredOrganizations.count > 1 {
+                clearFiltersButton
+                    .accessibilityLabel(TestingIdentifiers.clearFiltersButton)
             }
-            .padding([.top, .bottom], 4)
-            .onTapGesture {
-                model.removeFromFiltered(this: org)
+        }
+        .padding(.bottom, 8)
+        .overlay(Divider(), alignment: .bottom)
+    }
+
+    private var availableOrganizationsSection: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(viewModel.input.availableOrganizations, id: \.self) { organization in
+                    organizationChip(for: organization)
+                }
             }
+        }
+        .overlay(Divider(), alignment: .top)
+    }
+
+    private var filteredOrganizationsView: some View {
+        WrappingHStack(viewModel.input.filteredOrganizations, id: \.self) { organization in
+            organizationChip(for: organization)
+                .onTapGesture {
+                    viewModel.output.removeFilteredOrganization.send(organization)
+                }
+                .accessibilityLabel("\(TestingIdentifiers.clearOrgaButton)")
         }
     }
 
-    private
-    var clearLabel: some View {
+    private var clearFiltersButton: some View {
         Text("Clear all filters")
             .font(.callout)
-            .padding(6)
-            .padding([.leading, .trailing], 16)
-            .background {
-                RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
-                    .foregroundStyle(Color.red.opacity(0.6))
-            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 6)
+            .background(RoundedRectangle(cornerRadius: viewModel.input.configuration.view.cornerRadius)
+                .foregroundColor(.red.opacity(0.6)))
             .onTapGesture {
-                model.pressedClearAll()
+                viewModel.clearAllFilters()
             }
     }
 
-    private
-    var availableOrganizations: some View {
-        ScrollView(.horizontal) {
-            HStack {
-                ForEach(model.input.availableOrganizations,
-                        id: \.self) { organization in
-                    Text(organization.name)
-                        .italic()
-                        .font(.headline)
-                        .foregroundStyle(.primary)
-                        .padding([.top, .bottom], 8)
-                        .padding([.leading, .trailing], 12)
-                        .background {
-                            RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
-                                .foregroundStyle(Color.primary.opacity(0.25))
-                        }
-                        .onTapGesture {
-                            model.applyFilterFrom(this: organization)
-                        }
-                }
-            }
-        }
+    private func organizationChip(for organization: Organization) -> some View {
+        Text(organization.name)
+            .font(.headline)
+            .italic()
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(RoundedRectangle(cornerRadius: viewModel.input.configuration.view.cornerRadius)
+                .foregroundColor(.blue.opacity(0.4)))
     }
 }
 
-#if DEBUG
-import Combine
-
-#Preview {
-    let modelInput = FilterOrganizationsComponentModel
-        .Input(availableOrganizations: Organization.mocks(count: 20),
-               currentFilteredOrganizations: Organization.mocks(),
-               configuration: Configuration.standard())
-    let modelOutput = FilterOrganizationsComponentModel
-        .Output(removeFilteredOrganization: PassthroughSubject(),
-                removeAllFilteredOrganizations: PassthroughSubject(),
-                applyFilterFromOrganization: PassthroughSubject())
-    let model = FilterOrganizationsComponentModel(with: modelInput, and: modelOutput)
-    FilterOrganizationsComponent(with: model)
+extension FilterOrganizationsComponent {
+    struct TestingIdentifiers {
+        static let mainView = "FilterOrganizationsComponent.MainView"
+        static let clearFiltersButton = "FilterOrganizationsComponent.ClearFiltersButton"
+        static let clearOrgaButton = "FilterOrganizationsComponentOrga.Chip"
+    }
 }
-#endif

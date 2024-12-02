@@ -34,7 +34,7 @@ struct RepositoriesView: View {
             SearchComponent(query: $model.query,
                             isFocused: $isSearching,
                             configuration: model.input.configuration)
-            FilterOrganizationsComponent(with: model.makeFilterOrganizationsComponentModel())
+            FilterOrganizationsComponent(model: model.makeFilterOrganizationsComponentModel())
                 .accessibilityElement(children: .contain)
                 .accessibilityLabel(TestingIdentifiers.searchComponent)
                 .background {

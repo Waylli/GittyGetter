@@ -13,21 +13,23 @@ class FilterOrganizationsComponentModel {
     let input: Input
     let output: Output
 
-    init(with input: Input,
-         and output: Output) {
+    init(input: Input, output: Output) {
         self.input = input
         self.output = output
     }
 
-    func removeFromFiltered(this organization: Organization) {
+    /// Sends an event to remove a specific organization from the filtered list.
+    func removeFromFiltered(organization: Organization) {
         output.removeFilteredOrganization.send(organization)
     }
 
-    func pressedClearAll() {
+    /// Sends an event to clear all filtered organizations.
+    func clearAllFilters() {
         output.removeAllFilteredOrganizations.send(())
     }
 
-    func applyFilterFrom(this organization: Organization) {
+    /// Sends an event to apply a filter for a specific organization.
+    func applyFilter(for organization: Organization) {
         output.applyFilterFromOrganization.send(organization)
     }
 }
@@ -36,7 +38,7 @@ extension FilterOrganizationsComponentModel {
 
     struct Input {
         let availableOrganizations: Organizations
-        let currentFilteredOrganizations: Organizations
+        let filteredOrganizations: Organizations
         let configuration: Configuration
     }
 

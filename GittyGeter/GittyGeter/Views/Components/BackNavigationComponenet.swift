@@ -20,6 +20,7 @@ struct BackNavigationComponenet: View {
                         .aspectRatio(contentMode: .fit)
                         .foregroundStyle(.primary)
                         .frame(height: proxy.size.height * 0.7)
+                        .accessibilityLabel(TestingIdentifiers.backButton)
                     Spacer()
                 }
             }
@@ -29,6 +30,11 @@ struct BackNavigationComponenet: View {
     }
 }
 
+extension BackNavigationComponenet {
+    struct TestingIdentifiers {
+        static let backButton = "BackNavigationComponenet.Back.Button"
+    }
+}
 #if DEBUG
 #Preview {
     BackNavigationComponenet(configuration: Configuration.standard())

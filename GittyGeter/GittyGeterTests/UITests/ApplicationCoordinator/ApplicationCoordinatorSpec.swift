@@ -18,68 +18,71 @@ class ApplicationCoordinatorSpec: KIFSpec {
         describe("ApplicationCoordinator") {
             var coordinator: ApplicationCoordinator!
             var coordinatorModel: ApplicationCoordinatorModel!
-            var navigator: BaseNavigationCoordinator!
-            var factory: ViewModelFactory!
-            let dataManager: DataManager = MockDataManager()
-            let database = MockDatabase()
-            var rootView: UIViewController!
-            
+            var navigationCoordinator: BaseNavigationCoordinator!
+            var viewModelFactory: ViewModelFactory!
+            let mockDataManager: DataManager = MockDataManager()
+            let mockDatabase = MockDatabase()
+            var rootViewController: UIViewController!
+
             beforeEach {
-                navigator = BaseNavigationCoordinator(rootViewController: UIViewController())
-                rootView = presentViewController(view: navigator).rootView
-                initFactory()
-                initCoordinator()
-                print(coordinator!)
+                navigationCoordinator = BaseNavigationCoordinator(rootViewController: UIViewController())
+                rootViewController = presentViewController(view: navigationCoordinator).rootView
+                setupViewModelFactory()
+                setupCoordinator()
+                print(coordinator!) // just to silence the warning
             }
+
             afterEach {
-                cleanUp(rootView: rootView)
+                cleanUp(rootView: rootViewController)
             }
-            context("tab navigation") {
-                it("goes to favourites") {
-                    let tab = viewTester().usingLabel(GittyTabView.TestingIdentifiers.FavouritesTab)
-                    tab?.tap()
+
+            context("Tab Navigation") {
+                it("navigates to the Favourites tab") {
+                    let favouritesTab = viewTester().usingLabel(GittyTabView.TestingIdentifiers.FavouritesTab)
+                    favouritesTab?.tap()
                     assertViewExists(withAccessibilityLabel: FavouriteRepositoriesView.TestingIdentifiers.placeholderView)
                 }
-                it("goes to organizations") {
-                    let tab = viewTester().usingLabel(GittyTabView.TestingIdentifiers.OrganizationsTab)
-                    tab?.tap()
+
+                it("navigates to the Organizations tab") {
+                    let organizationsTab = viewTester().usingLabel(GittyTabView.TestingIdentifiers.OrganizationsTab)
+                    organizationsTab?.tap()
                     assertViewExists(withAccessibilityLabel: OrganizationsView.TestingIdentifiers.titleView)
                 }
-                it("goes back to all repositories") {
-                    let tab = viewTester().usingLabel(GittyTabView.TestingIdentifiers.OrganizationsTab)
-                    tab?.tap()
+
+                it("navigates back to the Repositories tab") {
+                    let organizationsTab = viewTester().usingLabel(GittyTabView.TestingIdentifiers.OrganizationsTab)
+                    organizationsTab?.tap()
                     assertViewExists(withAccessibilityLabel: OrganizationsView.TestingIdentifiers.titleView)
-                    let repoTab = viewTester().usingLabel(GittyTabView.TestingIdentifiers.RepositoriesTab)
-                    repoTab?.tap()
+                    let repositoriesTab = viewTester().usingLabel(GittyTabView.TestingIdentifiers.RepositoriesTab)
+                    repositoriesTab?.tap()
                     assertViewExists(withAccessibilityLabel: RepositoriesView.TestingIdentifiers.backgroundView)
                 }
             }
 
-            context("view navigation") {
-                it("can show repo detail") {
-                    let repoTab = viewTester().usingLabel(GittyTabView.TestingIdentifiers.RepositoriesTab)
-                    repoTab?.tap()
-                    /// need to find underlying uiElement to have  KIF tap and trigger the event
+            context("View Navigation") {
+                it("displays the Repository Details view") {
+                    let repositoriesTab = viewTester().usingLabel(GittyTabView.TestingIdentifiers.RepositoriesTab)
+                    repositoriesTab?.tap()
+                    // Trigger repository selection event "manually" need to explore why tap is not working
                     coordinatorModel.events.repositorySelected.send(Repository.mock())
                     assertViewExists(withAccessibilityLabel: DetailedRepositoryView.TestingIdentifiers.mainView)
                     tester().waitForAnimationsToFinish()
                 }
             }
 
-            
-            func initCoordinator() {
+            func setupCoordinator() {
                 let modelInput = ApplicationCoordinatorModel
-                    .Input(navigationCoordinator: navigator, viewModelFactory: factory, dataManager: dataManager)
+                    .Input(navigationCoordinator: navigationCoordinator, viewModelFactory: viewModelFactory, dataManager: mockDataManager)
                 coordinatorModel = ApplicationCoordinatorModel(input: modelInput)
                 coordinator = ApplicationCoordinator(with: coordinatorModel)
             }
-            
-            func initFactory() {
-                let input = ViewModelFactoryModel
-                    .Input(database: database, fetcher: MockFetcher(), configurtion: Configuration.standard())
-                factory = ViewModelFactory(with: ViewModelFactoryModel(with: input))
+
+            func setupViewModelFactory() {
+                let factoryInput = ViewModelFactoryModel
+                    .Input(database: mockDatabase, fetcher: MockFetcher(), configurtion: Configuration.standard())
+                viewModelFactory = ViewModelFactory(with: ViewModelFactoryModel(with: factoryInput))
             }
+
         }
-        
     }
 }
