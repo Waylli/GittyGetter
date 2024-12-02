@@ -18,20 +18,26 @@ struct FavouriteRepositoriesView: View {
     var body: some View {
         ZStack {
             model.input.configuration.colors.tappableClearColor
+                .accessibilityElement(children: .contain)
                 .accessibilityLabel(TestingIdentifiers.placeholderView)
             VStack {
                 if model.repositories.count > 0 {
                     TitleTextComponent(title: "Favourite")
+                        .accessibilityElement(children: .contain)
                         .accessibilityLabel(TestingIdentifiers.titleView)
                     RepositoriesListView(with: model.makeRepositoriesListViewModel())
+                        .accessibilityElement(children: .contain)
                         .accessibilityLabel(TestingIdentifiers.repositoriesView)
                     Spacer()
                 } else {
                     noRepos
+                        .accessibilityElement(children: .contain)
                         .accessibilityLabel(TestingIdentifiers.noRepositoriesView)
                 }
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("testing")
         .overlay {
             HStack {
                 Spacer()

@@ -24,15 +24,18 @@ class MockDatabase: FullRepositoryService {
     let repositories: Repositories
     var fetchedRepositories: Repositories
     let initialSortingOrder: SortingOrder
+    let favouriteRepositories: Repositories
 
     init(organizations: Organizations = Organization.mocks(),
          repositories: Repositories = Repository.mocks(count: 20),
          fetchedRepositories: Repositories = Repository.mocks(),
+         favouriteRepositories: Repositories = Repository.mocks(),
          sortingOrder: SortingOrder = Configuration.standard().settings.sorting.forFavorites) {
         self.organizations = organizations
         self.repositories = repositories
         self.fetchedRepositories = fetchedRepositories
         self.initialSortingOrder = sortingOrder
+        self.favouriteRepositories = favouriteRepositories
     }
 
     func getRepositories(query: String,
@@ -54,12 +57,14 @@ class MockDatabase: FullRepositoryService {
     }
 
     func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
-        guard sortingOrder == initialSortingOrder else {
+        print(sortingOrder.readable())
+        print(initialSortingOrder.readable())
+        guard sortingOrder.readable() == initialSortingOrder.readable() else {
             return Just(fetchedRepositories)
                 .setFailureType(to: CustomError.self)
                 .eraseToAnyPublisher()
         }
-        return Just(repositories)
+        return Just(favouriteRepositories)
             .setFailureType(to: CustomError.self)
             .eraseToAnyPublisher()
     }

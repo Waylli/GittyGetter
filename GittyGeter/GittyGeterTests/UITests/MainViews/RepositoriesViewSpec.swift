@@ -31,12 +31,15 @@ class RepositoriesViewSpec: KIFSpec {
                 viewModel = nil
             }
             context("when displayed") {
+
                 it("shows the title") {
                     assertViewExists(withAccessibilityLabel: RepositoriesView.TestingIdentifiers.titleView)
                 }
+
                 it("shows the sort button") {
                     assertViewExists(withAccessibilityLabel: RepositoriesView.TestingIdentifiers.sortingView)
                 }
+
                 it("shows search component") {
                     assertViewExists(withAccessibilityLabel: RepositoriesView.TestingIdentifiers.searchComponent)
                 }
@@ -44,8 +47,13 @@ class RepositoriesViewSpec: KIFSpec {
                 it("shows repository list") {
                     assertViewExists(withAccessibilityLabel: RepositoriesView.TestingIdentifiers.repositoryListComponent)
                 }
+
                 it("shows background view") {
                     assertViewExists(withAccessibilityLabel: RepositoriesView.TestingIdentifiers.backgroundView)
+                }
+
+                it("shows card") {
+                    assertViewExists(withAccessibilityLabel: "RepositoriesListView.\(viewModel.queriedRepositories.first!.name)")
                 }
             }
         }

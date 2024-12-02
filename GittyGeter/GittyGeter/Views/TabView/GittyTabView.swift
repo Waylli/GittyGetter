@@ -18,32 +18,42 @@ struct GittyTabView: View {
     var body: some View {
         TabView(selection: $model.selectedTab) {
             RepositoriesView(with: model.makeRepositoriesViewModel())
+                .accessibilityElement(children: .contain)
                 .accessibilityLabel(TestingIdentifiers.repositoriesView)
                 .tabItem {
                     Label {
                         Text("Repositories")
                     } icon: {
                         Image(uiImage: UIImage.fork)
+                            .accessibilityElement(children: .contain)
+                            .accessibilityLabel(TestingIdentifiers.RepositoriesTab)
                     }
                 }
                 .tag(GittyTabViewTab.repositories)
             FavouriteRepositoriesView(with: model.makeFavouriteRepositoriesViewModel())
+                .accessibilityElement(children: .contain)
                 .accessibilityLabel(TestingIdentifiers.favouriteRepositoriesView)
                 .tabItem {
                     Label {
                         Text("Favourites")
                     } icon: {
                         Image(systemName: "heart.fill")
+                            .accessibilityElement(children: .contain)
+                            .accessibilityLabel(TestingIdentifiers.FavouritesTab)
                     }
                 }
                 .tag(GittyTabViewTab.favorite)
             OrganizationsView(with: model.makeOrganizationsViewModel())
+                .accessibilityElement(children: .contain)
                 .accessibilityLabel(TestingIdentifiers.organizationsView)
                 .tabItem {
                     Label("Organizations", systemImage: "building.2")
+                        .accessibilityElement(children: .contain)
+                        .accessibilityLabel(TestingIdentifiers.OrganizationsTab)
                 }
                 .tag(GittyTabViewTab.organizations)
         }
+        .accessibilityElement(children: .contain)
         .accessibilityLabel(TestingIdentifiers.tabView)
     }
 }
@@ -61,6 +71,9 @@ extension GittyTabView {
         static let favouriteRepositoriesView = "GittyTabView.FavouriteRepositoriesView"
         static let organizationsView = "FavouriteRepositoriesView.OrganizationsView"
         static let tabView = "GittyTabView.TabView"
+        static let RepositoriesTab = "GittyTabView.RepositoriesTab"
+        static let FavouritesTab = "GittyTabView.FavouritesTab"
+        static let OrganizationsTab = "GittyTabView.OrganizationsTab"
     }
 }
 

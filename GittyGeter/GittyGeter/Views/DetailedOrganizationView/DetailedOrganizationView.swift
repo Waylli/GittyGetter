@@ -102,6 +102,7 @@ struct DetailedOrganizationView: View {
             }
             Spacer()
         }
+        .accessibilityElement(children: .contain)
         .accessibilityLabel(TestingIdentifiers.decorationView)
     }
 

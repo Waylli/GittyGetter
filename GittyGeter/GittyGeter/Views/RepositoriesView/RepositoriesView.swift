@@ -20,10 +20,12 @@ struct RepositoriesView: View {
         VStack {
             HStack(alignment: .top) {
                 TitleTextComponent(title: "Repositories")
+                    .accessibilityElement(children: .contain)
                     .accessibilityLabel(TestingIdentifiers.titleView)
                 Spacer()
                 SortingOrderButtonComponent(sortingOrder: model.sortingOrder,
                                             configuration: model.input.configuration)
+                .accessibilityElement(children: .contain)
                 .accessibilityLabel(TestingIdentifiers.sortingView)
                 .onTapGesture {
                     model.sortingOrder = model.sortingOrder.next()
@@ -33,11 +35,13 @@ struct RepositoriesView: View {
                             isFocused: $isSearching,
                             configuration: model.input.configuration)
             FilterOrganizationsComponent(with: model.makeFilterOrganizationsComponentModel())
+                .accessibilityElement(children: .contain)
                 .accessibilityLabel(TestingIdentifiers.searchComponent)
                 .background {
                     model.input.configuration.colors.tappableClearColor
                 }
             RepositoriesListView(with: model.makeRepositoriesListViewModel())
+                .accessibilityElement(children: .contain)
                 .accessibilityLabel(TestingIdentifiers.repositoryListComponent)
             Spacer()
         }
@@ -51,6 +55,7 @@ struct RepositoriesView: View {
                         isSearching = false
                     }
                 }
+                .accessibilityElement(children: .contain)
                 .accessibilityLabel(TestingIdentifiers.backgroundView)
         }
         .onAppear {

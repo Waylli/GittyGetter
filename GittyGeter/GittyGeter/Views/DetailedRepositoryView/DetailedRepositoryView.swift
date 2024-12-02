@@ -43,6 +43,8 @@ struct DetailedRepositoryView: View {
 
             Spacer()
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(TestingIdentifiers.mainView)
         .padding()
     }
 
@@ -141,7 +143,14 @@ struct DetailedRepositoryView: View {
             Text(subtitle)
                 .font(.title3)
         }
+        .accessibilityElement(children: .contain)
         .accessibilityLabel("DetailedRepositoryView.\(title)")
+    }
+}
+
+extension DetailedRepositoryView {
+    struct TestingIdentifiers {
+        static let mainView = "DetailedRepositoryView.MainView"
     }
 }
 

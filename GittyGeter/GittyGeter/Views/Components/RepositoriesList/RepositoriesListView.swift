@@ -39,6 +39,8 @@ struct RepositoriesListView: View {
                     .background {
                         RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
                             .foregroundStyle(Color.primary.opacity(0.15))
+                            .accessibilityElement(children: .contain)
+                            .accessibilityLabel("RepositoriesListView.\(repository.name)")
                     }
                     .onTapGesture {
                         model.userselected(this: repository)

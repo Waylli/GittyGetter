@@ -34,8 +34,6 @@ extension ApplicationCoordinatorModel {
     }
 }
 
-// MARK: - Computed Properties
-
 extension ApplicationCoordinatorModel {
 
     var viewModelFactory: ViewModelFactory {

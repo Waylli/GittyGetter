@@ -18,6 +18,7 @@ struct OrganizationsView: View {
     var body: some View {
         VStack {
             TitleTextComponent(title: "Organizations")
+                .accessibilityElement(children: .contain)
                 .accessibilityLabel(TestingIdentifiers.titleView)
                 .overlay {
                     HStack {

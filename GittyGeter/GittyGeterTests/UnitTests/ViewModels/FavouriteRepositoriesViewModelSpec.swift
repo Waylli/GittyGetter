@@ -20,28 +20,28 @@ class FavouriteRepositoriesViewModelSpec: QuickSpec {
         describe("FavouriteRepositoriesViewModel") {
             context("when initialized") {
                 beforeEach {
-                    database = MockDatabase()
+                    database = MockDatabase(sortingOrder: Configuration.standard().settings.sorting.forFavorites)
                     model = makeFavoriteRepositoriesViewModel(service: database)
                 }
                 it("sets the default sorting order from configuration") {
                     expect(model.sortingOrder).to(equal(Configuration.standard().settings.sorting.forFavorites))
-                    expect(model.repositories).toEventually(equal(database.repositories))
+                    expect(model.repositories).toEventually(equal(database.favouriteRepositories))
                     // Test implementation here
                 }
                 it("can make RepositoriesListViewModel") {
                     let repositoriesListViewModel = model.makeRepositoriesListViewModel()
-                    expect(repositoriesListViewModel.input.repositories).to(equal(database.repositories))
+                    expect(repositoriesListViewModel.input.repositories).to(equal(database.favouriteRepositories))
                 }
             }
 
             context("when changing sort order") {
                 beforeEach {
-                    database = MockDatabase()
+                    database = MockDatabase(sortingOrder: Configuration.standard().settings.sorting.forFavorites)
                     model = makeFavoriteRepositoriesViewModel(service: database)
                 }
                 it("changes repositories") {
                     expect(model.sortingOrder).to(equal(Configuration.standard().settings.sorting.forFavorites))
-                    expect(model.repositories).toEventually(equal(database.repositories))
+                    expect(model.repositories).toEventually(equal(database.favouriteRepositories))
                     model.sortingOrder = .updatedAt(ascending: true)
                     expect(model.repositories).toEventually(equal(database.fetchedRepositories))
                 }

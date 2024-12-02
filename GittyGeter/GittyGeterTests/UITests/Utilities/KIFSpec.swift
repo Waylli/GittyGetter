@@ -96,6 +96,14 @@ extension KIFSpec {
     }
 
     static
+    func presentViewController<T: UIViewController>(view: T) -> (view: T, rootView: UIViewController) {
+        let rootView = try! UIApplication.getVisibleViewController()
+        rootView.present(view, animated: false)
+        tester().waitForAnimationsToFinish()
+        return (view, rootView)
+    }
+
+    static
     func cleanUp(rootView: UIViewController) {
         rootView.dismiss(animated: false)
         tester().waitForAnimationsToFinish()

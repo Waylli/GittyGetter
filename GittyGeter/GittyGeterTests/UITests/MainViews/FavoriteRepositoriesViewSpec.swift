@@ -52,7 +52,10 @@ class FavoriteRepositoriesViewSpec: KIFSpec {
             }
             context("when there are no favorite repositories") {
                 beforeEach {
-                    database = MockDatabase(organizations: [], repositories: [], fetchedRepositories: [])
+                    database = MockDatabase(organizations: [],
+                                            repositories: [],
+                                            fetchedRepositories: [],
+                                            favouriteRepositories: [])
                     viewModel = makeFavouriteRepositoriesViewModel(database: database)
                     view = FavouriteRepositoriesView(with: viewModel)
                     rootView = presentView(view: view).rootView
