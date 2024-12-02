@@ -14,10 +14,5 @@ extension String {
         UUID().uuidString.replacingOccurrences(of: "-", with: "")
     }
 
-    static
-    func orgName() -> String {
-        ["Pera Wallet", "Algorand Foundation", "Algorand"].randomElement() ?? "Algorand"
-    }
-
 }
 #endif
