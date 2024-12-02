@@ -27,16 +27,11 @@ struct OrganizationsView: View {
                             Button {
                                 print("aad orga not implemented")
                             } label: {
-                                VStack {
-                                    Image(systemName: "plus.circle")
-                                        .font(.title)
-                                        .padding([.top, .trailing])
-                                        .accessibilityLabel(TestingIdentifiers.addOrgaButton)
-                                        .foregroundStyle(model.input.configuration.colors.purpule)
-                                    Text("not impl!")
-                                        .font(.footnote)
-                                        .foregroundStyle(.red)
-                                }
+                                Image(systemName: "plus.circle")
+                                    .font(.title)
+                                    .padding([.top, .trailing])
+                                    .foregroundStyle(model.input.configuration.colors.purpule)
+                                    .accessibilityLabel(TestingIdentifiers.addOrgaButton)
                             }
                             Spacer()
                         }
