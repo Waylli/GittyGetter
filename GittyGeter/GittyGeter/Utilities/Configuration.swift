@@ -41,6 +41,9 @@ struct Configuration {
 
     struct Colors {
         let tappableClearColor = Color.white.opacity(0.002)
+        let gray = "F5F5F5".toColor()
+        let purpule = "9D92ED".toColor()
+        let yellow = "F5E432".toColor()
     }
 
     struct Buttons {

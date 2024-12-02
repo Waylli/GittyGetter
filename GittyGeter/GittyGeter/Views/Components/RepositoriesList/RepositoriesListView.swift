@@ -38,7 +38,7 @@ struct RepositoriesListView: View {
                     .padding()
                     .background {
                         RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
-                            .foregroundStyle(Color.primary.opacity(0.15))
+                            .foregroundStyle(model.input.configuration.colors.gray)
                             .accessibilityLabel("RepositoriesListView.\(repository.name)")
                             .accessibilityElement(children: .contain)
                     }
@@ -56,7 +56,7 @@ import Combine
 #Preview {
     let modelInput = RepositoriesListViewModel
         .Input(isScrollable: true,
-               repositories: Repository.mocks(),
+               repositories: Repository.mocks(isFavorite: true),
                fetcher: MockFetcher(),
                configuration: Configuration.standard()) { _, _ in
             Just(true)

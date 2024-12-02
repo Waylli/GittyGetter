@@ -49,6 +49,9 @@ struct FilterOrganizationsComponent: View {
             HStack {
                 ForEach(viewModel.input.availableOrganizations, id: \.self) { organization in
                     organizationChip(for: organization)
+                        .onTapGesture {
+                            viewModel.output.applyFilterFromOrganization.send(organization)
+                        }
                 }
             }
         }
@@ -83,8 +86,10 @@ struct FilterOrganizationsComponent: View {
             .italic()
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .background(RoundedRectangle(cornerRadius: viewModel.input.configuration.view.cornerRadius)
-                .foregroundColor(.blue.opacity(0.4)))
+            .background(
+                RoundedRectangle(cornerRadius: viewModel.input.configuration.view.cornerRadius)
+                .foregroundColor(viewModel.input.configuration.colors.purpule)
+            )
     }
 }
 

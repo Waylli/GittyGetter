@@ -23,6 +23,8 @@ struct RepositoryCard: View {
                     HStack {
                         HStack(alignment: .bottom, spacing: 4) {
                             Image(uiImage: UIImage.star)
+                                .renderingMode(.template)
+                                .foregroundStyle(model.input.configuration.colors.yellow)
                             Text("\(model.input.repository.stargazersCount)")
                                 .fontWeight(.light)
                                 .italic()
@@ -36,7 +38,6 @@ struct RepositoryCard: View {
                                 .italic()
                                 .font(.headline)
                         }
-                        .padding([.trailing])
                     }
                 }
                 Spacer()
@@ -83,7 +84,7 @@ struct RepositoryCard: View {
             Spacer()
             Image(systemName: model.isFavorite ? "heart.fill" : "heart")
                 .font(.largeTitle)
-                .foregroundStyle(Color.orange)
+                .foregroundStyle(model.input.configuration.colors.purpule)
             /// comment out if favorite status can be set from here
 //                .onTapGesture {
 //                    model.isFavoritePressed()
