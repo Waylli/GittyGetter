@@ -62,20 +62,20 @@ class GitHubServiceSpec: QuickSpec {
                     expect(repositories?.count).to(beGreaterThan(0))
                 }
 
-                context("fetching live data") {
-                    beforeEach {
-                        provider.purgeCache()
-                        let repositories = LocalDatabaseTestHelpers
-                            .performAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
-                            .0
-                        expect(repositories).notTo(beNil())
-                    }
-                    it("should return cached data") {
-                        let repositories = LocalDatabaseTestHelpers
-                            .performAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
-                            .0
-                        expect(repositories).notTo(beNil())
-                    }
+            }
+            context("fetching live data") {
+                beforeEach {
+                    provider.purgeCache()
+                    let repositories = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
+                        .0
+                    expect(repositories).notTo(beNil())
+                }
+                it("should return cached data") {
+                    let repositories = LocalDatabaseTestHelpers
+                        .performAndWait(publisher: provider.fetchRepositoriesForOrganizationWith(login: orgLogin))
+                        .0
+                    expect(repositories).notTo(beNil())
                 }
             }
         }
