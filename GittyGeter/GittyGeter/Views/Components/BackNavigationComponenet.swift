@@ -18,7 +18,7 @@ struct BackNavigationComponenet: View {
                     Image(systemName: "chevron.left")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(configuration.colors.purpule)
                         .frame(height: proxy.size.height * 0.7)
                         .accessibilityLabel(TestingIdentifiers.backButton)
                     Spacer()

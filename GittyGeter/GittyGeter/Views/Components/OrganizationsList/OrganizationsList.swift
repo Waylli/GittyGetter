@@ -30,7 +30,7 @@ struct OrganizationsList: View {
                     .padding()
                     .background {
                         RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
-                            .foregroundStyle(Color.primary.opacity(0.15))
+                            .foregroundStyle(model.input.configuration.colors.gray)
                     }
                     .onTapGesture {
                         model.userSelected(this: organization)

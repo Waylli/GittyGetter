@@ -36,7 +36,7 @@ struct DetailedRepositoryView: View {
                     .padding()
                     .background {
                         RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
-                            .foregroundStyle(.primary.opacity(0.15))
+                            .foregroundStyle(model.input.configuration.colors.gray)
                     }
             }
             .padding([.top, .bottom])
@@ -65,7 +65,7 @@ struct DetailedRepositoryView: View {
                 Image(systemName: model.isFavouriteRepository ? "heart.fill" : "heart")
                     .font(.system(size: 60))
                     .padding()
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(model.input.configuration.colors.purpule)
                     .onTapGesture {
                         model.favoriteIconTapped()
                     }

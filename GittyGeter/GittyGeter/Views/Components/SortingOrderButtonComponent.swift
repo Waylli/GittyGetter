@@ -19,7 +19,7 @@ struct SortingOrderButtonComponent: View {
             .padding(6)
             .background {
                 RoundedRectangle(cornerRadius: configuration.view.cornerRadius)
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(configuration.colors.purpule)
             }
     }
 }

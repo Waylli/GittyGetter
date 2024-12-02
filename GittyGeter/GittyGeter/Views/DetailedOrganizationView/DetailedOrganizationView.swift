@@ -65,6 +65,7 @@ struct DetailedOrganizationView: View {
                                 .font(.subheadline)
                                 .minimumScaleFactor(0.2)
                                 .lineLimit(1)
+                                .foregroundStyle(model.input.configuration.colors.purpule)
                         } else {
                             Text(model.input.organization.email ?? "N/A")
                                 .font(.subheadline)
@@ -83,6 +84,7 @@ struct DetailedOrganizationView: View {
                             .font(.subheadline)
                             .lineLimit(1)
                             .minimumScaleFactor(0.2)
+                            .foregroundStyle(model.input.configuration.colors.purpule)
                     } else {
                         Text(model.input.organization.websiteUrl ?? "N/A")
                             .font(.subheadline)
