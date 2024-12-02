@@ -1,0 +1,49 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Xcode
+build/
+DerivedData/
+*.xcuserdatad
+*.xcuserdata/
+*.swp
+*.lock
+*.xcscmblueprint
+*.xcworkspace
+!default.xcworkspace
+
+
+# Swift Package Manager
+.swiftpm/
+Package.resolved
+
+
+# Archives
+*.xcarchive
+
+
+# Other
+*.moved-aside
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# IDE Profiles
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+
+
+# Temporary Files
+*.tmp
+*.temp
+
+# Logs
+*.log
+
+# Xcode Coverage
+*.xccoverage
+
+
