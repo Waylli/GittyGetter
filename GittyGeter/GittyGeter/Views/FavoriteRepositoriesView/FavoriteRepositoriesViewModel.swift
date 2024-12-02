@@ -76,6 +76,7 @@ extension FavouriteRepositoriesViewModel {
             .sink { _ in
                 print("handle error")
             } receiveValue: { [weak self] in
+                guard let this = self, this.repositories != $0 else {return}
                 self?.repositories = $0
             }
     }

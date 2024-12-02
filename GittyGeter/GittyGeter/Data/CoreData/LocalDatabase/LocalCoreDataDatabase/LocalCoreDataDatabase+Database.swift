@@ -57,6 +57,7 @@ extension LocalCoreDataDatabase: RepositoryProvider {
     func getFavouriteRepositories(with sortingOrder: SortingOrder) -> AnyPublisher<Repositories, CustomError> {
         self.changeSortingOrderOfFavorites(to: sortingOrder)
         return $favoriteRepositories
+            .removeDuplicates()
             .map {$0.map {try? $0.toRepository()}.compactMap {$0}}
             .receive(on: RunLoop.main)
             .setFailureType(to: CustomError.self)

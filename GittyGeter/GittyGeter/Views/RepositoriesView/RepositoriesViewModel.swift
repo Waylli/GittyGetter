@@ -99,7 +99,8 @@ extension RepositoriesViewModel {
             .sink(receiveCompletion: { _ in
                 print("handle error if any")
             }, receiveValue: { [weak self] in
-                self?.allOrganizations = $0
+                guard let this = self, this.allOrganizations != $0 else {return}
+                this.allOrganizations = $0
             })
             .store(in: &cancelBag)
     }

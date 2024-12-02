@@ -61,6 +61,7 @@ extension OrganizationsViewModel {
             .sink(receiveCompletion: { _ in
                 print("handle error")
             }, receiveValue: { [weak self] in
+                guard let this = self, this.organizations != $0 else {return}
                 self?.organizations = $0
             })
             .store(in: &cancelBag)

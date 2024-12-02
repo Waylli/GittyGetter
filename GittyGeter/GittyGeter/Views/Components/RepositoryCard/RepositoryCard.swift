@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct RepositoryCard: View {
 
@@ -54,16 +55,25 @@ struct RepositoryCard: View {
 
     private
     var thumbnail: some View {
-        guard let thumbnail = model.thumbnail else {
-            return ThumbnailComponent(thumbnail: Photo.star,
-                                      configuration: model.input.configuration) {
-                ThumbnailBackgroundComponent()
+        ZStack {
+            // quick and dirty fix to handle "https://avatars.githubusercontent.com/u/49564161?v=4" not loaded correctly
+            if let thumbnail = model.input.repository.avatarURL, let url = URL(string: thumbnail) {
+                KFImage(url)
+                    .resizable()
+                    .frame(width: model.input.configuration.thumbnail.widht,
+                           height: model.input.configuration.thumbnail.height)
+                    .clipShape(
+                        RoundedRectangle(cornerRadius: model.input.configuration.view.cornerRadius)
+                    )
+            } else {
+                ThumbnailComponent(thumbnail: Photo.star,
+                                   configuration: model.input.configuration) {
+                    ThumbnailBackgroundComponent()
+                }
             }
         }
-        return ThumbnailComponent(thumbnail: thumbnail, configuration: model.input.configuration) {
-            ThumbnailBackgroundComponent()
-        }
     }
+
     private
     var nameDescription: some View {
         HStack(alignment: .top) {
